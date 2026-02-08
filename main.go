@@ -1,6 +1,9 @@
 package main
 
-import ()
+import (
+	"main/lib"
+)
 
 func main() {
+	lib.INIT()
 }
