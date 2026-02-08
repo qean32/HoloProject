@@ -1,9 +1,9 @@
 package model
 
 type Event struct {
-	Key     string
-	Payload string
-	Hash    string
-	Flags   []string
-	Time    string
+	Key      string
+	Payload  string
+	Password string
+	Flags    []string
+	Time     string
 }

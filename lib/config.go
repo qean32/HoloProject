@@ -5,13 +5,15 @@ import (
 )
 
 var KEY_FUNCTION = map[string]func(e model.Event){
-	"hash":         func(e model.Event) {}, // hash "ключ" "сообщество" "хеш" (-nl)
-	"dihash":       func(e model.Event) {}, // dihash "ключ" (-nl)
-	"master":       func(e model.Event) {}, // master (-nl)
-	"generate:key": func(e model.Event) {}, // generate:key
-	"drop":         func(e model.Event) {}, // drop (-f)
-	"clear:log":    func(e model.Event) {}, // clear:log (-nl -f)
-	"stop":         func(e model.Event) {}, // stop
+	"hash":   func(e model.Event) {}, // hash ключ пароль {сообщение} (-nl)
+	"g:key":  func(e model.Event) {}, // g:key
+	"g:log":  func(e model.Event) {}, // g:log
+	"c:log":  func(e model.Event) {}, // c:log (-nl -f)
+	"dihash": func(e model.Event) {}, // dihash ключ пароль (-nl)
+	"master": func(e model.Event) {}, // master (-nl)
+	"drop":   func(e model.Event) {}, // drop (-f)
+	"stop":   func(e model.Event) {}, // stop
+	"help":   func(e model.Event) {}, // help
 }
 
 var FLAG = map[string]string{
