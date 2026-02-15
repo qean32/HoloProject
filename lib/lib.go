@@ -13,7 +13,7 @@ import (
 var READER = bufio.NewReader(os.Stdin)
 
 func ENTER_COMMAND() {
-	print("Enter command: ")
+	print("> ")
 	command, _ := READER.ReadString('\n')
 	if len(command) > 1 {
 		event := PARSE_EVENT(command)
@@ -34,11 +34,7 @@ func HOF_ACCESS_ACTION(f model.EventFunction, event model.Event) {
 }
 
 func INIT() {
-	var text, _ = depth.ReadFile("/log.txt")
-	fmt.Println(depth.WriteFile(strings.Join(text, " \n"), "/log.txt"))
-	for i := 0; i < len(PROJECT_INIT); i++ {
-		fmt.Print(PROJECT_INIT[i])
-	}
+	fmt.Println(PROJECT_INIT)
 	ENTER_COMMAND()
 }
 

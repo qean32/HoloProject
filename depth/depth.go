@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 const root = "./private"
@@ -29,12 +30,12 @@ func ITERATION_CYCLE() {
 
 var CALLSTACK = []string{}
 
-func ReadFile(path string) ([]string, error) {
+func ReadFile(path string) []string {
 	file, err := os.Open(root + path)
 	scanner := bufio.NewScanner(file)
 
 	if err != nil {
-		return nil, err
+		return nil
 	}
 	defer file.Close()
 
@@ -43,7 +44,7 @@ func ReadFile(path string) ([]string, error) {
 		data =
 			append(data, scanner.Text())
 	}
-	return data, scanner.Err()
+	return data
 }
 
 func WriteFile(data string, path string) bool {
@@ -56,4 +57,9 @@ func WriteFile(data string, path string) bool {
 
 	file.WriteString(data)
 	return true
+}
+
+func PushToFile(path string, newText string) bool {
+	return WriteFile(strings.Join(
+		append(ReadFile(path), newText+"\n"), " \n"), path)
 }
