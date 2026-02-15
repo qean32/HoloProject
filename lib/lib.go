@@ -3,11 +3,11 @@ package lib
 import (
 	"bufio"
 	"fmt"
-	"main/depth"
+	"main/constants"
+	"main/deep"
 	"main/model"
 	"os"
 	"strings"
-	"time"
 )
 
 var READER = bufio.NewReader(os.Stdin)
@@ -16,16 +16,26 @@ func ENTER_COMMAND() {
 	print("> ")
 	command, _ := READER.ReadString('\n')
 	if len(command) > 1 {
-		event := PARSE_EVENT(command)
-		fmt.Printf("%+v \n", event)
+		key := strings.Split(
+			strings.TrimSpace(command), " ")[0]
+		event, _error := PARSE_EVENT(command, key)
 
-		depth.LOG()
+		if !_error {
+			fn := KEY_FUNCTION[key]
+			if fn != nil {
+				fn(event)
+				deep.LOG(event)
+				fmt.Printf("%+v \n", event)
+			} else {
+				fmt.Println(constants.NO_FIND_COMAND)
+			}
+		}
 	}
 	ENTER_COMMAND()
 }
 
 func HOF_ACCESS_ACTION(f model.EventFunction, event model.Event) {
-	if depth.ACCESS_ACTION() {
+	if ACCESS_ACTION() {
 		f(event)
 		return
 	}
@@ -34,23 +44,32 @@ func HOF_ACCESS_ACTION(f model.EventFunction, event model.Event) {
 }
 
 func INIT() {
-	fmt.Println(PROJECT_INIT)
+	fmt.Println(constants.PROJECT_INIT)
 	ENTER_COMMAND()
 }
 
 func PUSH_CYCLE() {
 }
 
-func PARSE_EVENT(command string) model.Event {
-	arr := strings.Split(command, " ")
-	payload := getPaylaod(command)
-	var event model.Event = model.Event{
-		Time:     time.Now().Format("2006-01-02 15:04:05"),
-		Key:      arr[0],
-		Password: arr[1],
-		Payload:  payload,
-		Flags:    filterIsFlag(arr),
+func PARSE_EVENT(command string, key string) (event model.Event, _error bool) {
+	fn := KEY_PARSE[key]
+
+	if fn == nil {
+		return
+	}
+	event, _error = fn(command)
+	return event, _error
+}
+
+func ACCESS_ACTION() bool {
+	var response string
+	fmt.Print("Need access (yes/no): ")
+	fmt.Scan(&response)
+
+	if response == "yes" {
+
+		return true
 	}
 
-	return event
+	return false
 }

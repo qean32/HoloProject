@@ -1,28 +1,14 @@
-package depth
+package deep
 
 import (
 	"bufio"
-	"fmt"
+	"main/constants"
+	"main/model"
 	"os"
 	"strings"
 )
 
-const root = "./private"
-
-func ACCESS_ACTION() bool {
-	var response string
-	fmt.Print("Need access (yes/no): ")
-	fmt.Scan(&response)
-
-	if response == "yes" {
-
-		return true
-	}
-
-	return false
-}
-
-func LOG() {
+func LOG(event model.Event) {
 }
 
 func ITERATION_CYCLE() {
@@ -31,7 +17,7 @@ func ITERATION_CYCLE() {
 var CALLSTACK = []string{}
 
 func ReadFile(path string) []string {
-	file, err := os.Open(root + path)
+	file, err := os.Open(constants.Root + path)
 	scanner := bufio.NewScanner(file)
 
 	if err != nil {
@@ -48,7 +34,7 @@ func ReadFile(path string) []string {
 }
 
 func WriteFile(data string, path string) bool {
-	file, err := os.Create(root + path)
+	file, err := os.Create(constants.Root + path)
 
 	if err != nil {
 		return false
