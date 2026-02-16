@@ -25,9 +25,8 @@ func ENTER_COMMAND() {
 			if fn != nil {
 				fn(event)
 				deep.LOG(event)
-				fmt.Printf("%+v \n", event)
 			} else {
-				fmt.Println(constants.NO_FIND_COMMAND)
+				fmt.Println(constants.UNDEFINED_COMMAND)
 			}
 		}
 	}

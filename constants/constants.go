@@ -1,11 +1,14 @@
 package constants
 
-const NO_FIND_COMMAND = "Undefined command/"
+const UNDEFINED_COMMAND = "Undefined command/"
 const ERROR_COMMAND = "Syntax error/"
 const STOP_COMMAND = "Command stop/"
+const UNDEFINED_WORD_KEY = "Undefined word key/"
 
 const Root = "./private"
 const LOG_PATH = "/log.asc"
+const COMMAND_PATH = "/command.asc"
+const DATA_PATH = "/data.asc"
 
 const PROJECT_NAME = "Holo"
 
@@ -21,5 +24,20 @@ var PROJECT_INIT = `
 `
 
 var HelpMessage = `
+ Holo Project
+
+ -- hash
+ -- dihash
+
+ -- stop
+ -- drop
+ -- master
+
+ -- g:log
+ -- c:log
+
+ -- run
+ -- place
+ -- commands
 
 `

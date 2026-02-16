@@ -6,18 +6,27 @@ import (
 	"main/constants"
 	"main/model"
 	"os"
+	"slices"
 	"strings"
 	"time"
 )
 
 func LOG(event model.Event) {
-	PushToFile(constants.LOG_PATH, fmt.Sprintf("%#v", event))
+	index := slices.IndexFunc(event.Flags, func(item string) bool {
+		return strings.TrimSpace(item) == "-nl"
+	})
+
+	if index == -1 {
+		PushToFile(constants.LOG_PATH, fmt.Sprintf("%#v", event))
+	}
 }
 
 func ITERATION_CYCLE() {
 }
 
 var CALLSTACK = []string{}
+var TMP_DATA = [][]string{}
+var TMP_COMMANDS = [][]string{}
 
 func ReadFile(path string) []string {
 	file, err := os.Open(constants.Root + path)
@@ -59,7 +68,6 @@ func CreateFile(path string) {
 }
 
 func GenerateMaster() {
-
 }
 
 func ClearFile(path string) {
