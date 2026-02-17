@@ -6,6 +6,7 @@ import (
 	"main/constants"
 	"main/model"
 	"os"
+	"os/exec"
 	"slices"
 	"strings"
 	"time"
@@ -76,4 +77,68 @@ func ClearFile(path string) {
 
 func NewTime() string {
 	return time.Now().Format("2006-01-02 15:04:05")
+}
+
+func SET_DATA() {
+	if len(TMP_COMMANDS) == 0 {
+		strs := (ReadFile(constants.COMMAND_PATH))
+		var tmpArr [][]string
+
+		for i := 0; i < len(strs); i++ {
+			tmp := strings.Split(strs[i], " ")
+			tmpArr = append(tmpArr, []string{tmp[0], strings.Join(tmp[1:], " ")})
+		}
+		TMP_COMMANDS = tmpArr
+	}
+	if len(TMP_DATA) == 0 {
+		strs := (ReadFile(constants.DATA_PATH))
+		var tmpArr [][]string
+
+		for i := 0; i < len(strs); i++ {
+			tmp := strings.Split(strs[i], " ")
+			tmpArr = append(tmpArr, []string{tmp[0], strings.Join(tmp[1:], " ")})
+		}
+		TMP_DATA = tmpArr
+	}
+}
+
+func MatrixToArrayString(matrix [][]string) []string {
+	var tmpArr []string
+
+	for i := 0; i < len(matrix); i++ {
+		tmpArr = append(tmpArr, strings.Join(matrix[i], " "))
+	}
+
+	return tmpArr
+}
+
+func ACCESS_ACTION() bool {
+	var response string
+	fmt.Print("Need access (yes/no): ")
+	fmt.Scan(&response)
+
+	if response == "yes" {
+
+		return true
+	}
+
+	return false
+}
+
+func HOF_ACCESS_ACTION(f model.EventFunction, event model.Event) {
+	if ACCESS_ACTION() {
+		f(event)
+		return
+	}
+
+	fmt.Println(constants.STOP_COMMAND)
+}
+
+func RunCommand(command string) {
+	cmd := exec.Command("CMD.exe", "/C", command)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println("Ошибка при запуске команды:", err)
+		return
+	}
 }
