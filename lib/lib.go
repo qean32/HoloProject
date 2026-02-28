@@ -10,9 +10,21 @@ import (
 	"strings"
 )
 
+func ITERATION_CYCLE(e model.Event) {
+	fn := KEY_FUNCTION[e.Key]
+
+	if fn != nil {
+		fn(e)
+		deep.LOG(e)
+	} else {
+		fmt.Println(constants.UNDEFINED_COMMAND)
+		print("> ")
+	}
+}
+
 var READER = bufio.NewReader(os.Stdin)
 
-func ENTER_COMMAND() {
+func ENTER_COMMAND(callstack model.Channel) {
 	print("> ")
 	command, _ := READER.ReadString('\n')
 
@@ -22,28 +34,17 @@ func ENTER_COMMAND() {
 		e, _error := PARSE_EVENT(trimString, key)
 
 		if !_error {
-			fn := KEY_FUNCTION[key]
-
-			if fn != nil {
-				fn(e)
-				deep.LOG(e)
-			} else {
-				fmt.Println(constants.UNDEFINED_COMMAND)
-			}
+			deep.CALLSTACK = append(deep.CALLSTACK, e)
+			callstack <- e
 		}
 	}
-	ENTER_COMMAND()
+	ENTER_COMMAND(callstack)
 }
 
-func INIT() {
-	constants.INIT_ROOT()
-	fmt.Println(constants.Root)
+func INIT(callstack model.Channel) {
 	fmt.Println(constants.PROJECT_INIT)
 	deep.SET_DATA()
-	ENTER_COMMAND()
-}
-
-func PUSH_CYCLE() {
+	ENTER_COMMAND(callstack)
 }
 
 func PARSE_EVENT(command string, key string) (e model.Event, _error bool) {

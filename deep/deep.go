@@ -20,10 +20,7 @@ func LOG(e model.Event) {
 	}
 }
 
-func ITERATION_CYCLE() {
-}
-
-var CALLSTACK = []string{}
+var CALLSTACK = []model.Event{}
 var TMP_DATA = [][]string{}
 var TMP_COMMANDS = [][]string{}
 
