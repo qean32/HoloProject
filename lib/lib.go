@@ -2,7 +2,6 @@ package lib
 
 import (
 	"bufio"
-	"fmt"
 	"main/constants"
 	"main/deep"
 	"main/model"
@@ -17,15 +16,13 @@ func ITERATION_CYCLE(e model.Event) {
 		fn(e)
 		deep.LOG(e)
 	} else {
-		fmt.Println(constants.UNDEFINED_COMMAND)
-		print("> ")
+		deep.Console(constants.UNDEFINED_COMMAND)
 	}
 }
 
 var READER = bufio.NewReader(os.Stdin)
 
 func ENTER_COMMAND(callstack model.Channel) {
-	print("> ")
 	command, _ := READER.ReadString('\n')
 
 	if len(command) > 1 {
@@ -42,18 +39,17 @@ func ENTER_COMMAND(callstack model.Channel) {
 }
 
 func INIT(callstack model.Channel) {
-	fmt.Println(constants.PROJECT_INIT)
+	deep.Console(constants.PROJECT_INIT)
 	deep.SET_DATA()
 	ENTER_COMMAND(callstack)
 }
 
-func PARSE_EVENT(command string, key string) (e model.Event, _error bool) {
-	fn := KEY_PARSE[key]
+func matrixToArrayString(matrix [][]string) []string {
+	var tmpArr []string
 
-	if fn == nil {
-		e, _error = SHORT_EVENT(strings.Split(command, " "))
-		return
+	for i := 0; i < len(matrix); i++ {
+		tmpArr = append(tmpArr, strings.Join(matrix[i], " "))
 	}
-	e, _error = fn(strings.Split(command, " "))
-	return e, _error
+
+	return tmpArr
 }

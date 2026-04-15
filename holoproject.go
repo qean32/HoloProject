@@ -14,6 +14,5 @@ func main() {
 func LOOP(callstack model.Channel) {
 	for value := range callstack {
 		lib.ITERATION_CYCLE(value)
-		// fmt.Print(value)
 	}
 }

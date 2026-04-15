@@ -97,23 +97,12 @@ func SET_DATA() {
 	}
 }
 
-func MatrixToArrayString(matrix [][]string) []string {
-	var tmpArr []string
-
-	for i := 0; i < len(matrix); i++ {
-		tmpArr = append(tmpArr, strings.Join(matrix[i], " "))
-	}
-
-	return tmpArr
-}
-
 func ACCESS_ACTION() bool {
 	var response string
 	fmt.Print("Need access (yes/no): ")
 	fmt.Scan(&response)
 
-	if response == "yes" {
-
+	if response == "yes" || response == "y" || response == "yea" {
 		return true
 	}
 
@@ -126,7 +115,7 @@ func DECORATOR_ACCESS_ACTION(f model.EventFunction) model.EventFunction {
 		if ACCESS_ACTION() {
 			f(e)
 		} else {
-			fmt.Println(constants.STOP_COMMAND)
+			Console(constants.STOP_COMMAND)
 		}
 	}
 }
@@ -135,7 +124,12 @@ func RunCommand(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Ошибка при запуске команды:", err)
+		fmt.Println("Ошибка при запуске команды: ", err)
 		return
 	}
+}
+
+func Console(output string) {
+	fmt.Println(output)
+	fmt.Print("- ")
 }

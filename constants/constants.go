@@ -2,31 +2,30 @@ package constants
 
 import "os"
 
-const UNDEFINED_COMMAND = "Undefined command/"
-const ERROR_COMMAND = "Syntax error/"
-const STOP_COMMAND = "Command stop/"
-const UNDEFINED_WORD_KEY = "Undefined word key/"
-
 var mode = "prod"
+
+const UNDEFINED_COMMAND = "Undefined command"
+const ERROR_COMMAND = "Syntax error"
+const STOP_COMMAND = "Command stop"
+const UNDEFINED_WORD_KEY = "Undefined word key"
+const PROJECT_NAME = "holoproject"
+
+const COMMAND_PATH = "/command.asc"
+const LOG_PATH = "/log.asc"
+const DATA_PATH = "/data.asc"
+
 var Root = "./private"
 
 func INIT_ROOT() {
 	if mode == "dev" {
 		Root = "./private"
 	} else {
-		os.Mkdir(os.TempDir()+`\holoproject`, 0755)
-		Root = os.TempDir() + `\holoproject`
+		os.Mkdir(os.TempDir()+`\`+PROJECT_NAME, 0755)
+		Root = os.TempDir() + `\` + PROJECT_NAME
 	}
 }
 
-const LOG_PATH = "/log.asc"
-const COMMAND_PATH = "/command.asc"
-const DATA_PATH = "/data.asc"
-
-const PROJECT_NAME = "Holo"
-
 var PROJECT_INIT = `
-
     _  _    __   _      __     __   __     ___      _  ___    ___  _____
    | || | / _ \ | |    / _ \  | _ \| _ \  / _ \  _ | || __|  / __||_   _| 
    | __ || (_) || |__ | (_) | |  _/|   / | (_) || || || _|  | (__   | |   
@@ -34,23 +33,28 @@ var PROJECT_INIT = `
 `
 
 var HelpMessage = `
- Holo Project
-
- -- cripto
- -- ecripto
-
- -- stop
- -- drop
- -- master
-
- -- g:key
- -- c:log
-
- -- run
- -- run:m
- -- place
- -- commands
- -- comm
- -- rm:c
-
++------------------------------------------------------------+
+|                   Holo Project                             |
++------------------------------------------------------------+
+|                                                            |
+|  - - cripto     : Шифрование строки                        |
+|  - - ecripto    : Дешифровка строки                        |
+|                                                            |
+|  - - stop       : Остановить приложение                    |
+|  - - drop       : Удалить данные приложения                |
+|  - - gmasterkey : Генерация мастер-ключа                   |
+|                                                            |
+|  - - gkey       : Генерация ключа для шифра                |
+|  - - clog       : Очистка логов                            |
+|                                                            |
+|  - - run        : Запустить команду                        |
+|  - - run-m      : Запустить мультиязычную команду          |
+|  - - place      : Добавить команду                         |
+|  - - commands   : Просмотреть список команд                |
+|  - - rmc        : Удалить команду                          |
+|                                                            |
++------------------------------------------------------------+
+|               Используйте команды для                      |
+|        управления вашим приложением и системой.            |
++------------------------------------------------------------+
 `
