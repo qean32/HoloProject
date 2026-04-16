@@ -2,7 +2,7 @@ package constants
 
 import "os"
 
-var mode = "prod"
+var MODE = "prod"
 
 const UNDEFINED_COMMAND = "Undefined command"
 const ERROR_COMMAND = "Syntax error"
@@ -17,7 +17,7 @@ const DATA_PATH = "/data.asc"
 var Root = "./private"
 
 func INIT_ROOT() {
-	if mode == "dev" {
+	if MODE == "dev" {
 		Root = "./private"
 	} else {
 		os.Mkdir(os.TempDir()+`\`+PROJECT_NAME, 0755)

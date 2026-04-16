@@ -53,7 +53,7 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 		})
 
 		if index != -1 {
-			deep.RunCommand(deep.TMP_COMMANDS[index][1])
+			deep.RunCMD(deep.TMP_COMMANDS[index][1])
 		} else {
 			deep.Console(constants.UNDEFINED_WORD_KEY)
 		}
@@ -67,7 +67,7 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 			tmp := strings.Split(deep.TMP_COMMANDS[index][1], ";")
 
 			for i := 0; i < len(tmp); i++ {
-				deep.RunCommand(tmp[i])
+				deep.RunCMD(tmp[i])
 			}
 		} else {
 			deep.Console(constants.UNDEFINED_WORD_KEY)
@@ -84,7 +84,7 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 		}),
 }
 
-var KEY_PARSE = map[string]model.FnRerutnEvent{
+var KEY_PARSE = map[string]model.FnReturnEvent{
 	"cripto": func(arr []string) (e model.Event, _error bool) {
 		payload := getPaylaod(arr)
 
@@ -94,7 +94,7 @@ var KEY_PARSE = map[string]model.FnRerutnEvent{
 		}
 
 		e = model.Event{
-			Time:     deep.NewTime(),
+			DateTime: deep.NewTime(),
 			Key:      arr[0],
 			KeyWord:  arr[1],
 			Password: arr[2],
@@ -110,7 +110,7 @@ var KEY_PARSE = map[string]model.FnRerutnEvent{
 		}
 
 		e = model.Event{
-			Time:     deep.NewTime(),
+			DateTime: deep.NewTime(),
 			Key:      arr[0],
 			KeyWord:  arr[1],
 			Password: arr[2],
@@ -127,10 +127,10 @@ var KEY_PARSE = map[string]model.FnRerutnEvent{
 		}
 
 		e = model.Event{
-			Time:    deep.NewTime(),
-			Key:     arr[0],
-			KeyWord: arr[1],
-			Payload: payload,
+			DateTime: deep.NewTime(),
+			Key:      arr[0],
+			KeyWord:  arr[1],
+			Payload:  payload,
 		}
 		return
 	},
@@ -141,17 +141,17 @@ var KEY_PARSE = map[string]model.FnRerutnEvent{
 
 func SHORT_EVENT(arr []string) (e model.Event, _error bool) {
 	e = model.Event{
-		Time: deep.NewTime(),
-		Key:  arr[0],
+		DateTime: deep.NewTime(),
+		Key:      arr[0],
 	}
 	return
 }
 
 func SHORT_EVENT_KEY(arr []string) (e model.Event, _error bool) {
 	e = model.Event{
-		Time:    deep.NewTime(),
-		Key:     arr[0],
-		KeyWord: arr[1],
+		DateTime: deep.NewTime(),
+		Key:      arr[0],
+		KeyWord:  arr[1],
 	}
 	return
 }

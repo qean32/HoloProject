@@ -6,5 +6,5 @@ type Event struct {
 	Payload  string
 	Password string
 	Flags    []string
-	Time     string
+	DateTime string
 }

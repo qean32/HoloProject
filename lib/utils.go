@@ -15,3 +15,13 @@ func getPaylaod(arr []string) string {
 
 	return payload
 }
+
+func matrixToArrayString(matrix [][]string) []string {
+	var tmpArr []string
+
+	for i := 0; i < len(matrix); i++ {
+		tmpArr = append(tmpArr, strings.Join(matrix[i], " "))
+	}
+
+	return tmpArr
+}

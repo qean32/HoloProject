@@ -1,11 +1,9 @@
 package deep
 
 import (
-	"bufio"
 	"fmt"
 	"main/constants"
 	"main/model"
-	"os"
 	"os/exec"
 	"slices"
 	"strings"
@@ -24,50 +22,7 @@ var CALLSTACK = []model.Event{}
 var TMP_DATA = [][]string{}
 var TMP_COMMANDS = [][]string{}
 
-func ReadFile(path string) []string {
-	file, err := os.Open(constants.Root + path)
-	scanner := bufio.NewScanner(file)
-
-	if err != nil {
-		return nil
-	}
-	defer file.Close()
-
-	var data []string
-	for scanner.Scan() {
-		data =
-			append(data, scanner.Text())
-	}
-	return data
-}
-
-func WriteFile(data string, path string) bool {
-	file, err := os.Create(constants.Root + path)
-
-	if err != nil {
-		return false
-	}
-	defer file.Close()
-
-	file.WriteString(data)
-	return true
-}
-
-func PushToFile(path string, newText string) bool {
-	return WriteFile(strings.Join(
-		append(ReadFile(path), newText+"\n"), " \n"), path)
-}
-
-func CreateFile(path string) {
-	file, _ := os.Create(constants.Root + path)
-	defer file.Close()
-}
-
 func GenerateMaster() {
-}
-
-func ClearFile(path string) {
-	WriteFile("", path)
 }
 
 func NewTime() string {
@@ -120,7 +75,7 @@ func DECORATOR_ACCESS_ACTION(f model.EventFunction) model.EventFunction {
 	}
 }
 
-func RunCommand(command string) {
+func RunCMD(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	err := cmd.Run()
 	if err != nil {
