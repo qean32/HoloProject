@@ -22,6 +22,7 @@ func ITERATION_CYCLE(e model.Event) {
 
 	if fn != nil {
 		fn(e)
+		deep.Console("")
 		deep.LOG(e)
 	} else {
 		deep.Console(constants.UNDEFINED_COMMAND)

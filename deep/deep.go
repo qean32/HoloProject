@@ -32,23 +32,23 @@ func NewTime() string {
 func SET_DATA() {
 	if len(TMP_COMMANDS) == 0 {
 		strs := (ReadFile(constants.COMMAND_PATH))
-		var tmpArr [][]string
+		var commands [][]string
 
 		for i := 0; i < len(strs); i++ {
 			tmp := strings.Split(strs[i], " ")
-			tmpArr = append(tmpArr, []string{tmp[0], strings.Join(tmp[1:], " ")})
+			commands = append(commands, []string{tmp[0], strings.Join(tmp[1:], " ")})
 		}
-		TMP_COMMANDS = tmpArr
+		TMP_COMMANDS = commands
 	}
 	if len(TMP_DATA) == 0 {
 		strs := (ReadFile(constants.DATA_PATH))
-		var tmpArr [][]string
+		var data [][]string
 
 		for i := 0; i < len(strs); i++ {
 			tmp := strings.Split(strs[i], " ")
-			tmpArr = append(tmpArr, []string{tmp[0], strings.Join(tmp[1:], " ")})
+			data = append(data, []string{tmp[0], strings.Join(tmp[1:], " ")})
 		}
-		TMP_DATA = tmpArr
+		TMP_DATA = data
 	}
 }
 
