@@ -1,3 +1,3 @@
 package model
 
-type Channel chan Event
+type CallStackChannel chan Event

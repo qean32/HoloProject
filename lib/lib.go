@@ -2,6 +2,7 @@ package lib
 
 import (
 	"bufio"
+	"fmt"
 	"main/constants"
 	"main/deep"
 	"main/model"
@@ -11,10 +12,10 @@ import (
 
 var READER = bufio.NewReader(os.Stdin)
 
-func INIT(callstack model.Channel) {
-	deep.Console(constants.PROJECT_INIT)
-	deep.SET_DATA()
-	ENTER_COMMAND(callstack)
+func INIT(callstack_channel model.CallStackChannel) {
+	deep.CONSOLE(constants.PROJECT_INIT)
+	deep.DATA()
+	ENTER_COMMAND(callstack_channel)
 }
 
 func ITERATION_CYCLE(e model.Event) {
@@ -22,14 +23,14 @@ func ITERATION_CYCLE(e model.Event) {
 
 	if fn != nil {
 		fn(e)
-		deep.Console("")
+		deep.CONSOLE("")
 		deep.LOG(e)
 	} else {
-		deep.Console(constants.UNDEFINED_COMMAND)
+		deep.CONSOLE(constants.UNDEFINED_COMMAND)
 	}
 }
 
-func ENTER_COMMAND(callstack model.Channel) {
+func ENTER_COMMAND(callstack_channel model.CallStackChannel) {
 	command, _ := READER.ReadString('\n')
 
 	if len(command) > 1 {
@@ -39,8 +40,17 @@ func ENTER_COMMAND(callstack model.Channel) {
 
 		if !_error {
 			deep.CALLSTACK = append(deep.CALLSTACK, e)
-			callstack <- e
+			callstack_channel <- e
 		}
 	}
-	ENTER_COMMAND(callstack)
+	ENTER_COMMAND(callstack_channel)
+}
+
+func get_it_out_of_the_basket(callstack_channel model.CallStackChannel) model.Event {
+	it := deep.CALLSTACK[:len(deep.CALLSTACK)-1][0]
+	fmt.Println(it)
+	deep.CALLSTACK = deep.CALLSTACK[:len(deep.CALLSTACK)-1]
+	callstack_channel <- it
+
+	return it
 }

@@ -1,18 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"main/lib"
 	"main/model"
 )
 
 func main() {
-	callstack := make(model.Channel)
-	go lib.INIT(callstack)
-	LOOP(callstack)
+	callstack_channel := make(model.CallStackChannel)
+	go lib.INIT(callstack_channel)
+	LOOP(callstack_channel)
 }
 
-func LOOP(callstack model.Channel) {
-	for value := range callstack {
+func LOOP(callstack_channel model.CallStackChannel) {
+	for value := range callstack_channel {
+		fmt.Println(value)
 		lib.ITERATION_CYCLE(value)
 	}
 }

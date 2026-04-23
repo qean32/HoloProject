@@ -18,38 +18,11 @@ func LOG(e model.Event) {
 	}
 }
 
-var CALLSTACK = []model.Event{}
-var TMP_DATA = [][]string{}
-var TMP_COMMANDS = [][]string{}
-
 func GenerateMaster() {
 }
 
-func NewTime() string {
+func CurrentTime() string {
 	return time.Now().Format("2006-01-02 15:04:05")
-}
-
-func SET_DATA() {
-	if len(TMP_COMMANDS) == 0 {
-		strs := (ReadFile(constants.COMMAND_PATH))
-		var commands [][]string
-
-		for i := 0; i < len(strs); i++ {
-			tmp := strings.Split(strs[i], " ")
-			commands = append(commands, []string{tmp[0], strings.Join(tmp[1:], " ")})
-		}
-		TMP_COMMANDS = commands
-	}
-	if len(TMP_DATA) == 0 {
-		strs := (ReadFile(constants.DATA_PATH))
-		var data [][]string
-
-		for i := 0; i < len(strs); i++ {
-			tmp := strings.Split(strs[i], " ")
-			data = append(data, []string{tmp[0], strings.Join(tmp[1:], " ")})
-		}
-		TMP_DATA = data
-	}
 }
 
 func ACCESS_ACTION() bool {
@@ -70,12 +43,12 @@ func DECORATOR_ACCESS_ACTION(f model.EventFunction) model.EventFunction {
 		if ACCESS_ACTION() {
 			f(e)
 		} else {
-			Console(constants.STOP_COMMAND)
+			CONSOLE(constants.STOP_COMMAND)
 		}
 	}
 }
 
-func RunCMD(command string) {
+func RUN_CMD(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	err := cmd.Run()
 	if err != nil {
@@ -84,7 +57,7 @@ func RunCMD(command string) {
 	}
 }
 
-func Console(output string) {
+func CONSOLE(output string) {
 	fmt.Println(output)
 	fmt.Print("$ ")
 }

@@ -4,10 +4,6 @@ func filterIsFlag[T string](arr []T) []T {
 	return FILTER(arr, isFlag)
 }
 
-func isFlag[T string](item T) bool {
-	return item[0:1] == "-"
-}
-
 func FILTER[T any](arr []T, f func(item T) bool) []T {
 	filtered := make([]T, 0, len(arr))
 
@@ -18,4 +14,8 @@ func FILTER[T any](arr []T, f func(item T) bool) []T {
 	}
 
 	return filtered
+}
+
+func isFlag[T string](item T) bool {
+	return item[0:1] == "-"
 }

@@ -21,9 +21,9 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 		})
 
 		if index != -1 {
-			deep.Console(deep.TMP_DATA[index][1])
+			deep.CONSOLE(deep.TMP_DATA[index][1])
 		} else {
-			deep.Console(constants.UNDEFINED_WORD_KEY)
+			deep.CONSOLE(constants.UNDEFINED_WORD_KEY)
 		}
 	},
 	"gkey": func(e model.Event) {},
@@ -41,7 +41,7 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 	},
 	"stop": func(e model.Event) { os.Exit(0) },
 	"help": func(e model.Event) {
-		deep.Console(constants.HelpMessage)
+		deep.CONSOLE(constants.HelpMessage)
 	},
 	"place": func(e model.Event) {
 		deep.PushToFile(constants.COMMAND_PATH, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
@@ -53,9 +53,9 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 		})
 
 		if index != -1 {
-			deep.RunCMD(deep.TMP_COMMANDS[index][1])
+			deep.RUN_CMD(deep.TMP_COMMANDS[index][1])
 		} else {
-			deep.Console(constants.UNDEFINED_WORD_KEY)
+			deep.CONSOLE(constants.UNDEFINED_WORD_KEY)
 		}
 	},
 	"run-m": func(e model.Event) {
@@ -67,14 +67,14 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 			tmp := strings.Split(deep.TMP_COMMANDS[index][1], ";")
 
 			for i := 0; i < len(tmp); i++ {
-				deep.RunCMD(tmp[i])
+				deep.RUN_CMD(tmp[i])
 			}
 		} else {
-			deep.Console(constants.UNDEFINED_WORD_KEY)
+			deep.CONSOLE(constants.UNDEFINED_WORD_KEY)
 		}
 	},
 	"comm": func(e model.Event) {
-		deep.Console(strings.Join(deep.ReadFile(constants.COMMAND_PATH), "\n- - "))
+		deep.CONSOLE(strings.Join(deep.ReadFile(constants.COMMAND_PATH), "\n- - "))
 	},
 	"rmc": deep.DECORATOR_ACCESS_ACTION(
 		func(e model.Event) {
@@ -94,7 +94,7 @@ var KEY_PARSE = map[string]model.FnReturnEvent{
 		}
 
 		e = model.Event{
-			DateTime: deep.NewTime(),
+			DateTime: deep.CurrentTime(),
 			Key:      arr[0],
 			KeyWord:  arr[1],
 			Password: arr[2],
@@ -110,7 +110,7 @@ var KEY_PARSE = map[string]model.FnReturnEvent{
 		}
 
 		e = model.Event{
-			DateTime: deep.NewTime(),
+			DateTime: deep.CurrentTime(),
 			Key:      arr[0],
 			KeyWord:  arr[1],
 			Password: arr[2],
@@ -127,7 +127,7 @@ var KEY_PARSE = map[string]model.FnReturnEvent{
 		}
 
 		e = model.Event{
-			DateTime: deep.NewTime(),
+			DateTime: deep.CurrentTime(),
 			Key:      arr[0],
 			KeyWord:  arr[1],
 			Payload:  payload,
@@ -141,7 +141,7 @@ var KEY_PARSE = map[string]model.FnReturnEvent{
 
 func SHORT_EVENT(arr []string) (e model.Event, _error bool) {
 	e = model.Event{
-		DateTime: deep.NewTime(),
+		DateTime: deep.CurrentTime(),
 		Key:      arr[0],
 	}
 	return
@@ -149,7 +149,7 @@ func SHORT_EVENT(arr []string) (e model.Event, _error bool) {
 
 func SHORT_EVENT_KEY(arr []string) (e model.Event, _error bool) {
 	e = model.Event{
-		DateTime: deep.NewTime(),
+		DateTime: deep.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
 	}
