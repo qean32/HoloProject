@@ -58,7 +58,7 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 			deep.CONSOLE(constants.UNDEFINED_WORD_KEY)
 		}
 	},
-	"run-m": func(e model.Event) {
+	"runm": func(e model.Event) {
 		index := slices.IndexFunc(deep.TMP_COMMANDS, func(item []string) bool {
 			return item[0] == strings.TrimSpace(e.KeyWord)
 		})

@@ -2,7 +2,6 @@ package lib
 
 import (
 	"bufio"
-	"fmt"
 	"main/constants"
 	"main/deep"
 	"main/model"
@@ -48,7 +47,6 @@ func ENTER_COMMAND(callstack_channel model.CallStackChannel) {
 
 func get_it_out_of_the_basket(callstack_channel model.CallStackChannel) model.Event {
 	it := deep.CALLSTACK[:len(deep.CALLSTACK)-1][0]
-	fmt.Println(it)
 	deep.CALLSTACK = deep.CALLSTACK[:len(deep.CALLSTACK)-1]
 	callstack_channel <- it
 

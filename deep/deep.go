@@ -52,7 +52,7 @@ func RUN_CMD(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Ошибка при запуске команды: ", err)
+		fmt.Println("$ Ошибка при запуске команды: ", err)
 		return
 	}
 }
