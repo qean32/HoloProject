@@ -86,5 +86,5 @@ func RunCMD(command string) {
 
 func Console(output string) {
 	fmt.Println(output)
-	fmt.Print("- ")
+	fmt.Print(" - ")
 }
