@@ -13,6 +13,7 @@ var READER = bufio.NewReader(os.Stdin)
 
 func INIT(callstack_channel model.CallStackChannel) {
 	deep.CONSOLE(constants.PROJECT_INIT)
+	constants.INIT_ROOT()
 	deep.DATA()
 	ENTER_COMMAND(callstack_channel)
 }
@@ -40,6 +41,8 @@ func ENTER_COMMAND(callstack_channel model.CallStackChannel) {
 		if !_error {
 			deep.CALLSTACK = append(deep.CALLSTACK, e)
 			callstack_channel <- e
+		} else {
+			deep.CONSOLE(constants.SYNTAX_ERROR)
 		}
 	}
 	ENTER_COMMAND(callstack_channel)

@@ -84,7 +84,7 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 		}),
 }
 
-var KEY_PARSE = map[string]model.FnReturnEvent{
+var PARSE_FUNCTION = map[string]model.FnReturnEvent{
 	"cripto": func(arr []string) (e model.Event, _error bool) {
 		payload := getPaylaod(arr)
 
@@ -134,9 +134,9 @@ var KEY_PARSE = map[string]model.FnReturnEvent{
 		}
 		return
 	},
-	"run":   SHORT_EVENT_KEY,
-	"rmc":   SHORT_EVENT_KEY,
-	"run-m": SHORT_EVENT_KEY,
+	"run":  SHORT_EVENT_KEY,
+	"runm": SHORT_EVENT_KEY,
+	"rmc":  SHORT_EVENT_KEY,
 }
 
 func SHORT_EVENT(arr []string) (e model.Event, _error bool) {
@@ -157,7 +157,7 @@ func SHORT_EVENT_KEY(arr []string) (e model.Event, _error bool) {
 }
 
 func PARSE_EVENT(command string, key string) (e model.Event, _error bool) {
-	fn := KEY_PARSE[key]
+	fn := PARSE_FUNCTION[key]
 
 	if fn == nil {
 		e, _error = SHORT_EVENT(strings.Split(command, " "))
