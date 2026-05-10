@@ -19,10 +19,10 @@ func INIT(callstack_channel model.CallStackChannel) {
 }
 
 func ITERATION_CYCLE(e model.Event) {
-	fn := KEY_FUNCTION[e.Key]
+	function := KEY_FUNCTION[e.Key]
 
-	if fn != nil {
-		fn(e)
+	if function != nil {
+		function(e)
 		deep.CONSOLE("")
 		deep.LOG(e)
 	} else {

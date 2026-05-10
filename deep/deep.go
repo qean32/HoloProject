@@ -11,9 +11,7 @@ import (
 )
 
 func LOG(e model.Event) {
-	if slices.IndexFunc(e.Flags, func(item string) bool {
-		return strings.TrimSpace(item) == "-nl"
-	}) == -1 {
+	if slices.IndexFunc(e.Flags, func(item string) bool { return strings.TrimSpace(item) == constants.FLAGS.NOLOG }) == -1 {
 		PushToFile(constants.LOG_PATH, fmt.Sprintf("%#v", e))
 	}
 }
@@ -27,10 +25,10 @@ func CurrentTime() string {
 
 func ACCESS_ACTION() bool {
 	var response string
-	fmt.Print("Need access (yes/no): ")
+	fmt.Print("need access action / yes | no ")
 	fmt.Scan(&response)
 
-	if response == "yes" || response == "y" || response == "yea" {
+	if slices.Contains(constants.ACCESS_VARIANTS, response) {
 		return true
 	}
 
@@ -52,7 +50,7 @@ func RUN_CMD(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("$ Ошибка при запуске команды: ", err)
+		fmt.Println("$ Ошибка при запуске команды", err)
 		return
 	}
 }

@@ -26,28 +26,24 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 			deep.CONSOLE(constants.UNDEFINED_WORD_KEY)
 		}
 	},
-	"gkey": func(e model.Event) {},
-	"clog": func(e model.Event) {
-		deep.ClearFile(constants.LOG_PATH)
-	},
-	"gmasterkey": func(e model.Event) {
+	constants.COMMANDS.GKEY: func(e model.Event) {},
+	constants.COMMANDS.CLOG: func(e model.Event) { deep.ClearFile(constants.LOG_PATH) },
+	constants.COMMANDS.GMASTERKEY: func(e model.Event) {
 		deep.CreateFile(constants.LOG_PATH)
 		deep.CreateFile(constants.COMMAND_PATH)
 		deep.CreateFile(constants.DATA_PATH)
 	},
-	"drop": func(e model.Event) {
+	constants.COMMANDS.DROP: func(e model.Event) {
 		os.RemoveAll(constants.Root)
 		os.Mkdir(constants.Root, 0755)
 	},
-	"stop": func(e model.Event) { os.Exit(0) },
-	"help": func(e model.Event) {
-		deep.CONSOLE(constants.HelpMessage)
-	},
-	"place": func(e model.Event) {
+	constants.COMMANDS.STOP: func(e model.Event) { os.Exit(0) },
+	constants.COMMANDS.HELP: func(e model.Event) { deep.CONSOLE(constants.HelpMessage) },
+	constants.COMMANDS.PLACE: func(e model.Event) {
 		deep.PushToFile(constants.COMMAND_PATH, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
 		deep.TMP_COMMANDS = append(deep.TMP_COMMANDS, []string{e.KeyWord, e.Payload})
 	},
-	"run": func(e model.Event) {
+	constants.COMMANDS.RUN: func(e model.Event) {
 		index := slices.IndexFunc(deep.TMP_COMMANDS, func(item []string) bool {
 			return item[0] == strings.TrimSpace(e.KeyWord)
 		})
@@ -58,7 +54,7 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 			deep.CONSOLE(constants.UNDEFINED_WORD_KEY)
 		}
 	},
-	"runm": func(e model.Event) {
+	constants.COMMANDS.RUNM: func(e model.Event) {
 		index := slices.IndexFunc(deep.TMP_COMMANDS, func(item []string) bool {
 			return item[0] == strings.TrimSpace(e.KeyWord)
 		})
@@ -73,10 +69,8 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 			deep.CONSOLE(constants.UNDEFINED_WORD_KEY)
 		}
 	},
-	"comm": func(e model.Event) {
-		deep.CONSOLE(strings.Join(deep.ReadFile(constants.COMMAND_PATH), "\n- - "))
-	},
-	"rmc": deep.DECORATOR_ACCESS_ACTION(
+	constants.COMMANDS.COMM: func(e model.Event) { deep.CONSOLE(strings.Join(deep.ReadFile(constants.COMMAND_PATH), "\n- - ")) },
+	constants.COMMANDS.RMC: deep.DECORATOR_ACCESS_ACTION(
 		func(e model.Event) {
 			filtered := FILTER(deep.TMP_COMMANDS, func(item []string) bool { return item[0] != e.KeyWord })
 			deep.TMP_COMMANDS = filtered
@@ -85,7 +79,7 @@ var KEY_FUNCTION = map[string]model.EventFunction{
 }
 
 var PARSE_FUNCTION = map[string]model.FnReturnEvent{
-	"cripto": func(arr []string) (e model.Event, _error bool) {
+	constants.COMMANDS.CRIPTO: func(arr []string) (e model.Event, _error bool) {
 		payload := getPaylaod(arr)
 
 		if len(arr) < 3 || payload == "" {
@@ -103,7 +97,7 @@ var PARSE_FUNCTION = map[string]model.FnReturnEvent{
 		}
 		return
 	},
-	"ecripto": func(arr []string) (e model.Event, _error bool) {
+	constants.COMMANDS.ECRIPTO: func(arr []string) (e model.Event, _error bool) {
 		if len(arr) < 3 {
 			_error = true
 			return
@@ -118,7 +112,7 @@ var PARSE_FUNCTION = map[string]model.FnReturnEvent{
 		}
 		return
 	},
-	"place": func(arr []string) (e model.Event, _error bool) {
+	constants.COMMANDS.PLACE: func(arr []string) (e model.Event, _error bool) {
 		payload := getPaylaod(arr)
 
 		if len(arr) < 3 || payload == "" {
@@ -131,27 +125,30 @@ var PARSE_FUNCTION = map[string]model.FnReturnEvent{
 			Key:      arr[0],
 			KeyWord:  arr[1],
 			Payload:  payload,
+			Flags:    filterIsFlag(arr),
 		}
 		return
 	},
-	"run":  SHORT_EVENT_KEY,
-	"runm": SHORT_EVENT_KEY,
-	"rmc":  SHORT_EVENT_KEY,
+	constants.COMMANDS.RUN:  SHORT_EVENT_KEYWORD,
+	constants.COMMANDS.RUNM: SHORT_EVENT_KEYWORD,
+	constants.COMMANDS.RMC:  SHORT_EVENT_KEYWORD,
 }
 
 func SHORT_EVENT(arr []string) (e model.Event, _error bool) {
 	e = model.Event{
 		DateTime: deep.CurrentTime(),
 		Key:      arr[0],
+		Flags:    filterIsFlag(arr),
 	}
 	return
 }
 
-func SHORT_EVENT_KEY(arr []string) (e model.Event, _error bool) {
+func SHORT_EVENT_KEYWORD(arr []string) (e model.Event, _error bool) {
 	e = model.Event{
 		DateTime: deep.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
+		Flags:    filterIsFlag(arr),
 	}
 	return
 }
