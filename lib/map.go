@@ -11,11 +11,11 @@ import (
 )
 
 var KEY_FUNCTION = map[string]model.EventFunction{
-	"cripto": func(e model.Event) {
+	constants.COMMANDS.CRIPTO: func(e model.Event) {
 		deep.PushToFile(constants.DATA_PATH, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
 		deep.TMP_DATA = append(deep.TMP_DATA, []string{e.KeyWord, e.Payload})
 	},
-	"ecripto": func(e model.Event) {
+	constants.COMMANDS.ECRIPTO: func(e model.Event) {
 		index := slices.IndexFunc(deep.TMP_DATA, func(item []string) bool {
 			return item[0] == e.KeyWord
 		})

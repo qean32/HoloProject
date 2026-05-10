@@ -58,3 +58,35 @@ var HelpMessage = `
   -gkey       | Генерация ключа для шифра       |  "gkey"
   -clog       | Очистка логов                   |  "clog"
 `
+
+type CommandsType struct {
+	CRIPTO     string
+	ECRIPTO    string
+	GKEY       string
+	CLOG       string
+	GMASTERKEY string
+	DROP       string
+	STOP       string
+	HELP       string
+	PLACE      string
+	RUN        string
+	RUNM       string
+	COMM       string
+	RMC        string
+}
+
+var COMMANDS = CommandsType{
+	CRIPTO:     "cripto",
+	ECRIPTO:    "ecripto",
+	GKEY:       "gkey",
+	CLOG:       "clog",
+	GMASTERKEY: "gmasterkey",
+	DROP:       "drop",
+	STOP:       "stop",
+	HELP:       "help",
+	PLACE:      "place",
+	RUN:        "run",
+	RUNM:       "runm",
+	COMM:       "comm",
+	RMC:        "rmc",
+}
