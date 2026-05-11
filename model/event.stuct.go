@@ -2,7 +2,7 @@ package model
 
 type Event struct {
 	Key      string
-	WordKey  string
+	KeyWord  string
 	Payload  string
 	Password string
 	Flags    []string

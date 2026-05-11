@@ -2,17 +2,20 @@ package constants
 
 import "os"
 
-var MODE = "dev"
+const MODE = "dev"
 
 const UNDEFINED_COMMAND = "Undefined command"
 const SYNTAX_ERROR = "Syntax error"
 const STOP_COMMAND = "Command stop"
-const UNDEFINED_WORDKEY = "Undefined word key"
+const UNDEFINED_KEYWORD = "Undefined word key"
+
 const PROJECT_NAME = "holoproject"
 
-const COMMAND_PATH = "/command.asc"
-const LOG_PATH = "/log.asc"
-const DATA_PATH = "/data.asc"
+const PATH_COMMAND = "/command.asc"
+const PATH_LOG = "/log.asc"
+const PATH_DATA = "/data.asc"
+const PATH_SETTINGS = "/settings.asc"
+const PATH_NOTES = "/notes.asc"
 
 var Root = "./private"
 
@@ -26,87 +29,48 @@ func INIT_ROOT() {
 }
 
 var PROJECT_INIT = `
-%v    __  ______  __    ____      ____  ____  ____      ____________________%v
-%v   / / / / __ \/ /   / __ \    / __ \/ __ \/ __ \    / / ____/ ____/_  __/%v
-%v  / /_/ / / / / /   / / / /   / /_/ / /_/ / / / /_  / / __/ / /     / /   %v
-%v / __  / /_/ / /___/ /_/ /   / ____/ _, _/ /_/ / /_/ / /___/ /___  / /    %v
-%v/_/ /_/\____/_____/\____/   /_/   /_/ |_|\____/\____/_____/\____/ /_/     %v
+%v  _           _                       _           _      __  _       ____   __  
+%v | |__   ___ | | ___  _ __  _ __ ___ (_) ___  ___| |_   / / / |     |___ \  \ \ 
+%v | '_ \ / _ \| |/ _ \| '_ \| '__/ _ \| |/ _ \/ __| __| | |  | |       __) |  | |
+%v | | | | (_) | | (_) | |_) | | | (_) | |  __/ (__| |_  | |  | |  _   / __/   | |
+%v |_| |_|\___/|_|\___/| .__/|_|  \___// |\___|\___|\__| | |  |_| (_) |_____|  | |
+%v                     |_|           |__/                 \_\                 /_/ 
 `
 
 // ASCII
+// https://www.asciiart.eu/text-to-ascii-art respect
 
 var HelpMessage = `
-    __  ______  __    ____      ____  ____  ____      ____________________   __  __________    ____ 
-   / / / / __ \/ /   / __ \    / __ \/ __ \/ __ \    / / ____/ ____/_  __/  / / / / ____/ /   / __ \
-  / /_/ / / / / /   / / / /   / /_/ / /_/ / / / /_  / / __/ / /     / /    / /_/ / __/ / /   / /_/ /
- / __  / /_/ / /___/ /_/ /   / ____/ _, _/ /_/ / /_/ / /___/ /___  / /    / __  / /___/ /___/ ____/ 
-/_/ /_/\____/_____/\____/   /_/   /_/ |_|\____/\____/_____/\____/ /_/    /_/ /_/_____/_____/_/      
+  _           _                       _           _     _          _        
+ | |__   ___ | | ___  _ __  _ __ ___ (_) ___  ___| |_  | |__   ___| |_ __   
+ | '_ \ / _ \| |/ _ \| '_ \| '__/ _ \| |/ _ \/ __| __| | '_ \ / _ \ | '_ \  
+ | | | | (_) | | (_) | |_) | | | (_) | |  __/ (__| |_  | | | |  __/ | |_) | 
+ |_| |_|\___/|_|\___/| .__/|_|  \___// |\___|\___|\__| |_| |_|\___|_| .__/  
+                     |_|           |__/                             |_|     
 
-  -cripto     | Шифрование строки               |  "cripto key_word key_password {payload}"
-  -ecripto    | Дешифровка строки               |  "ecripto key_word key_password"
-
-  -run        | Запустить команду               |  "run key_word"
-  -runm       | Запустить мультиязычную команду |  "runm key_word"
-  -rmc        | Удалить команду                 |  "rmc key_word"
-  -place      | Добавить команду                |  "place key_word {payload}"
-  -commands   | Просмотреть список команд       |  "commands"
-
-  -stop       | Остановить приложение           |  "stop"
-  -drop       | Удалить данные приложения       |  "drop"
-  -gmasterkey | Генерация мастер-ключа          |  "gmasterkey"
-
-  -gkey       | Генерация ключа для шифра       |  "gkey"
-  -clog       | Очистка логов                   |  "clog"
+|  -cripto     |  Шифрование строки               |  cripto key_word key_password { payload }  |
+|  -ecripto    |  Дешифровка строки               |  ecripto key_word key_password             |
+|              |                                  |                                            |
+|  -gmaster    |  Генерация мастер-ключа          |                                            |
+|  -gkey       |  Генерация ключа для шифра       |                                            |
+|              |                                  |                                            |
+|  -clog       |  Очистка логов                   |                                            |
+|  -drop       |  Удалить данные приложения       |                                            |
+|  -stop       |  Остановить приложение           |                                            |
+|  -help       |  Список команд                   |                                            |
+|              |                                  |                                            |
+|  -note       |  Открыть запись                  |                                            |
+|  -dnote      |  Создание записи                 |  dnote key_word key_password               |
+|  -notes      |  Получить список записей         |                                            |
+|              |                                  |                                            |
+|  -declare    |  Добавить команду                |  declare key_word { payload }              |
+|  -commands   |  Просмотреть список команд       |                                            |
+|  -run        |  Запустить команду               |  run key_word                              |
+|  -runm       |  Запустить множественую команду  |  runm key_word                             |
+|  -rmc        |  Удалить команду                 |  rmc key_word                              |
 `
-
-type commandsType struct {
-	CRIPTO     string
-	ECRIPTO    string
-	GKEY       string
-	CLOG       string
-	GMASTERKEY string
-	DROP       string
-	STOP       string
-	HELP       string
-	PLACE      string
-	RUN        string
-	RUNM       string
-	COMM       string
-	RMC        string
-}
-
-type flagsType struct {
-	NOLOG string
-}
-
-var FLAGS = flagsType{
-	NOLOG: "-nl",
-}
-
-/*
- CRIPTO добавить сохранение даты
- CRIPTO добавить шифрование
- NOTE сдеать записную строку сохранение даты шифрование пароль
-*/
-
-var COMMANDS = commandsType{
-	CRIPTO:     "cripto",
-	ECRIPTO:    "ecripto",
-	GKEY:       "gkey",
-	CLOG:       "clog",
-	GMASTERKEY: "gmasterkey",
-	DROP:       "drop",
-	STOP:       "stop",
-	HELP:       "help",
-	PLACE:      "place",
-	RUN:        "run",
-	RUNM:       "runm",
-	COMM:       "comm",
-	RMC:        "rmc",
-}
 
 var ACCESS_VARIANTS = []string{"yes", "y", "yea"}
 
 const NEXT_LINE = "\n"
-
 const OUTPUT_MESSAGE = "~ OUTPUT ~ "

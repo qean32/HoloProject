@@ -9,10 +9,11 @@ import (
 var CALLSTACK = []model.Event{}
 var TMP_DATA = [][]string{}
 var TMP_COMMANDS = [][]string{}
+var SETTINGS = model.Settings{}
 
 func DATA() {
 	if len(TMP_COMMANDS) == 0 {
-		strs := (ReadFile(constants.COMMAND_PATH))
+		strs := (ReadFile(constants.PATH_COMMAND))
 		var commands [][]string
 
 		for i := 0; i < len(strs); i++ {
@@ -22,7 +23,7 @@ func DATA() {
 		TMP_COMMANDS = commands
 	}
 	if len(TMP_DATA) == 0 {
-		strs := (ReadFile(constants.DATA_PATH))
+		strs := (ReadFile(constants.PATH_DATA))
 		var data [][]string
 
 		for i := 0; i < len(strs); i++ {

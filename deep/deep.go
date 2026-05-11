@@ -12,7 +12,7 @@ import (
 
 func LOG(e model.Event) {
 	if slices.IndexFunc(e.Flags, func(item string) bool { return strings.TrimSpace(item) == constants.FLAGS.NOLOG }) == -1 {
-		PushToFile(constants.LOG_PATH, fmt.Sprintf("%#v", e))
+		PushToFile(constants.PATH_LOG, fmt.Sprintf("%#v", e))
 	}
 }
 

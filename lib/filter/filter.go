@@ -1,6 +1,6 @@
-package lib
+package filter
 
-func filterIsFlag[T string](arr []T) []T {
+func FilterIsFlag[T string](arr []T) []T {
 	return FILTER(arr, isFlag)
 }
 

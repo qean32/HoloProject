@@ -13,8 +13,8 @@ func CONSOLE(output string) {
 	fmt.Print("~ ")
 }
 
-func CONSOLE_CENTER(output string) {
-	CONSOLE(strings.Repeat(" ", CalcCenterCMD(len(output))) + output)
+func CONSOLE_CENTER(output string, separator string) {
+	CONSOLE(strings.Repeat(separator, CalcCenterCMD(len(output))) + output)
 }
 
 func CalcCenterCMD(length int) int {
@@ -22,14 +22,14 @@ func CalcCenterCMD(length int) int {
 	return cols/2 - (length / 2)
 }
 
-func CONSOLE_ASCII_CENTER(ASCII string) {
+func CONSOLE_ASCII_CENTER(ASCII string, separator string) {
 	array := strings.Split(ASCII, constants.NEXT_LINE)
-	s := strings.Repeat(" ", CalcCenterCMD(len(array[1])-2))
-	n := (len(array) - 2) * 2
+	repeat := strings.Repeat(separator, CalcCenterCMD(len(array[1])-2))
+	length := len(array) - 2
 
-	params := make([]interface{}, n)
+	params := make([]interface{}, length)
 	for i := range params {
-		params[i] = s
+		params[i] = repeat
 	}
 
 	CONSOLE(fmt.Sprintf(ASCII, params...))

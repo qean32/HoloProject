@@ -12,7 +12,7 @@ import (
 var READER = bufio.NewReader(os.Stdin)
 
 func INIT(callstack_channel model.CallStackChannel) {
-	deep.CONSOLE_ASCII_CENTER(constants.PROJECT_INIT)
+	deep.CONSOLE_ASCII_CENTER(constants.PROJECT_INIT, "")
 	constants.INIT_ROOT()
 	deep.DATA()
 	ENTER_COMMAND(callstack_channel)
