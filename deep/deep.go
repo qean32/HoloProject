@@ -25,7 +25,7 @@ func CurrentTime() string {
 
 func ACCESS_ACTION() bool {
 	var response string
-	fmt.Print("need access action / yes | no ")
+	fmt.Print("need access action (yes|no) ~ ")
 	fmt.Scan(&response)
 
 	if slices.Contains(constants.ACCESS_VARIANTS, response) {
@@ -35,13 +35,13 @@ func ACCESS_ACTION() bool {
 	return false
 }
 
-func DECORATOR_ACCESS_ACTION(f model.EventFunction) model.EventFunction {
+func DECORATOR_ACCESS_ACTION(function model.EventFunction) model.EventFunction {
 	return func(e model.Event) {
 
 		if ACCESS_ACTION() {
-			f(e)
+			function(e)
 		} else {
-			CONSOLE(constants.STOP_COMMAND)
+			CONSOLE_RESPONSE(constants.STOP_COMMAND, false)
 		}
 	}
 }
@@ -53,9 +53,4 @@ func RUN_CMD(command string) {
 		fmt.Println("$ Ошибка при запуске команды", err)
 		return
 	}
-}
-
-func CONSOLE(output string) {
-	fmt.Println(output)
-	fmt.Print("$ ")
 }

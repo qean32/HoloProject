@@ -12,21 +12,21 @@ import (
 var READER = bufio.NewReader(os.Stdin)
 
 func INIT(callstack_channel model.CallStackChannel) {
-	deep.CONSOLE(constants.PROJECT_INIT)
+	deep.CONSOLE_ASCII_CENTER(constants.PROJECT_INIT)
 	constants.INIT_ROOT()
 	deep.DATA()
 	ENTER_COMMAND(callstack_channel)
 }
 
 func ITERATION_CYCLE(e model.Event) {
-	function := KEY_FUNCTION[e.Key]
+	function := MAP_HANDLER[e.Key]
 
 	if function != nil {
 		function(e)
 		deep.CONSOLE("")
 		deep.LOG(e)
 	} else {
-		deep.CONSOLE(constants.UNDEFINED_COMMAND)
+		deep.CONSOLE_RESPONSE(constants.UNDEFINED_COMMAND, true)
 	}
 }
 
@@ -40,9 +40,10 @@ func ENTER_COMMAND(callstack_channel model.CallStackChannel) {
 
 		if !_error {
 			deep.CALLSTACK = append(deep.CALLSTACK, e)
-			callstack_channel <- e
+			// callstack_channel <- e
+			ITERATION_CYCLE(e)
 		} else {
-			deep.CONSOLE(constants.SYNTAX_ERROR)
+			deep.CONSOLE_RESPONSE(constants.SYNTAX_ERROR, true)
 		}
 	}
 	ENTER_COMMAND(callstack_channel)
