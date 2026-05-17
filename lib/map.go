@@ -74,7 +74,6 @@ var MAP_HANDLER = map[string]model.EventFunction{
 	},
 	constants.COMMANDS.COMMANDS: func(e model.Event) {
 		fmt.Println(constants.OUTPUT_MESSAGE)
-		fmt.Print("~ ")
 		deep.CONSOLE(strings.Join(deep.ReadFile(constants.PATH_COMMAND), "\n~ "))
 	},
 	constants.COMMANDS.RMC: deep.DECORATOR_ACCESS_ACTION(

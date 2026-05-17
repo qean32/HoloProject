@@ -1,9 +1,17 @@
 package main
 
 import (
-	"main/lib/ui"
+	"main/deep"
+	"main/lib"
 )
 
 func main() {
-	ui.RENDER_UI()
+	go lib.INIT()
+	LOOP()
+}
+
+func LOOP() {
+	for value := range deep.Callstack_channel {
+		lib.ITERATION_CYCLE(value)
+	}
 }

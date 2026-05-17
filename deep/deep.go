@@ -1,14 +1,18 @@
 package deep
 
 import (
+	"bufio"
 	"fmt"
 	"main/constants"
 	"main/model"
+	"os"
 	"os/exec"
 	"slices"
 	"strings"
 	"time"
 )
+
+var READER = bufio.NewReader(os.Stdin)
 
 func LOG(e model.Event) {
 	if slices.IndexFunc(e.Flags, func(item string) bool { return strings.TrimSpace(item) == constants.FLAGS.NOLOG }) == -1 {
@@ -25,10 +29,11 @@ func CurrentTime() string {
 
 func ACCESS_ACTION() bool {
 	var response string
-	fmt.Print("need access action (yes|no) ~ ")
-	fmt.Scan(&response)
+	fmt.Print("u need access action (yes|no) ~ ")
+	fmt.Scanln(&response)
+	trimResponse := strings.TrimSpace(response)
 
-	if slices.Contains(constants.ACCESS_VARIANTS, response) {
+	if slices.Contains(constants.ACCESS_VARIANTS, trimResponse) {
 		return true
 	}
 
