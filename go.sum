@@ -1,2 +1,13 @@
+atomicgo.dev/keyboard v0.2.10 h1:v7mvUKUZLHIggxULEIuWbT+WkkyQSgdbA201EziAhHU=
+atomicgo.dev/keyboard v0.2.10/go.mod h1:ap/z5ilnhLqYq852m6kPeTq5Z6aESGWu5mzRpJlC6aI=
+github.com/containerd/console v1.0.5 h1:R0ymNeydRqH2DmakFNdmjR2k0t7UPuiOV/N/27/qqsc=
+github.com/containerd/console v1.0.5/go.mod h1:YynlIjWYF8myEu6sdkwKIvGQq+cOckRm6So2avqoYAk=
+github.com/eiannone/keyboard v0.0.0-20220611211555-0d226195f203 h1:XBBHcIb256gUJtLmY22n99HaZTz+r2Z51xUPi01m3wg=
+github.com/eiannone/keyboard v0.0.0-20220611211555-0d226195f203/go.mod h1:E1jcSv8FaEny+OP/5k9UxZVw9YFWGj7eI4KR/iOBqCg=
 github.com/nathan-fiscaletti/consolesize-go v0.0.0-20260406063853-3bac975de715 h1:FiSC3sz/k2SYB32YJ1bLlBVB7Li0N7n6jcYa9Knq/60=
 github.com/nathan-fiscaletti/consolesize-go v0.0.0-20260406063853-3bac975de715/go.mod h1:DQpEqvLUU3b35AJUVu5P6LFn/RY3qj4WtMjvrcE8gto=
+golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a h1:dGzPydgVsqGcTRVwiLJ1jVbufYwmzD3LfVPLKsKg+0k=
+golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.1.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.43.0 h1:Rlag2XtaFTxp19wS8MXlJwTvoh8ArU6ezoyFsMyCTNI=
+golang.org/x/sys v0.43.0/go.mod h1:4GL1E5IUh+htKOUEOaiffhrAeqysfVGipDYzABqnCmw=

@@ -38,6 +38,7 @@ var PROJECT_INIT = `
 `
 
 // ASCII
+// https://translated.turbopages.org/proxy_u/en-ru.ru.6c604ba4-6a11ef9b-b4e5d92b-74722d776562/https/student.cs.uwaterloo.ca/~cs452/terminal.html
 // https://www.asciiart.eu/text-to-ascii-art respect
 
 var HelpMessage = `
@@ -48,29 +49,29 @@ var HelpMessage = `
  |_| |_|\___/|_|\___/| .__/|_|  \___// |\___|\___|\__| |_| |_|\___|_| .__/  
                      |_|           |__/                             |_|     
 
-|  -cripto     |  Шифрование строки               |  cripto key_word key_password { payload }  |
-|  -ecripto    |  Дешифровка строки               |  ecripto key_word key_password             |
-|              |                                  |                                            |
-|  -gmaster    |  Генерация мастер-ключа          |                                            |
-|  -gkey       |  Генерация ключа для шифра       |                                            |
-|              |                                  |                                            |
-|  -clog       |  Очистка логов                   |                                            |
-|  -drop       |  Удалить данные приложения       |                                            |
-|  -stop       |  Остановить приложение           |                                            |
-|  -help       |  Список команд                   |                                            |
-|              |                                  |                                            |
-|  -note       |  Открыть запись                  |                                            |
-|  -dnote      |  Создание записи                 |  dnote key_word key_password               |
-|  -notes      |  Получить список записей         |                                            |
-|              |                                  |                                            |
-|  -declare    |  Добавить команду                |  declare key_word { payload }              |
-|  -commands   |  Просмотреть список команд       |                                            |
-|  -run        |  Запустить команду               |  run key_word                              |
-|  -runm       |  Запустить множественую команду  |  runm key_word                             |
-|  -rmc        |  Удалить команду                 |  rmc key_word                              |
+| cripto       |  Шифрование строки               | cripto key_word key_password { payload }  |
+| ecripto      |  Дешифровка строки               | ecripto key_word key_password             |
+|              |                                  |                                           |
+| gmaster      |  Генерация мастер-ключа          |                                           |
+| gkey         |  Генерация ключа для шифра       |                                           |
+|              |                                  |                                           |
+| clog         |  Очистка логов                   |                                           |
+| drop         |  Удалить данные приложения       |                                           |
+| stop         |  Остановить приложение           |                                           |
+| help         |  Список команд                   |                                           |
+|              |                                  |                                           |
+| note         |  Открыть запись                  |                                           |
+| dnote        |  Создание записи                 | dnote key_word key_password               |
+| notes        |  Получить список записей         |                                           |
+|              |                                  |                                           |
+| declare      |  Добавить команду                | declare key_word { payload }              |
+| commands     |  Просмотреть список команд       |                                           |
+| run          |  Запустить команду               | run key_word                              |
+| runm         |  Запустить множественую команду  | runm key_word                             |
+| rmc          |  Удалить команду                 | rmc key_word                              |
 `
 
 var ACCESS_VARIANTS = []string{"yes", "y", "yea"}
 
 const NEXT_LINE = "\n"
-const OUTPUT_MESSAGE = "OUTPUT "
+const OUTPUT_MESSAGE = "output "
