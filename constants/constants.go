@@ -38,6 +38,7 @@ var PROJECT_INIT = `
 `
 
 // ASCII
+// "\033[31m" red color text
 // https://translated.turbopages.org/proxy_u/en-ru.ru.6c604ba4-6a11ef9b-b4e5d92b-74722d776562/https/student.cs.uwaterloo.ca/~cs452/terminal.html
 // https://www.asciiart.eu/text-to-ascii-art respect
 
