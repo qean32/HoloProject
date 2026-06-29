@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"os"
 	"strings"
 )
 
@@ -39,4 +40,8 @@ func matrixToArrayString(matrix [][]string) []string {
 	}
 
 	return tmpArr
+}
+
+func StopProcess() {
+	os.Exit(0)
 }

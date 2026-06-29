@@ -8,5 +8,5 @@ type POINT struct {
 type FIELDTYPE struct {
 	Position      int
 	PositionRange int
-	Field         string
+	Message       string
 }

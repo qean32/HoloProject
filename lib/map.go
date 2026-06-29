@@ -38,7 +38,7 @@ var MAP_HANDLER = map[string]model.EventFunction{
 		os.RemoveAll(constants.Root)
 		os.Mkdir(constants.Root, 0755)
 	},
-	constants.COMMANDS.STOP: func(e model.Event) { os.Exit(0) },
+	constants.COMMANDS.STOP: func(e model.Event) { StopProcess() },
 	constants.COMMANDS.HELP: func(e model.Event) { deep.CONSOLE_RESPONSE(constants.HelpMessage, false) },
 	constants.COMMANDS.DECLARE: func(e model.Event) {
 		deep.PushToFile(constants.PATH_COMMAND, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
