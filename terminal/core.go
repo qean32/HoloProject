@@ -5,7 +5,7 @@ import (
 	"main/model"
 )
 
-var field = model.FIELDTYPE{
+var field = model.FieldType{
 	Position:      0,
 	PositionRange: 0,
 	Message:       "",
@@ -47,6 +47,9 @@ func ClearLine() {
 	fmt.Print("\033[2K")
 }
 
-func JumpToStartLine() {
-	fmt.Print("\r")
+func ClearLineByCount(count int) {
+	for i := 0; i < count; i++ {
+		ClearLine()
+		JumpToUp()
+	}
 }

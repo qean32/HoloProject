@@ -40,3 +40,20 @@ func ChangePositionCursor(operation int, moveRange bool) {
 		DecrimentPosition()
 	}
 }
+
+func JumpToStartLine() {
+	fmt.Print("\r")
+}
+
+func JumpToEndMessage() {
+	field.Position = field.PositionRange
+	MoveCursorToPosition(field.PositionRange)
+}
+
+func JumpToUp() {
+	fmt.Print("\033[1A")
+}
+
+func JumpToDown() {
+	fmt.Print("\033[1B")
+}

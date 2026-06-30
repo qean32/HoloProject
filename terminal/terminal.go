@@ -23,13 +23,19 @@ func Field() {
 		}
 		if key.Code == keys.Enter {
 			EnterCommand()
-			return false, nil
+			return true, nil
 		}
 		if key.Code == keys.Left {
 			MoveCursorLeft()
 		}
 		if key.Code == keys.Right {
 			MoveCursorRight()
+		}
+		if key.Code == keys.End {
+			JumpToEndMessage()
+		}
+		if key.Code == keys.Home {
+			JumpToStartLine()
 		}
 		if key.Code == keys.Escape || key.Code == keys.CtrlC {
 			lib.StopProcess()

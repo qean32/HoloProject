@@ -5,7 +5,7 @@ type POINT struct {
 	y int
 }
 
-type FIELDTYPE struct {
+type FieldType struct {
 	Position      int
 	PositionRange int
 	Message       string
