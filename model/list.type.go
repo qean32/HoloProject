@@ -2,5 +2,6 @@ package model
 
 type List struct {
 	Position int
-	Options  Options
+	Length   int
+	Options  []Option
 }

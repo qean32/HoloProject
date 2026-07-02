@@ -54,6 +54,13 @@ func JumpToUp() {
 	fmt.Print("\033[1A")
 }
 
+func JumpToUpCount(count int) {
+	fmt.Printf("\033[%dA", count)
+}
+
+func JumpDownCount(count int) {
+	fmt.Printf("\033[%dB", count)
+}
 func JumpToDown() {
 	fmt.Print("\033[1B")
 }

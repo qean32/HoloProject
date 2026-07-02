@@ -44,7 +44,7 @@ func ChangeMessage(_message string) {
 }
 
 func ClearLine() {
-	fmt.Print("\033[2K")
+	fmt.Print("\r \033[2K")
 }
 
 func ClearLineByCount(count int) {

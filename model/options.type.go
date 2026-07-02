@@ -1,3 +1,6 @@
 package model
 
-type Options map[string]EventFunction
+type Option struct {
+	Message string
+	Command string
+}

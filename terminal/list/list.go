@@ -10,8 +10,10 @@ import (
 	"atomicgo.dev/keyboard/keys"
 )
 
-func List(list model.Options) {
+func List(list []model.Option) {
+	_setOptions(list)
 	UnwrapList(list)
+	terminal.JumpToUpCount(len(list))
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		if key.Code == keys.Enter {
 			SelectItem()
@@ -30,36 +32,38 @@ func List(list model.Options) {
 	})
 }
 
-func UnwrapList(_list model.Options) {
-	i := 0
-	for message := range _list {
-		fmt.Println(getStartChar(i == list.Position) + message)
-		i++
+func UnwrapList(options []model.Option) {
+	for i, item := range options {
+		fmt.Println("\r" + getStartChar(i == list.Position) + item.Message + "\r")
 	}
 }
 
 func getStartChar(isSelected bool) string {
 	if isSelected {
-		return "> "
+		return "● "
 	}
 
-	return "< "
+	return "○ "
 }
 
 func SelectItem() {
 }
 
 func MoveUpList() {
-	IncrementPosition()
-	RefreshList()
+	if DecrimentPosition() {
+		RefreshList()
+	}
 }
 
 func MoveDownList() {
-	DecrimentPosition()
-	RefreshList()
+	if IncrementPosition() {
+		RefreshList()
+	}
 }
 
 func RefreshList() {
-	terminal.ClearLineByCount(len(list.Options))
+	terminal.JumpDownCount(list.Length - list.Position)
+	terminal.ClearLineByCount(list.Length)
 	UnwrapList(list.Options)
+	terminal.JumpToUpCount(list.Length - list.Position)
 }
