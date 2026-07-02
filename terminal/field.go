@@ -5,26 +5,26 @@ import (
 	"strings"
 )
 
-func AddChar(char string) {
+func pushChar(char string) {
 	if field.Position != len(field.Message) {
 		chars := strings.Split(field.Message, "")
-		ChangeMessage(strings.Join(lib.AddAfterIndex(chars, char, field.Position), ""))
-		RefreshLine(field.Message)
-		IncrementPositionRange()
-		MoveCursorToPosition(field.Position + 1)
+		setMessage(strings.Join(lib.AddAfterIndex(chars, char, field.Position), ""))
+		ReRenderLine(field.Message)
+		incrementPositionRange()
+		horizontalCursorToPosition(field.Position + 1)
 	} else {
-		ChangeMessage(field.Message + char)
-		RefreshLine(field.Message)
-		ChangePositionCursor(1, true)
+		setMessage(field.Message + char)
+		ReRenderLine(field.Message)
+		changePositionCursor(1, true)
 	}
 }
 
-func RemoveChar() {
+func removeChar() {
 	if len(field.Message) != 0 {
-		DecrimentPosition()
-		DecrimentPositionRange()
-		ChangeMessage(strings.Join(lib.RemoveByIndex(strings.Split(field.Message, ""), field.Position), ""))
-		RefreshLine(field.Message)
-		MoveCursorToPosition(field.Position)
+		decrimentPosition()
+		decrimentPositionRange()
+		setMessage(strings.Join(lib.RemoveByIndex(strings.Split(field.Message, ""), field.Position), ""))
+		ReRenderLine(field.Message)
+		horizontalCursorToPosition(field.Position)
 	}
 }

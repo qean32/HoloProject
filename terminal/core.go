@@ -1,7 +1,6 @@
 package terminal
 
 import (
-	"fmt"
 	"main/model"
 )
 
@@ -11,45 +10,34 @@ var field = model.FieldType{
 	Message:       "",
 }
 
-func ResetField() {
+func reset() {
 	field.Message = ""
 	field.Position = 0
 	field.PositionRange = 0
 }
 
-func IncrementPosition() {
+func setMessage(message string) {
+	field.Message = message
+}
+
+func incrementPosition() {
 	if field.Position < field.PositionRange {
 		field.Position++
 	}
 }
 
-func DecrimentPosition() {
+func decrimentPosition() {
 	if field.Position > 0 {
 		field.Position--
 	}
 }
 
-func IncrementPositionRange() {
+func incrementPositionRange() {
 	field.PositionRange++
 }
 
-func DecrimentPositionRange() {
+func decrimentPositionRange() {
 	if field.PositionRange > 0 {
 		field.PositionRange--
-	}
-}
-
-func ChangeMessage(_message string) {
-	field.Message = _message
-}
-
-func ClearLine() {
-	fmt.Print("\r \033[2K")
-}
-
-func ClearLineByCount(count int) {
-	for i := 0; i < count; i++ {
-		ClearLine()
-		JumpToUp()
 	}
 }

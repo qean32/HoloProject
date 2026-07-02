@@ -11,59 +11,51 @@ import (
 )
 
 func List(list []model.Option) {
-	_setOptions(list)
-	UnwrapList(list)
-	terminal.JumpToUpCount(len(list))
+	set(list)
+	renderList(list)
+	terminal.VerticalJumpUpCount(len(list))
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
-		if key.Code == keys.Enter {
-			SelectItem()
+		switch key.Code {
+		case keys.Enter:
+			selectItem()
 			return true, nil
-		}
-		if key.Code == keys.Up {
-			MoveUpList()
-		}
-		if key.Code == keys.Down {
-			MoveDownList()
-		}
-		if key.Code == keys.Escape || key.Code == keys.CtrlC {
+		case keys.Down:
+			moveDown()
+		case keys.Up:
+			moveUp()
+		case keys.Escape:
+			lib.StopProcess()
+		case keys.CtrlC:
 			lib.StopProcess()
 		}
 		return false, nil
 	})
 }
 
-func UnwrapList(options []model.Option) {
+func renderList(options []model.Option) {
 	for i, item := range options {
 		fmt.Println("\r" + getStartChar(i == list.Position) + item.Message + "\r")
 	}
 }
 
-func getStartChar(isSelected bool) string {
-	if isSelected {
-		return "● "
-	}
-
-	return "○ "
+func selectItem() {
 }
 
-func SelectItem() {
-}
-
-func MoveUpList() {
-	if DecrimentPosition() {
-		RefreshList()
+func moveUp() {
+	if decrimentPosition() {
+		reRenderList()
 	}
 }
 
-func MoveDownList() {
-	if IncrementPosition() {
-		RefreshList()
+func moveDown() {
+	if incrementPosition() {
+		reRenderList()
 	}
 }
 
-func RefreshList() {
-	terminal.JumpDownCount(list.Length - list.Position)
-	terminal.ClearLineByCount(list.Length)
-	UnwrapList(list.Options)
-	terminal.JumpToUpCount(list.Length - list.Position)
+func reRenderList() {
+	terminal.VerticalJumpDownCount(list.Length - list.Position)
+	terminal.ClearLines(list.Length)
+	renderList(list.Options)
+	terminal.VerticalJumpUpCount(list.Length - list.Position)
 }

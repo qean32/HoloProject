@@ -12,53 +12,42 @@ func Field() {
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		char := key.String()
 
-		if key.Code == keys.Space {
+		switch key.Code {
+		case keys.Space:
 			char = " "
-		}
-		if len(char) == 1 {
-			AddChar(char)
-		}
-		if key.Code == keys.Backspace {
-			RemoveChar()
-		}
-		if key.Code == keys.Enter {
-			EnterCommand()
+		case keys.Backspace:
+			removeChar()
+		case keys.Enter:
+			Enter()
 			return true, nil
-		}
-		if key.Code == keys.Left {
-			MoveCursorLeft()
-		}
-		if key.Code == keys.Right {
-			MoveCursorRight()
-		}
-		if key.Code == keys.End {
-			JumpToEndMessage()
-		}
-		if key.Code == keys.Home {
-			JumpToStartLine()
-		}
-		if key.Code == keys.Escape || key.Code == keys.CtrlC {
+		case keys.Left:
+			horizontalCursorToLeft()
+		case keys.Right:
+			horizontalCursorToRight()
+		case keys.End:
+			horizontalJumpToEnd()
+		case keys.Home:
+			HorizontalJumpToStart()
+		case keys.Escape:
 			lib.StopProcess()
+		case keys.CtrlC:
+			lib.StopProcess()
+		}
+
+		if len(char) == 1 {
+			pushChar(char)
 		}
 		return false, nil
 	})
 }
 
-func RefreshLine(_message string) {
+func ReRenderLine(_message string) {
 	ClearLine()
-	JumpToStartLine()
+	HorizontalJumpToStart()
 	fmt.Print(_message)
 }
 
-func EnterCommand() {
-	RefreshLine("Обработка")
-	ResetField()
-}
-
-func OutputTechInfo(messages ...any) {
-	var result string
-	for _, msg := range messages[1:] {
-		result += fmt.Sprint(msg)
-	}
-	RefreshLine(fmt.Sprint(messages[0]) + "\033[31m Технический вывод: " + result + "\033[0m")
+func Enter() {
+	ReRenderLine("Обработка")
+	reset()
 }

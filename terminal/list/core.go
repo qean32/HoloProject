@@ -11,32 +11,32 @@ var list = model.List{
 	Options:  []model.Option{},
 }
 
-func _setOptions(options []model.Option) {
-	list.Options = options
-	list.Position = 0
-	list.Length = len(options)
-}
-
-func IncrementPosition() bool {
+func incrementPosition() bool {
 	if list.Position < list.Length-1 {
 		list.Position++
-		terminal.JumpToDown()
+		terminal.VerticalJumpDown()
 		return true
 	}
 	return false
 }
 
-func DecrimentPosition() bool {
+func decrimentPosition() bool {
 	if list.Position > 0 {
 		list.Position--
-		terminal.JumpToUp()
+		terminal.VerticalJumpUp()
 		return true
 	}
 	return false
 }
 
-func ResetList() {
+func reset() {
 	list.Options = []model.Option{}
 	list.Position = 0
 	list.Length = 0
+}
+
+func set(options []model.Option) {
+	list.Options = options
+	list.Position = 0
+	list.Length = len(options)
 }

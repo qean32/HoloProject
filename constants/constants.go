@@ -76,3 +76,6 @@ var ACCESS_VARIANTS = []string{"yes", "y", "yea"}
 
 const NEXT_LINE = "\n"
 const OUTPUT_MESSAGE = "output "
+
+const CHAR_SELECTED_ITEM = "● "
+const CHAR_UN_SELECTED_ITEM = "○ "

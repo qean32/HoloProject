@@ -2,65 +2,47 @@ package terminal
 
 import "fmt"
 
-func MoveCursorLeft() {
+func horizontalCursorToLeft() {
+	// DO NOT USE OUTSIDE FIELD !!!
 	if field.Position > 0 {
 		fmt.Print("\033[1D")
-		ChangePositionCursor(-1, false)
+		changePositionCursor(-1, false)
 	}
 }
 
-func MoveCursorRight() {
+func horizontalCursorToRight() {
 	if field.Position < field.PositionRange {
 		fmt.Print("\033[1C")
-		ChangePositionCursor(1, false)
+		changePositionCursor(1, false)
 	}
 }
 
-func MoveCursorToPosition(position int) {
+func horizontalCursorToPosition(position int) {
 	if position <= field.PositionRange {
 		fmt.Printf("\033[%dG", position)
 		field.Position = position
 	}
 }
 
-func ChangePositionCursor(operation int, moveRange bool) {
+func changePositionCursor(operation int, moveRange bool) {
 	if operation != -1 && operation != 1 {
 		return
 	}
 
 	if operation == 1 {
 		if moveRange {
-			IncrementPositionRange()
+			incrementPositionRange()
 		}
-		IncrementPosition()
+		incrementPosition()
 	} else {
 		if moveRange {
-			DecrimentPositionRange()
+			decrimentPositionRange()
 		}
-		DecrimentPosition()
+		decrimentPosition()
 	}
 }
 
-func JumpToStartLine() {
-	fmt.Print("\r")
-}
-
-func JumpToEndMessage() {
+func horizontalJumpToEnd() {
 	field.Position = field.PositionRange
-	MoveCursorToPosition(field.PositionRange)
-}
-
-func JumpToUp() {
-	fmt.Print("\033[1A")
-}
-
-func JumpToUpCount(count int) {
-	fmt.Printf("\033[%dA", count)
-}
-
-func JumpDownCount(count int) {
-	fmt.Printf("\033[%dB", count)
-}
-func JumpToDown() {
-	fmt.Print("\033[1B")
+	horizontalCursorToPosition(field.PositionRange)
 }
