@@ -27,30 +27,6 @@ func CurrentTime() string {
 	return time.Now().Format("2006-01-02 15:04:05")
 }
 
-func ACCESS_ACTION() bool {
-	var response string
-	fmt.Print("u need access action (yes|no) ~ ")
-	fmt.Scanln(&response)
-	trimResponse := strings.TrimSpace(response)
-
-	if slices.Contains(constants.ACCESS_VARIANTS, trimResponse) {
-		return true
-	}
-
-	return false
-}
-
-func DECORATOR_ACCESS_ACTION(function model.EventFunction) model.EventFunction {
-	return func(e model.Event) {
-
-		if ACCESS_ACTION() {
-			function(e)
-		} else {
-			CONSOLE_RESPONSE(constants.STOP_COMMAND, false)
-		}
-	}
-}
-
 func RUN_CMD(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	err := cmd.Run()

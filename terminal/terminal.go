@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"main/lib"
 
+	"atomicgo.dev/cursor"
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
 )
@@ -27,7 +28,7 @@ func Field() {
 		case keys.End:
 			horizontalJumpToEnd()
 		case keys.Home:
-			HorizontalJumpToStart()
+			cursor.StartOfLine()
 		case keys.Escape:
 			lib.StopProcess()
 		case keys.CtrlC:
@@ -42,8 +43,8 @@ func Field() {
 }
 
 func ReRenderLine(_message string) {
-	ClearLine()
-	HorizontalJumpToStart()
+	cursor.ClearLine()
+	cursor.StartOfLine()
 	fmt.Print(_message)
 }
 

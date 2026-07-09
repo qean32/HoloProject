@@ -5,19 +5,27 @@ import (
 	"main/lib"
 	"main/model"
 	"main/terminal"
+	"strconv"
 
+	"atomicgo.dev/cursor"
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
 )
 
-func List(list []model.Option) {
-	set(list)
-	renderList(list)
-	terminal.VerticalJumpUpCount(len(list))
+func List(_list []model.Option) {
+	cursor.Hide()
+	set(_list)
+	renderList(_list)
+	cursor.Up(4)
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
+		if value, err := strconv.Atoi(key.String()); err == nil {
+			list.Position = value
+			reRenderList()
+		}
 		switch key.Code {
 		case keys.Enter:
 			selectItem()
+			reset()
 			return true, nil
 		case keys.Down:
 			moveDown()
@@ -34,11 +42,15 @@ func List(list []model.Option) {
 
 func renderList(options []model.Option) {
 	for i, item := range options {
-		fmt.Println("\r" + getStartChar(i == list.Position) + item.Message + "\r")
+		fmt.Println(getStartChar(i == list.Position) + item.Message)
+		cursor.StartOfLineDown(0)
 	}
 }
 
 func selectItem() {
+	jumpToEndList()
+	list.Options[list.Position].Command()
+	cursor.Show()
 }
 
 func moveUp() {
@@ -54,8 +66,8 @@ func moveDown() {
 }
 
 func reRenderList() {
-	terminal.VerticalJumpDownCount(list.Length - list.Position)
+	jumpToEndList()
 	terminal.ClearLines(list.Length)
 	renderList(list.Options)
-	terminal.VerticalJumpUpCount(list.Length - list.Position)
+	cursor.Up(list.Length - list.Position)
 }

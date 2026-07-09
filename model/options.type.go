@@ -2,5 +2,5 @@ package model
 
 type Option struct {
 	Message string
-	Command string
+	Command func()
 }

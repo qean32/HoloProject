@@ -1,6 +1,10 @@
 package list
 
-import "main/constants"
+import (
+	"main/constants"
+
+	"atomicgo.dev/cursor"
+)
 
 func getStartChar(isSelected bool) string {
 	if isSelected {
@@ -8,4 +12,8 @@ func getStartChar(isSelected bool) string {
 	}
 
 	return constants.CHAR_UN_SELECTED_ITEM
+}
+
+func jumpToEndList() {
+	cursor.Down(list.Length - list.Position)
 }

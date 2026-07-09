@@ -1,8 +1,8 @@
 package list
 
 import (
+	"atomicgo.dev/cursor"
 	"main/model"
-	"main/terminal"
 )
 
 var list = model.List{
@@ -14,7 +14,7 @@ var list = model.List{
 func incrementPosition() bool {
 	if list.Position < list.Length-1 {
 		list.Position++
-		terminal.VerticalJumpDown()
+		cursor.Down(1)
 		return true
 	}
 	return false
@@ -23,7 +23,7 @@ func incrementPosition() bool {
 func decrimentPosition() bool {
 	if list.Position > 0 {
 		list.Position--
-		terminal.VerticalJumpUp()
+		cursor.Up(1)
 		return true
 	}
 	return false

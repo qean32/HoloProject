@@ -1,8 +1,12 @@
 package deep
 
+// DEPRECETED !!!
+
 import (
 	"fmt"
 	"main/constants"
+	"main/model"
+	"slices"
 	"strings"
 
 	"github.com/nathan-fiscaletti/consolesize-go"
@@ -39,5 +43,29 @@ func CONSOLE_RESPONSE(output string, next bool) {
 	fmt.Println(constants.OUTPUT_MESSAGE + output)
 	if next {
 		fmt.Print("~ ")
+	}
+}
+
+func ACCESS_ACTION() bool {
+	var response string
+	fmt.Print("u need access action (yes|no) ~ ")
+	fmt.Scanln(&response)
+	trimResponse := strings.TrimSpace(response)
+
+	if slices.Contains(constants.ACCESS_VARIANTS, trimResponse) {
+		return true
+	}
+
+	return false
+}
+
+func DECORATOR_ACCESS_ACTION(function model.EventFunction) model.EventFunction {
+	return func(e model.Event) {
+
+		if ACCESS_ACTION() {
+			function(e)
+		} else {
+			CONSOLE_RESPONSE(constants.STOP_COMMAND, false)
+		}
 	}
 }
