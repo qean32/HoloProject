@@ -18,6 +18,7 @@ func List(options []model.Option) {
 	set(options)
 	renderList(options)
 	jumpToStartList()
+
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		if value, err := strconv.Atoi(key.String()); err == nil {
 			list.Position = value
@@ -25,8 +26,6 @@ func List(options []model.Option) {
 		}
 		switch key.Code {
 		case keys.Enter:
-			selectItem()
-			reset()
 			return true, nil
 		case keys.Down:
 			moveDown()
@@ -37,8 +36,14 @@ func List(options []model.Option) {
 		case keys.CtrlC:
 			lib.StopProcess()
 		}
+
 		return false, nil
 	})
+	jumpToEndList()
+	cursor.Down(1)
+	cursor.Show()
+	list.Options[list.Position].Command()
+	reset()
 }
 
 func renderList(options []model.Option) {
@@ -47,21 +52,15 @@ func renderList(options []model.Option) {
 
 		if isSelected {
 			terminal.Output(terminal.GetCustomMessage(getStartChar(isSelected), literals.SGR.GREEN) +
-				terminal.GetCustomMessage(item.Message, constants.StyleError...))
+				terminal.GetCustomMessage(item.Message, constants.StyleSelected...))
 
 		} else {
 			terminal.Output(terminal.GetCustomMessage(getStartChar(isSelected), literals.SGR.GREEN) +
-				terminal.GetCustomMessage(item.Message, literals.SGR.DIM, literals.SGR.WHITE))
+				terminal.GetCustomMessage(item.Message, literals.SGR.DIM))
 
 		}
 		terminal.DownAndStart()
 	}
-}
-
-func selectItem() {
-	jumpToEndList()
-	cursor.Show()
-	list.Options[list.Position].Command()
 }
 
 func moveUp() {

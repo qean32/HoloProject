@@ -27,7 +27,7 @@ var MAP_HANDLER = map[string]model.EventFunction{
 		if index != -1 {
 			terminal.Output(deep.TMP_DATA[index][1])
 		} else {
-			deep.CONSOLE_RESPONSE(constants.UNDEFINED_KEYWORD, false)
+			terminal.Output(constants.UNDEFINED_KEYWORD)
 		}
 	},
 	literals.COMMANDS.GKEY: func(e model.Event) {},
@@ -42,7 +42,7 @@ var MAP_HANDLER = map[string]model.EventFunction{
 		os.Mkdir(constants.Root, 0755)
 	},
 	literals.COMMANDS.STOP: func(e model.Event) { StopProcess() },
-	literals.COMMANDS.HELP: func(e model.Event) { deep.CONSOLE_RESPONSE(constants.HelpMessage, false) },
+	literals.COMMANDS.HELP: func(e model.Event) { terminal.Output(constants.HelpMessage) },
 	literals.COMMANDS.DECLARE: func(e model.Event) {
 		deep.PushToFile(constants.PATH_COMMAND, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
 		deep.TMP_COMMANDS = append(deep.TMP_COMMANDS, []string{e.KeyWord, e.Payload})
@@ -55,7 +55,7 @@ var MAP_HANDLER = map[string]model.EventFunction{
 		if index != -1 {
 			deep.RUN_CMD(deep.TMP_COMMANDS[index][1])
 		} else {
-			deep.CONSOLE_RESPONSE(constants.UNDEFINED_KEYWORD, false)
+			terminal.Output(constants.UNDEFINED_KEYWORD)
 		}
 	},
 	literals.COMMANDS.RUNM: func(e model.Event) {
@@ -72,26 +72,24 @@ var MAP_HANDLER = map[string]model.EventFunction{
 				deep.RUN_CMD(tmp[i])
 			}
 		} else {
-			deep.CONSOLE_RESPONSE(constants.UNDEFINED_KEYWORD, false)
+			terminal.Output(constants.UNDEFINED_KEYWORD)
 		}
 	},
 	literals.COMMANDS.COMMANDS: func(e model.Event) {
-		fmt.Println(constants.OUTPUT_MESSAGE)
-		deep.CONSOLE(strings.Join(deep.ReadFile(constants.PATH_COMMAND), "\n~ "))
+		terminal.Output(strings.Join(deep.ReadFile(constants.PATH_COMMAND), "\n~ "))
 	},
-	literals.COMMANDS.RMC: deep.DECORATOR_ACCESS_ACTION(
-		func(e model.Event) {
-			if slices.IndexFunc(deep.TMP_COMMANDS, func(item []string) bool {
-				return item[0] == e.KeyWord
-			}) != -1 {
-				filtered := filter.FILTER(deep.TMP_COMMANDS, func(item []string) bool { return item[0] != e.KeyWord })
-				deep.TMP_COMMANDS = filtered
-				deep.WriteFile(strings.Join(array.MatrixToArrayString(filtered), "\n"), constants.PATH_COMMAND)
-			} else {
-				deep.CONSOLE_RESPONSE(constants.UNDEFINED_KEYWORD, false)
-			}
-		},
-	),
+	literals.COMMANDS.RMC: func(e model.Event) {
+		// need add yes/no
+		if slices.IndexFunc(deep.TMP_COMMANDS, func(item []string) bool {
+			return item[0] == e.KeyWord
+		}) != -1 {
+			filtered := filter.FILTER(deep.TMP_COMMANDS, func(item []string) bool { return item[0] != e.KeyWord })
+			deep.TMP_COMMANDS = filtered
+			deep.WriteFile(strings.Join(array.MatrixToArrayString(filtered), "\n"), constants.PATH_COMMAND)
+		} else {
+			terminal.Output(constants.UNDEFINED_KEYWORD)
+		}
+	},
 	literals.COMMANDS.NOTES: func(e model.Event) {},
 	literals.COMMANDS.NOTE:  func(e model.Event) {},
 	literals.COMMANDS.DNOTE: func(e model.Event) {},

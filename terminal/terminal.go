@@ -2,7 +2,6 @@ package terminal
 
 import (
 	"fmt"
-	"main/constants"
 	"main/lib/array"
 	"strconv"
 	"strings"
@@ -24,7 +23,7 @@ func OutputCenter(output string, separator string) {
 }
 
 func OutputASCII_CENTER(ASCII string, separator string) {
-	array := strings.Split(ASCII, constants.NEXT_LINE)
+	array := strings.Split(ASCII, "\n")
 	offet := CalcCenterCMD(len(array[1]) - 2)
 
 	if offet <= 0 {
@@ -86,4 +85,8 @@ func GetCustomMessage(message string, SGR ...int) string {
 
 func Output(message string) {
 	fmt.Print(message)
+}
+
+func Outputln(message string) {
+	fmt.Println(message)
 }
