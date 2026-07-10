@@ -1,31 +1,4 @@
-package constants
-
-type commandsType struct {
-	CRIPTO  string
-	ECRIPTO string
-
-	GMASTER string
-	GKEY    string
-
-	CLOG string
-	DROP string
-	STOP string
-	HELP string
-
-	NOTE  string
-	DNOTE string
-	NOTES string
-
-	DECLARE  string
-	COMMANDS string
-	RUN      string
-	RUNM     string
-	RMC      string
-}
-
-type flagsType struct {
-	NOLOG string
-}
+package literals
 
 var FLAGS = flagsType{
 	NOLOG: "-nl",

@@ -2,57 +2,17 @@ package lib
 
 import (
 	"bufio"
-	"fmt"
 	"main/constants"
 	"main/deep"
-	"main/model"
+	"main/terminal"
 	"os"
-	"strings"
 )
 
 var READER = bufio.NewReader(os.Stdin)
 
 func INIT() {
-	deep.CONSOLE_ASCII_CENTER(constants.PROJECT_INIT, "")
+	terminal.OutputASCII_CENTER(constants.BinaryPROJECT_INIT, " ")
+	terminal.OutputASCII_CENTER(constants.PROJECT_INIT, " ")
 	constants.INIT_ROOT()
-	deep.DATA()
-	ENTER_COMMAND()
-}
-
-func ITERATION_CYCLE(e model.Event) {
-	function := MAP_HANDLER[e.Key]
-
-	if function != nil {
-		function(e)
-		deep.LOG(e)
-	} else {
-		deep.CONSOLE_RESPONSE(constants.UNDEFINED_COMMAND, false)
-	}
-	fmt.Print("~ ")
-}
-
-func ENTER_COMMAND() {
-	command, _ := READER.ReadString('\n')
-
-	if len(command) > 1 {
-		trimString := strings.TrimSpace(command)
-		e, _error := PARSE_EVENT(trimString, strings.Split(trimString, " ")[0])
-
-		if !_error {
-			deep.CALLSTACK = append(deep.CALLSTACK, e)
-			ITERATION_CYCLE(e)
-			// deep.Callstack_channel <- e
-		} else {
-			deep.CONSOLE_RESPONSE(constants.SYNTAX_ERROR, true)
-		}
-	}
-	ENTER_COMMAND()
-}
-
-func get_it_out_of_the_basket(callstack_channel model.CallStackChannel) model.Event {
-	it := deep.CALLSTACK[:len(deep.CALLSTACK)-1][0]
-	deep.CALLSTACK = deep.CALLSTACK[:len(deep.CALLSTACK)-1]
-	callstack_channel <- it
-
-	return it
+	deep.SETDATA()
 }

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"main/constants"
+	"main/constants/literals"
 	"main/model"
 	"os"
 	"os/exec"
@@ -15,7 +16,7 @@ import (
 var READER = bufio.NewReader(os.Stdin)
 
 func LOG(e model.Event) {
-	if slices.IndexFunc(e.Flags, func(item string) bool { return strings.TrimSpace(item) == constants.FLAGS.NOLOG }) == -1 {
+	if slices.IndexFunc(e.Flags, func(item string) bool { return strings.TrimSpace(item) == literals.FLAGS.NOLOG }) == -1 {
 		PushToFile(constants.PATH_LOG, fmt.Sprintf("%#v", e))
 	}
 }

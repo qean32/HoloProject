@@ -13,8 +13,7 @@ import (
 )
 
 func CONSOLE(output string) {
-	fmt.Println(output)
-	fmt.Print("~ ")
+	fmt.Print(output)
 }
 
 func CONSOLE_CENTER(output string, separator string) {
@@ -23,12 +22,18 @@ func CONSOLE_CENTER(output string, separator string) {
 
 func CalcCenterCMD(length int) int {
 	cols, _ := consolesize.GetConsoleSize()
-	return cols/2 - (length / 2)
+	res := cols/2 - (length / 2)
+	if res < 0 {
+		return 0
+	}
+	return res
 }
 
 func CONSOLE_ASCII_CENTER(ASCII string, separator string) {
 	array := strings.Split(ASCII, constants.NEXT_LINE)
-	repeat := strings.Repeat(separator, CalcCenterCMD(len(array[1])-2))
+	offet := CalcCenterCMD(len(array[1]) - 2)
+
+	repeat := strings.Repeat(separator, offet)
 	length := len(array) - 2
 
 	params := make([]interface{}, length)

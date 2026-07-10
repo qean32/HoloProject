@@ -3,48 +3,51 @@ package lib
 import (
 	"fmt"
 	"main/constants"
+	"main/constants/literals"
 	"main/deep"
+	"main/lib/array"
 	"main/lib/filter"
 	"main/model"
+	"main/terminal"
 	"os"
 	"slices"
 	"strings"
 )
 
 var MAP_HANDLER = map[string]model.EventFunction{
-	constants.COMMANDS.CRIPTO: func(e model.Event) {
+	literals.COMMANDS.CRIPTO: func(e model.Event) {
 		deep.PushToFile(constants.PATH_DATA, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
 		deep.TMP_DATA = append(deep.TMP_DATA, []string{e.KeyWord, e.Payload})
 	},
-	constants.COMMANDS.ECRIPTO: func(e model.Event) {
+	literals.COMMANDS.ECRIPTO: func(e model.Event) {
 		index := slices.IndexFunc(deep.TMP_DATA, func(item []string) bool {
 			return item[0] == e.KeyWord
 		})
 
 		if index != -1 {
-			deep.CONSOLE_RESPONSE(deep.TMP_DATA[index][1], false)
+			terminal.Output(deep.TMP_DATA[index][1])
 		} else {
 			deep.CONSOLE_RESPONSE(constants.UNDEFINED_KEYWORD, false)
 		}
 	},
-	constants.COMMANDS.GKEY: func(e model.Event) {},
-	constants.COMMANDS.CLOG: func(e model.Event) { deep.ClearFile(constants.PATH_LOG) },
-	constants.COMMANDS.GMASTER: func(e model.Event) {
+	literals.COMMANDS.GKEY: func(e model.Event) {},
+	literals.COMMANDS.CLOG: func(e model.Event) { deep.ClearFile(constants.PATH_LOG) },
+	literals.COMMANDS.GMASTER: func(e model.Event) {
 		deep.CreateFile(constants.PATH_LOG)
 		deep.CreateFile(constants.PATH_COMMAND)
 		deep.CreateFile(constants.PATH_DATA)
 	},
-	constants.COMMANDS.DROP: func(e model.Event) {
+	literals.COMMANDS.DROP: func(e model.Event) {
 		os.RemoveAll(constants.Root)
 		os.Mkdir(constants.Root, 0755)
 	},
-	constants.COMMANDS.STOP: func(e model.Event) { StopProcess() },
-	constants.COMMANDS.HELP: func(e model.Event) { deep.CONSOLE_RESPONSE(constants.HelpMessage, false) },
-	constants.COMMANDS.DECLARE: func(e model.Event) {
+	literals.COMMANDS.STOP: func(e model.Event) { StopProcess() },
+	literals.COMMANDS.HELP: func(e model.Event) { deep.CONSOLE_RESPONSE(constants.HelpMessage, false) },
+	literals.COMMANDS.DECLARE: func(e model.Event) {
 		deep.PushToFile(constants.PATH_COMMAND, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
 		deep.TMP_COMMANDS = append(deep.TMP_COMMANDS, []string{e.KeyWord, e.Payload})
 	},
-	constants.COMMANDS.RUN: func(e model.Event) {
+	literals.COMMANDS.RUN: func(e model.Event) {
 		index := slices.IndexFunc(deep.TMP_COMMANDS, func(item []string) bool {
 			return item[0] == strings.TrimSpace(e.KeyWord)
 		})
@@ -55,7 +58,7 @@ var MAP_HANDLER = map[string]model.EventFunction{
 			deep.CONSOLE_RESPONSE(constants.UNDEFINED_KEYWORD, false)
 		}
 	},
-	constants.COMMANDS.RUNM: func(e model.Event) {
+	literals.COMMANDS.RUNM: func(e model.Event) {
 		index := slices.IndexFunc(deep.TMP_COMMANDS, func(item []string) bool {
 			return item[0] == strings.TrimSpace(e.KeyWord)
 		})
@@ -72,30 +75,30 @@ var MAP_HANDLER = map[string]model.EventFunction{
 			deep.CONSOLE_RESPONSE(constants.UNDEFINED_KEYWORD, false)
 		}
 	},
-	constants.COMMANDS.COMMANDS: func(e model.Event) {
+	literals.COMMANDS.COMMANDS: func(e model.Event) {
 		fmt.Println(constants.OUTPUT_MESSAGE)
 		deep.CONSOLE(strings.Join(deep.ReadFile(constants.PATH_COMMAND), "\n~ "))
 	},
-	constants.COMMANDS.RMC: deep.DECORATOR_ACCESS_ACTION(
+	literals.COMMANDS.RMC: deep.DECORATOR_ACCESS_ACTION(
 		func(e model.Event) {
 			if slices.IndexFunc(deep.TMP_COMMANDS, func(item []string) bool {
 				return item[0] == e.KeyWord
 			}) != -1 {
 				filtered := filter.FILTER(deep.TMP_COMMANDS, func(item []string) bool { return item[0] != e.KeyWord })
 				deep.TMP_COMMANDS = filtered
-				deep.WriteFile(strings.Join(matrixToArrayString(filtered), "\n"), constants.PATH_COMMAND)
+				deep.WriteFile(strings.Join(array.MatrixToArrayString(filtered), "\n"), constants.PATH_COMMAND)
 			} else {
 				deep.CONSOLE_RESPONSE(constants.UNDEFINED_KEYWORD, false)
 			}
 		},
 	),
-	constants.COMMANDS.NOTES: func(e model.Event) {},
-	constants.COMMANDS.NOTE:  func(e model.Event) {},
-	constants.COMMANDS.DNOTE: func(e model.Event) {},
+	literals.COMMANDS.NOTES: func(e model.Event) {},
+	literals.COMMANDS.NOTE:  func(e model.Event) {},
+	literals.COMMANDS.DNOTE: func(e model.Event) {},
 }
 
 var MAP_PARSE = map[string]model.FnReturnEvent{
-	constants.COMMANDS.CRIPTO: func(arr []string) (e model.Event, _error bool) {
+	literals.COMMANDS.CRIPTO: func(arr []string) (e model.Event, _error bool) {
 		payload := getPaylaod(arr)
 
 		if len(arr) < 3 || payload == "" {
@@ -113,7 +116,7 @@ var MAP_PARSE = map[string]model.FnReturnEvent{
 		}
 		return
 	},
-	constants.COMMANDS.ECRIPTO: func(arr []string) (e model.Event, _error bool) {
+	literals.COMMANDS.ECRIPTO: func(arr []string) (e model.Event, _error bool) {
 		if len(arr) < 3 {
 			_error = true
 			return
@@ -128,7 +131,7 @@ var MAP_PARSE = map[string]model.FnReturnEvent{
 		}
 		return
 	},
-	constants.COMMANDS.DECLARE: func(arr []string) (e model.Event, _error bool) {
+	literals.COMMANDS.DECLARE: func(arr []string) (e model.Event, _error bool) {
 		payload := getPaylaod(arr)
 
 		if len(arr) < 3 || payload == "" {
@@ -145,12 +148,12 @@ var MAP_PARSE = map[string]model.FnReturnEvent{
 		}
 		return
 	},
-	constants.COMMANDS.RUN:   SHORT_EVENT_WordKey,
-	constants.COMMANDS.RUNM:  SHORT_EVENT_WordKey,
-	constants.COMMANDS.RMC:   SHORT_EVENT_WordKey,
-	constants.COMMANDS.NOTES: SHORT_EVENT_WordKey,
-	constants.COMMANDS.NOTE:  SHORT_EVENT_WordKey,
-	constants.COMMANDS.DNOTE: SHORT_EVENT_WordKey,
+	literals.COMMANDS.RUN:   SHORT_EVENT_WordKey,
+	literals.COMMANDS.RUNM:  SHORT_EVENT_WordKey,
+	literals.COMMANDS.RMC:   SHORT_EVENT_WordKey,
+	literals.COMMANDS.NOTES: SHORT_EVENT_WordKey,
+	literals.COMMANDS.NOTE:  SHORT_EVENT_WordKey,
+	literals.COMMANDS.DNOTE: SHORT_EVENT_WordKey,
 }
 
 func SHORT_EVENT(arr []string) (e model.Event, _error bool) {

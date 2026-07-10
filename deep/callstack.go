@@ -11,7 +11,7 @@ var TMP_DATA = [][]string{}
 var TMP_COMMANDS = [][]string{}
 var SETTINGS = model.Settings{}
 
-func DATA() {
+func SETDATA() {
 	if len(TMP_COMMANDS) == 0 {
 		strs := (ReadFile(constants.PATH_COMMAND))
 		var commands [][]string

@@ -1,0 +1,62 @@
+
+func ITERATION_CYCLE(e model.Event) {
+	function := MAP_HANDLER[e.Key]
+
+	if function != nil {
+		function(e)
+		deep.LOG(e)
+	} else {
+		deep.CONSOLE_RESPONSE(constants.UNDEFINED_COMMAND, false)
+	}
+	fmt.Print("~ ")
+}
+
+func ENTER_COMMAND() {
+	command, _ := READER.ReadString('\n')
+
+	if len(command) > 1 {
+		trimString := strings.TrimSpace(command)
+		e, _error := PARSE_EVENT(trimString, strings.Split(trimString, " ")[0])
+
+		if !_error {
+			deep.CALLSTACK = append(deep.CALLSTACK, e)
+			ITERATION_CYCLE(e)
+			// deep.Callstack_channel <- e
+		} else {
+			deep.CONSOLE_RESPONSE(constants.SYNTAX_ERROR, true)
+		}
+	}
+	ENTER_COMMAND()
+}
+
+func get_it_out_of_the_basket(callstack_channel model.CallStackChannel) model.Event {
+	it := deep.CALLSTACK[:len(deep.CALLSTACK)-1][0]
+	deep.CALLSTACK = deep.CALLSTACK[:len(deep.CALLSTACK)-1]
+	callstack_channel <- it
+
+	return it
+}
+
+func ACCESS_ACTION() bool {
+	var response string
+	fmt.Print("u need access action (yes|no) ~ ")
+	fmt.Scanln(&response)
+	trimResponse := strings.TrimSpace(response)
+
+	if slices.Contains(constants.ACCESS_VARIANTS, trimResponse) {
+		return true
+	}
+
+	return false
+}
+
+func DECORATOR_ACCESS_ACTION(function model.EventFunction) model.EventFunction {
+	return func(e model.Event) {
+
+		if ACCESS_ACTION() {
+			function(e)
+		} else {
+			CONSOLE_RESPONSE(constants.STOP_COMMAND, false)
+		}
+	}
+}

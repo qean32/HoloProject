@@ -17,3 +17,7 @@ func getStartChar(isSelected bool) string {
 func jumpToEndList() {
 	cursor.Down(list.Length - list.Position)
 }
+
+func jumpToStartList() {
+	cursor.Up(list.Length - list.Position)
+}

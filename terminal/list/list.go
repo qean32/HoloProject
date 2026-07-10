@@ -1,7 +1,8 @@
 package list
 
 import (
-	"fmt"
+	"main/constants"
+	"main/constants/literals"
 	"main/lib"
 	"main/model"
 	"main/terminal"
@@ -12,11 +13,11 @@ import (
 	"atomicgo.dev/keyboard/keys"
 )
 
-func List(_list []model.Option) {
+func List(options []model.Option) {
 	cursor.Hide()
-	set(_list)
-	renderList(_list)
-	cursor.Up(4)
+	set(options)
+	renderList(options)
+	jumpToStartList()
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		if value, err := strconv.Atoi(key.String()); err == nil {
 			list.Position = value
@@ -42,15 +43,25 @@ func List(_list []model.Option) {
 
 func renderList(options []model.Option) {
 	for i, item := range options {
-		fmt.Println(getStartChar(i == list.Position) + item.Message)
-		cursor.StartOfLineDown(0)
+		isSelected := i == list.Position
+
+		if isSelected {
+			terminal.Output(terminal.GetCustomMessage(getStartChar(isSelected), literals.SGR.GREEN) +
+				terminal.GetCustomMessage(item.Message, constants.StyleError...))
+
+		} else {
+			terminal.Output(terminal.GetCustomMessage(getStartChar(isSelected), literals.SGR.GREEN) +
+				terminal.GetCustomMessage(item.Message, literals.SGR.DIM, literals.SGR.WHITE))
+
+		}
+		terminal.DownAndStart()
 	}
 }
 
 func selectItem() {
 	jumpToEndList()
-	list.Options[list.Position].Command()
 	cursor.Show()
+	list.Options[list.Position].Command()
 }
 
 func moveUp() {
@@ -69,5 +80,5 @@ func reRenderList() {
 	jumpToEndList()
 	terminal.ClearLines(list.Length)
 	renderList(list.Options)
-	cursor.Up(list.Length - list.Position)
+	jumpToStartList()
 }
