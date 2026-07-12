@@ -31,4 +31,6 @@ var COMMANDS = commandsType{
 	RUN:      "run",
 	RUNM:     "runm",
 	RMC:      "rmc",
+
+	MENU: "menu",
 }

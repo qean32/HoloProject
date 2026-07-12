@@ -21,6 +21,8 @@ type commandsType struct {
 	RUN      string
 	RUNM     string
 	RMC      string
+
+	MENU string
 }
 
 type SGRtype struct {

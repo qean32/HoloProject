@@ -3,7 +3,7 @@ package list
 import (
 	"main/constants"
 	"main/constants/literals"
-	"main/lib"
+	"main/lib/low"
 	"main/model"
 	"main/terminal"
 	"strconv"
@@ -32,9 +32,9 @@ func List(options []model.Option) {
 		case keys.Up:
 			moveUp()
 		case keys.Escape:
-			lib.StopProcess()
+			low.StopProcess()
 		case keys.CtrlC:
-			lib.StopProcess()
+			low.StopProcess()
 		}
 
 		return false, nil

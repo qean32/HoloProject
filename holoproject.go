@@ -1,12 +1,16 @@
 package main
 
 import (
-	"main/constants/menu"
 	"main/lib"
-	"main/terminal/list"
+	"main/lib/low"
 )
 
 func main() {
 	lib.INIT()
-	list.List(menu.Menu)
+}
+
+func LOOP() {
+	for value := range low.Callstack_channel {
+		lib.ITERATION_CYCLE(value)
+	}
 }

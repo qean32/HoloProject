@@ -1,4 +1,4 @@
-package deep
+package low
 
 import (
 	"bufio"
@@ -35,4 +35,12 @@ func RUN_CMD(command string) {
 		fmt.Println("$ Ошибка при запуске команды", err)
 		return
 	}
+}
+
+func ClearLog() {
+	ClearFile(constants.PATH_LOG)
+}
+
+func StopProcess() {
+	os.Exit(0)
 }
