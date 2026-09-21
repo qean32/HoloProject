@@ -16,9 +16,10 @@ var READER = bufio.NewReader(os.Stdin)
 func INIT() {
 	terminal.OutputASCII_CENTER(constants.BinaryPROJECT_INIT, " ")
 	terminal.OutputASCII_CENTER(constants.PROJECT_INIT, " ")
-	terminal.OutputASCII_CENTER(constants.HelpMessage, "")
 	constants.INIT_ROOT()
 	low.SETDATA()
+
+	list.List(handler.Menu)
 
 	list.List(handler.Menu)
 }

@@ -1,8 +1,8 @@
 package manual
 
 import (
+	"main/callstack"
 	"main/constants"
-	"main/lib/low"
 	"main/lib/parse"
 	"main/model"
 	"main/terminal"
@@ -18,7 +18,7 @@ func Manual(e model.Event) {
 		event, _error := parse.ParseEvent(trimString, strings.Split(trimString, " ")[0])
 
 		if !_error {
-			low.PUSH(event)
+			callstack.PushCallStack(event)
 		} else {
 			terminal.Outputln(constants.SYNTAX_ERROR)
 		}

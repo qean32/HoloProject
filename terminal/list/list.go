@@ -1,10 +1,9 @@
 package list
 
 import (
-	"main/constants/literals"
 	"main/callstack"
+	"main/constants/literals"
 	"main/lib/low"
-	"main/lib/manual"
 	"main/model"
 	"main/terminal"
 	"strconv"
@@ -27,6 +26,7 @@ func List(options []model.Option) {
 		}
 		switch key.Code {
 		case keys.Enter:
+			_select(options[list.Position].Event)
 			return true, nil
 		case keys.Down:
 			moveDown()
@@ -40,13 +40,6 @@ func List(options []model.Option) {
 
 		return false, nil
 	})
-	jumpToEndList()
-	cursor.Down(1)
-	cursor.Show()
-	cursor.StartOfLine()
-	callstack.PushCallStack(options[list.Position].Event)
-	manual.Manual(model.Event{})
-	reset()
 }
 
 func renderList(options []model.Option) {
@@ -63,6 +56,14 @@ func renderList(options []model.Option) {
 		}
 		terminal.DownAndStart()
 	}
+}
+
+func _select(event model.Event) {
+	jumpToEndList()
+	cursor.Show()
+	terminal.DownAndStart()
+	callstack.PushCallStack(event)
+	reset()
 }
 
 func moveUp() {

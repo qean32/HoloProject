@@ -12,10 +12,10 @@ import (
 
 func OutputTechInfo(messages ...any) {
 	var result string
-	for _, msg := range messages[1:] {
+	for _, msg := range messages {
 		result += fmt.Sprint(msg)
 	}
-	ReRenderLine(fmt.Sprint(messages[0]) + "\033[31m Технический вывод: " + result + "\033[0m")
+	Outputln("\033[31m Технический вывод: " + result + "\033[0m")
 }
 
 func OutputCenter(output string, separator string) {
@@ -23,14 +23,26 @@ func OutputCenter(output string, separator string) {
 }
 
 func OutputASCII_CENTER(ASCII string, separator string) {
-	array := strings.Split(ASCII, "\n")
-	offet := CalcCenterCMD(len(array[1]) - 2)
-
-	if offet <= 0 {
+	lines := strings.Split(ASCII, "\n")
+	if len(lines) < 2 {
+		Output(ASCII)
 		return
 	}
-	repeat := strings.Repeat(separator, offet)
-	length := len(array) - 2
+
+	maxLen := 0
+	for _, line := range lines {
+		if len(line) > maxLen {
+			maxLen = len(line)
+		}
+	}
+
+	offset := CalcCenterCMD(maxLen - 2)
+	if offset < 0 {
+		offset = 0
+	}
+
+	repeat := strings.Repeat(separator, offset)
+	length := len(lines) - 2
 
 	params := make([]interface{}, length)
 	for i := range params {
@@ -50,7 +62,7 @@ func CalcCenterCMD(length int) int {
 }
 
 func DownAndStart() {
-	cursor.Down(1)
+	fmt.Print("\n")
 	cursor.StartOfLine()
 }
 
@@ -64,17 +76,14 @@ func ClearLines(count int) {
 func ReRenderLine(_message string) {
 	cursor.ClearLine()
 	cursor.StartOfLine()
-	fmt.Print(_message)
+	Output(_message)
 }
 
 func GetCustomMessage(message string, SGR ...int) string {
 	if len(SGR) == 0 {
 		return message
 	}
-	strCodes := make([]string, len(SGR))
-	for i, code := range SGR {
-		strCodes[i] = strconv.Itoa(code)
-	}
+
 	SGRstring := strings.Join(
 		array.Map(SGR, func(value int) string {
 			return strconv.Itoa(value)
@@ -84,9 +93,9 @@ func GetCustomMessage(message string, SGR ...int) string {
 }
 
 func Output(message string) {
-	fmt.Print(" ", message)
+	fmt.Print(message)
 }
 
 func Outputln(message string) {
-	fmt.Println(" ", message)
+	fmt.Println(message)
 }

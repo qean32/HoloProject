@@ -3,6 +3,7 @@ package main
 import (
 	"main/callstack"
 	"main/lib"
+	"main/terminal"
 )
 
 func main() {
@@ -18,10 +19,9 @@ func RunLoop() {
 			if !ok {
 				break
 			}
-
+			terminal.OutputTechInfo(event.Key)
 			lib.Event(event)
 		}
-
 		<-callstack.Changed()
 	}
 }

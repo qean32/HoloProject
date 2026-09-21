@@ -9,16 +9,23 @@ import (
 var (
 	mu        sync.Mutex
 	callstack []model.Event
-
-	changed = make(chan struct{}, 1)
+	changed   = make(chan struct{}, 1)
+	wasEmpty  = true
 )
 
 func PushCallStack(event model.Event) {
 	mu.Lock()
 	callstack = append(callstack, event)
+	shouldNotify := wasEmpty
+	wasEmpty = false
 	mu.Unlock()
 
-	notify()
+	if shouldNotify {
+		select {
+		case changed <- struct{}{}:
+		default:
+		}
+	}
 }
 
 func GetTask() (model.Event, bool) {
@@ -26,6 +33,7 @@ func GetTask() (model.Event, bool) {
 	defer mu.Unlock()
 
 	if len(callstack) == 0 {
+		wasEmpty = true
 		return model.Event{}, false
 	}
 
@@ -35,19 +43,6 @@ func GetTask() (model.Event, bool) {
 	return event, true
 }
 
-func Snapshot() []model.Event {
-	mu.Lock()
-	defer mu.Unlock()
-	return append([]model.Event(nil), callstack...)
-}
-
 func Changed() <-chan struct{} {
 	return changed
-}
-
-func notify() {
-	select {
-	case changed <- struct{}{}:
-	default:
-	}
 }
