@@ -84,3 +84,4 @@ var (
 )
 
 var AcceptableYeaOrNot []string = []string{"yes", "no", "y", "n", "yea", "not"}
+

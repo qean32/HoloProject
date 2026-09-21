@@ -1,16 +1,27 @@
 package main
 
 import (
+	"main/callstack"
 	"main/lib"
-	"main/lib/low"
 )
 
 func main() {
+	go RunLoop()
 	lib.INIT()
+
 }
 
-func LOOP() {
-	for value := range low.Callstack_channel {
-		lib.ITERATION_CYCLE(value)
+func RunLoop() {
+	for {
+		for {
+			event, ok := callstack.GetTask()
+			if !ok {
+				break
+			}
+
+			lib.Event(event)
+		}
+
+		<-callstack.Changed()
 	}
 }

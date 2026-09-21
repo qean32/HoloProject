@@ -1,9 +1,10 @@
 package list
 
 import (
-	"main/constants"
 	"main/constants/literals"
+	"main/callstack"
 	"main/lib/low"
+	"main/lib/manual"
 	"main/model"
 	"main/terminal"
 	"strconv"
@@ -42,7 +43,9 @@ func List(options []model.Option) {
 	jumpToEndList()
 	cursor.Down(1)
 	cursor.Show()
-	list.Options[list.Position].Command()
+	cursor.StartOfLine()
+	callstack.PushCallStack(options[list.Position].Event)
+	manual.Manual(model.Event{})
 	reset()
 }
 
@@ -52,8 +55,7 @@ func renderList(options []model.Option) {
 
 		if isSelected {
 			terminal.Output(terminal.GetCustomMessage(getStartChar(isSelected), literals.SGR.GREEN) +
-				terminal.GetCustomMessage(item.Message, constants.StyleSelected...))
-
+				terminal.GetCustomMessage(item.Message)) // constants.StyleSelected...,
 		} else {
 			terminal.Output(terminal.GetCustomMessage(getStartChar(isSelected), literals.SGR.GREEN) +
 				terminal.GetCustomMessage(item.Message, literals.SGR.DIM))

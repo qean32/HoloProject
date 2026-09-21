@@ -10,27 +10,33 @@ var FLAGS = flagsType{
  NOTE сдеать записную строку сохранение даты шифрование пароль
 */
 
-var COMMANDS = commandsType{
+var COMMANDS_LIST = commandsType{
 	CRIPTO:  "cripto",
 	ECRIPTO: "ecripto",
 
-	GMASTER: "gmaster",
-	GKEY:    "gkey",
+	GENERATEMASTER: "gmaster",
+	GENERATEKEY:    "gkey",
 
-	CLOG: "clog",
-	DROP: "drop",
-	STOP: "stop",
-	HELP: "help",
+	CLEARLOG: "clog",
+	DROP:     "drop",
+	STOP:     "stop",
+	HELP:     "help",
 
-	NOTE:  "note",
-	DNOTE: "dnote",
-	NOTES: "notes",
+	NOTE:       "note",
+	DELETENOTE: "dnote",
+	NOTES:      "notes",
 
-	DECLARE:  "declare",
-	COMMANDS: "comm",
-	RUN:      "run",
-	RUNM:     "runm",
-	RMC:      "rmc",
+	DECLARE:               "declare",
+	COMMANDS_LIST:         "clist",
+	RUN_COMMAND:           "run",
+	RUN_MULTIPLE_COMMANDS: "runm",
+	REMOVE_COMMAND:        "rmc",
 
-	MENU: "menu",
+	MENU:   "menu",
+	INWORK: "MENU_INWORK",
+	MANUAL: "MENU_MANUAL",
+
+	MENU_COMMANDS_LIST: "MENU_COMMANDS_LIST",
+	MANU_ADD_COMMAND:   "MANU_ADD_COMMAND",
+	MENU_HASH_STRING:   "MENU_HASH_STRING",
 }

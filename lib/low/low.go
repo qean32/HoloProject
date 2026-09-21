@@ -21,7 +21,7 @@ func LOG(e model.Event) {
 	}
 }
 
-func GenerateMaster() {
+func GenerateMasterKey() {
 }
 
 func CurrentTime() string {

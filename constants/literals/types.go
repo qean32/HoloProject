@@ -4,25 +4,31 @@ type commandsType struct {
 	CRIPTO  string
 	ECRIPTO string
 
-	GMASTER string
-	GKEY    string
+	GENERATEMASTER string
+	GENERATEKEY    string
 
-	CLOG string
-	DROP string
-	STOP string
-	HELP string
+	CLEARLOG string
+	DROP     string
+	STOP     string
+	HELP     string
 
-	NOTE  string
-	DNOTE string
-	NOTES string
+	NOTE       string
+	DELETENOTE string
+	NOTES      string
 
-	DECLARE  string
-	COMMANDS string
-	RUN      string
-	RUNM     string
-	RMC      string
+	DECLARE               string
+	COMMANDS_LIST         string
+	RUN_COMMAND           string
+	RUN_MULTIPLE_COMMANDS string
+	REMOVE_COMMAND        string
 
-	MENU string
+	MENU   string
+	INWORK string
+	MANUAL string
+
+	MENU_COMMANDS_LIST string
+	MANU_ADD_COMMAND   string
+	MENU_HASH_STRING   string
 }
 
 type SGRtype struct {

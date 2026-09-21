@@ -84,9 +84,9 @@ func GetCustomMessage(message string, SGR ...int) string {
 }
 
 func Output(message string) {
-	fmt.Print(message)
+	fmt.Print(" ", message)
 }
 
 func Outputln(message string) {
-	fmt.Println(message)
+	fmt.Println(" ", message)
 }
