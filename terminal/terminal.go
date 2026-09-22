@@ -9,18 +9,26 @@ var (
 	mu sync.Mutex
 )
 
-func Output(message string) {
+func Output(messages ...string) {
+	var result string
+	for _, msg := range messages {
+		result += fmt.Sprint(msg)
+	}
 	mu.Lock()
 	defer mu.Unlock()
 
-	fmt.Print(" ", message)
+	fmt.Print(" ", result)
 }
 
-func Outputln(message string) {
+func Outputln(messages ...string) {
+	var result string
+	for _, msg := range messages {
+		result += fmt.Sprint(msg)
+	}
 	mu.Lock()
 	defer mu.Unlock()
 
-	fmt.Println(" ", message)
+	fmt.Println(" ", result)
 }
 
 func OutputTechInfo(messages ...any) {
@@ -28,5 +36,5 @@ func OutputTechInfo(messages ...any) {
 	for _, msg := range messages {
 		result += fmt.Sprint(msg)
 	}
-	Outputln("\033[31m" + "Технический вывод: " + result + "\033[0m")
+	// Outputln("\033[31m" + "Технический вывод: " + result + "\033[0m")
 }

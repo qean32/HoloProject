@@ -7,7 +7,7 @@ import (
 )
 
 func askQuestion(question model.Question) {
-	terminal.Output(terminal.GetCustomMessage(question.Message))
+	terminal.Output("Введите: ", terminal.GetCustomMessage(question.Message))
 	terminal.DownAndStart()
 	answer := field.Field()
 

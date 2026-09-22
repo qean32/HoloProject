@@ -18,10 +18,6 @@ var MAP = map[string]model.EventFunction{
 	literals.COMMANDS_LIST.REMOVE_COMMAND:        RemoveCommand,
 	literals.COMMANDS_LIST.RUN_MULTIPLE_COMMANDS: RunMultipleCommands,
 
-	literals.COMMANDS_LIST.NOTES:      Notes,
-	literals.COMMANDS_LIST.NOTE:       Note,
-	literals.COMMANDS_LIST.DELETENOTE: DeleteNote,
-
 	literals.COMMANDS_LIST.CLEARLOG: ClearLog,
 	literals.COMMANDS_LIST.MENU:     RunMenu,
 	literals.COMMANDS_LIST.DROP:     Drop,
@@ -31,5 +27,5 @@ var MAP = map[string]model.EventFunction{
 	literals.COMMANDS_LIST.COMMANDS_LIST:    func(e model.Event) { Menu_runCommandsList() },
 	literals.COMMANDS_LIST.MANUAL:           func(e model.Event) { manual.Manual() },
 	literals.COMMANDS_LIST.MANU_ADD_COMMAND: Menu_runQuestionnaireAddCommand,
-	literals.COMMANDS_LIST.MENU_HASH_STRING: Inwork,
+	literals.COMMANDS_LIST.MENU_HASH:        Inwork,
 }

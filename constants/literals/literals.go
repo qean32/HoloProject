@@ -7,7 +7,7 @@ var FLAGS = flagsType{
 /*
  CRIPTO добавить сохранение даты
  CRIPTO добавить шифрование
- NOTE сдеать записную строку сохранение даты шифрование пароль
+ NOTE сделать записную строку сохранение даты шифрование пароль
 */
 
 var COMMANDS_LIST = commandsType{
@@ -21,10 +21,7 @@ var COMMANDS_LIST = commandsType{
 	DROP:     "drop",
 	STOP:     "stop",
 	HELP:     "help",
-
-	NOTE:       "note",
-	DELETENOTE: "dnote",
-	NOTES:      "notes",
+	INWORK:   "inwork",
 
 	DECLARE:               "declare",
 	COMMANDS_LIST:         "clist",
@@ -32,10 +29,8 @@ var COMMANDS_LIST = commandsType{
 	RUN_MULTIPLE_COMMANDS: "runm",
 	REMOVE_COMMAND:        "rmc",
 
-	MENU:   "menu",
-	INWORK: "MENU_INWORK",
-	MANUAL: "MENU_MANUAL",
+	MENU: "menu",
 
 	MANU_ADD_COMMAND: "MANU_ADD_COMMAND",
-	MENU_HASH_STRING: "MENU_HASH_STRING",
+	MENU_HASH:        "MENU_HASH",
 }

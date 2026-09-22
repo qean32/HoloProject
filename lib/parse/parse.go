@@ -17,9 +17,6 @@ var MAP = map[string]model.FnReturnEvent{
 	literals.COMMANDS_LIST.RUN_COMMAND:           ShortEventWithKeyword,
 	literals.COMMANDS_LIST.RUN_MULTIPLE_COMMANDS: ShortEventWithKeyword,
 	literals.COMMANDS_LIST.REMOVE_COMMAND:        ShortEventWithKeyword,
-	literals.COMMANDS_LIST.NOTES:                 ShortEventWithKeyword,
-	literals.COMMANDS_LIST.NOTE:                  ShortEventWithKeyword,
-	literals.COMMANDS_LIST.DELETENOTE:            ShortEventWithKeyword,
 	literals.COMMANDS_LIST.MENU:                  ShortEvent,
 }
 

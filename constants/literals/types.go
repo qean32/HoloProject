@@ -11,10 +11,7 @@ type commandsType struct {
 	DROP     string
 	STOP     string
 	HELP     string
-
-	NOTE       string
-	DELETENOTE string
-	NOTES      string
+	INWORK   string
 
 	DECLARE               string
 	COMMANDS_LIST         string
@@ -23,11 +20,10 @@ type commandsType struct {
 	REMOVE_COMMAND        string
 
 	MENU   string
-	INWORK string
 	MANUAL string
 
-	MANU_ADD_COMMAND   string
-	MENU_HASH_STRING   string
+	MANU_ADD_COMMAND string
+	MENU_HASH        string
 }
 
 type SGRtype struct {

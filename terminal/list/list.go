@@ -25,7 +25,17 @@ func List(options []model.Option) {
 
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		if value, err := strconv.Atoi(key.String()); err == nil {
-			list.Position = value
+			newPos := value - 1
+			if newPos < 0 || newPos >= list.Length {
+				return false, nil
+			}
+			diff := newPos - list.Position
+			if diff > 0 {
+				cursor.Down(diff)
+			} else if diff < 0 {
+				cursor.Up(-diff)
+			}
+			list.Position = newPos
 			reRenderList()
 		}
 		switch key.Code {
