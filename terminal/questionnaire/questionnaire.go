@@ -1,0 +1,23 @@
+package questionnaire
+
+import (
+	"main/model"
+	"main/terminal"
+	"main/terminal/field"
+)
+
+func askQuestion(question model.Question) {
+	terminal.Output("Введите: ", terminal.GetCustomMessage(question.Message))
+	terminal.DownAndStart()
+	answer := field.Field()
+
+	if question.Callback(answer) {
+		pushAnswer(question.Key, answer)
+	}
+}
+
+func runQuestionnaire() {
+	for _, question := range questionnaire.Questions {
+		askQuestion(question)
+	}
+}

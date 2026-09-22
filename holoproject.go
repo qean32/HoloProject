@@ -1,17 +1,31 @@
 package main
 
 import (
-	"main/deep"
+	"main/callstack"
+	"main/constants/literals"
 	"main/lib"
+	"main/model"
+	"main/terminal"
 )
 
 func main() {
-	go lib.INIT()
-	LOOP()
+	lib.INIT()
+	go RunLoop()
+
+	select {}
 }
 
-func LOOP() {
-	for value := range deep.Callstack_channel {
-		lib.ITERATION_CYCLE(value)
+func RunLoop() {
+	for {
+		for {
+			event, ok := callstack.Pop()
+			if !ok {
+				break
+			}
+			terminal.OutputTechInfo(event)
+			lib.Event(event)
+		}
+		lib.Event(model.Event{Key: literals.COMMANDS_LIST.MANUAL})
+		<-callstack.Changed()
 	}
 }
