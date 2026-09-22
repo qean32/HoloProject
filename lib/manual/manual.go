@@ -4,13 +4,12 @@ import (
 	"main/callstack"
 	"main/constants"
 	"main/lib/parse"
-	"main/model"
 	"main/terminal"
 	"main/terminal/field"
 	"strings"
 )
 
-func Manual(e model.Event) {
+func Manual() {
 	command := field.Field()
 
 	if len(command) > 1 {

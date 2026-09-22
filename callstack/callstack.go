@@ -7,39 +7,34 @@ import (
 )
 
 var (
-	mu        sync.Mutex
-	callstack []model.Event
-	changed   = make(chan struct{}, 1)
-	wasEmpty  = true
+	mu      sync.Mutex
+	queue   []model.Event
+	changed = make(chan struct{}, 1)
 )
 
 func PushCallStack(event model.Event) {
 	mu.Lock()
-	callstack = append(callstack, event)
-	shouldNotify := wasEmpty
-	wasEmpty = false
+	queue = append(queue, event)
 	mu.Unlock()
 
-	if shouldNotify {
-		select {
-		case changed <- struct{}{}:
-		default:
-		}
+	select {
+	case changed <- struct{}{}:
+	default:
 	}
 }
 
-func GetTask() (model.Event, bool) {
+func Pop() (model.Event, bool) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	if len(callstack) == 0 {
-		wasEmpty = true
+	if len(queue) == 0 {
 		return model.Event{}, false
 	}
 
-	event := callstack[0]
-	callstack[0] = model.Event{}
-	callstack = callstack[1:]
+	last := len(queue) - 1
+	event := queue[last]
+	queue[last] = model.Event{}
+	queue = queue[:last]
 	return event, true
 }
 

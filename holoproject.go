@@ -3,23 +3,22 @@ package main
 import (
 	"main/callstack"
 	"main/lib"
-	"main/terminal"
 )
 
 func main() {
-	go RunLoop()
 	lib.INIT()
+	go RunLoop()
 
+	select {}
 }
 
 func RunLoop() {
 	for {
 		for {
-			event, ok := callstack.GetTask()
+			event, ok := callstack.Pop()
 			if !ok {
 				break
 			}
-			terminal.OutputTechInfo(event.Key)
 			lib.Event(event)
 		}
 		<-callstack.Changed()

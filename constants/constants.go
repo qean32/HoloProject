@@ -73,9 +73,7 @@ var HelpMessage = `
 %v└──────────────┴────────────────────────────────┴────────────────────────────────────────────┘
 `
 
-// const CHAR_SELECTED_ITEM = "● "
-// const CHAR_UN_SELECTED_ITEM = "○ "
-const CHAR_SELECTED_ITEM = "> "
+const CHAR_SELECTED_ITEM = "-> "
 const CHAR_UN_SELECTED_ITEM = ""
 
 var (

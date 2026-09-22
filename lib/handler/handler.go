@@ -9,11 +9,14 @@ import (
 	"main/lib/low"
 	"main/model"
 	"main/terminal"
+
 	"main/terminal/list"
 	"main/terminal/questionnaire"
 	"os"
 	"slices"
 	"strings"
+
+	"atomicgo.dev/cursor"
 )
 
 func Inwork(e model.Event) {
@@ -59,6 +62,8 @@ func Stop(e model.Event) {
 }
 
 func Help(e model.Event) {
+	terminal.DownAndStart()
+	cursor.StartOfLine()
 	terminal.OutputASCII_CENTER(constants.HelpMessage, "")
 }
 

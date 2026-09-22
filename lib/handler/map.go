@@ -25,13 +25,12 @@ var MAP = map[string]model.EventFunction{
 
 	literals.COMMANDS_LIST.CLEARLOG: ClearLog,
 	literals.COMMANDS_LIST.MENU:     RunMenu,
-	literals.COMMANDS_LIST.INWORK:   Inwork,
 	literals.COMMANDS_LIST.DROP:     Drop,
 	literals.COMMANDS_LIST.STOP:     Stop,
 	literals.COMMANDS_LIST.HELP:     Help,
 
 	literals.COMMANDS_LIST.COMMANDS_LIST:    ListCommands,
-	literals.COMMANDS_LIST.MANUAL:           manual.Manual,
+	literals.COMMANDS_LIST.MANUAL:           func(e model.Event) { manual.Manual() },
 	literals.COMMANDS_LIST.MANU_ADD_COMMAND: Menu_runQuestionnaireAddCommand,
 	literals.COMMANDS_LIST.MENU_HASH_STRING: Inwork,
 }

@@ -1,6 +1,7 @@
 package list
 
 import (
+	"fmt"
 	"main/callstack"
 	"main/constants/literals"
 	"main/lib/low"
@@ -45,15 +46,17 @@ func List(options []model.Option) {
 func renderList(options []model.Option) {
 	for i, item := range options {
 		isSelected := i == list.Position
+		startChar := getStartChar(isSelected)
 
+		style := literals.SGR.DIM
 		if isSelected {
-			terminal.Output(terminal.GetCustomMessage(getStartChar(isSelected), literals.SGR.GREEN) +
-				terminal.GetCustomMessage(item.Message)) // constants.StyleSelected...,
+			startChar = terminal.GetCustomMessage(startChar, literals.SGR.GREEN)
 		} else {
-			terminal.Output(terminal.GetCustomMessage(getStartChar(isSelected), literals.SGR.GREEN) +
-				terminal.GetCustomMessage(item.Message, literals.SGR.DIM))
-
+			startChar = terminal.GetCustomMessage(startChar, literals.SGR.DIM)
 		}
+
+		cursor.ClearLine()
+		terminal.Output(startChar + terminal.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
 		terminal.DownAndStart()
 	}
 }

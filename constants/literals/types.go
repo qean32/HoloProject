@@ -46,6 +46,8 @@ type SGRtype struct {
 	MAGENTA int
 	CYAN    int
 	WHITE   int
+
+	RESET int
 }
 
 type flagsType struct {
@@ -65,4 +67,6 @@ var SGR = SGRtype{
 	MAGENTA: 35,
 	CYAN:    36,
 	WHITE:   37,
+
+	RESET: 0,
 }
