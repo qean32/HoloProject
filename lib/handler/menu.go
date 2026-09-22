@@ -7,10 +7,6 @@ import (
 
 var Menu = []model.Option{
 	{
-		Message: "Помощь",
-		Event:   model.Event{Key: literals.COMMANDS_LIST.HELP},
-	},
-	{
 		Message: "Запустить команду",
 		Event:   model.Event{Key: literals.COMMANDS_LIST.COMMANDS_LIST},
 	},
@@ -33,6 +29,10 @@ var Menu = []model.Option{
 	{
 		Message: "Генерация мастер ключа",
 		Event:   model.Event{Key: literals.COMMANDS_LIST.INWORK},
+	},
+	{
+		Message: "Помощь",
+		Event:   model.Event{Key: literals.COMMANDS_LIST.HELP},
 	},
 	{
 		Message: "Выход",

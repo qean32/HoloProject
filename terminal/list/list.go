@@ -15,6 +15,9 @@ import (
 )
 
 func List(options []model.Option) {
+	terminal.OutputTechInfo("[LIST] start")
+	defer reset()
+
 	cursor.Hide()
 	set(options)
 	renderList(options)
@@ -35,12 +38,15 @@ func List(options []model.Option) {
 			moveUp()
 		case keys.Escape:
 			low.StopProcess()
+			return true, nil
 		case keys.CtrlC:
 			low.StopProcess()
+			return true, nil
 		}
 
 		return false, nil
 	})
+	terminal.OutputTechInfo("[LIST] listener returned")
 }
 
 func renderList(options []model.Option) {
@@ -66,7 +72,6 @@ func _select(event model.Event) {
 	cursor.Show()
 	terminal.DownAndStart()
 	callstack.PushCallStack(event)
-	reset()
 }
 
 func moveUp() {

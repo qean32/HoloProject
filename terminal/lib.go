@@ -76,7 +76,7 @@ func ClearLines(count int) {
 }
 
 func ReRenderLine(_message string) {
-	cursor.ClearLine()
 	cursor.StartOfLine()
+	cursor.ClearLine()
 	Output(_message)
 }

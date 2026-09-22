@@ -1,15 +1,17 @@
 package field
 
 import (
-	"main/lib/low"
-	"main/terminal"
-
-	"atomicgo.dev/cursor"
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
+	"main/lib/low"
+	"main/terminal"
 )
 
+const prefix = "~ "
+
 func Field() string {
+	terminal.OutputTechInfo("[Field] start")
+	terminal.Output(prefix)
 	reset()
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		char := key.String()
@@ -29,11 +31,13 @@ func Field() string {
 		case keys.End:
 			horizontalJumpToEnd()
 		case keys.Home:
-			cursor.StartOfLine()
+			horizontalCursorToPosition(0)
 		case keys.Escape:
 			low.StopProcess()
+			return true, nil
 		case keys.CtrlC:
 			low.StopProcess()
+			return true, nil
 		}
 
 		if len(char) == 1 {
@@ -42,6 +46,7 @@ func Field() string {
 		return false, nil
 	})
 
+	terminal.OutputTechInfo("[Field] listener returned")
 	return field.Message
 }
 

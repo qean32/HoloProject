@@ -42,6 +42,7 @@ func decrimentPositionRange() {
 		field.PositionRange--
 	}
 }
+
 func horizontalCursorToLeft() {
 	// DO NOT USE OUTSIDE FIELD !!!
 	if field.Position > 0 {
@@ -58,10 +59,11 @@ func horizontalCursorToRight() {
 }
 
 func horizontalCursorToPosition(position int) {
-	if position <= field.PositionRange {
-		fmt.Printf("\033[%dG", position)
-		field.Position = position
+	if position < 0 || position > field.PositionRange {
+		return
 	}
+	fmt.Printf("\033[%dG", len(prefix)+position+2)
+	field.Position = position
 }
 
 func changePositionCursor(operation int, moveRange bool) {

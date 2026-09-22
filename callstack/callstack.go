@@ -1,9 +1,8 @@
 package callstack
 
 import (
-	"sync"
-
 	"main/model"
+	"sync"
 )
 
 var (
@@ -31,10 +30,9 @@ func Pop() (model.Event, bool) {
 		return model.Event{}, false
 	}
 
-	last := len(queue) - 1
-	event := queue[last]
-	queue[last] = model.Event{}
-	queue = queue[:last]
+	event := queue[0]
+	queue[0] = model.Event{}
+	queue = queue[1:]
 	return event, true
 }
 

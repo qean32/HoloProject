@@ -155,7 +155,7 @@ func Menu_runQuestionnaireAddCommand(e model.Event) {
 		},
 	})
 
-	low.PUSH(model.Event{
+	Declare(model.Event{
 		Key:      literals.COMMANDS_LIST.DECLARE,
 		KeyWord:  q["KeyWord"],
 		Payload:  q["Payload"],

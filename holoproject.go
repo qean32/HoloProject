@@ -2,7 +2,10 @@ package main
 
 import (
 	"main/callstack"
+	"main/constants/literals"
 	"main/lib"
+	"main/model"
+	"main/terminal"
 )
 
 func main() {
@@ -19,8 +22,10 @@ func RunLoop() {
 			if !ok {
 				break
 			}
+			terminal.OutputTechInfo(event)
 			lib.Event(event)
 		}
+		lib.Event(model.Event{Key: literals.COMMANDS_LIST.MANUAL})
 		<-callstack.Changed()
 	}
 }

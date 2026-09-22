@@ -6,26 +6,32 @@ import (
 	"strings"
 )
 
+func localReRenderLine(message string) {
+	terminal.ReRenderLine(prefix + message)
+}
+
 func pushChar(char string) {
 	if field.Position != len(field.Message) {
 		chars := strings.Split(field.Message, "")
 		setMessage(strings.Join(array.AddAfterIndex(chars, char, field.Position), ""))
-		terminal.ReRenderLine(field.Message)
+		localReRenderLine(field.Message)
 		incrementPositionRange()
-		horizontalCursorToPosition(field.Position + 1)
+		incrementPosition()
+		horizontalCursorToPosition(field.Position)
 	} else {
 		setMessage(field.Message + char)
-		terminal.ReRenderLine(field.Message)
+		localReRenderLine(field.Message)
 		changePositionCursor(1, true)
 	}
 }
 
 func removeChar() {
-	if len(field.Message) != 0 {
-		decrimentPosition()
-		decrimentPositionRange()
-		setMessage(strings.Join(array.RemoveByIndex(strings.Split(field.Message, ""), field.Position), ""))
-		terminal.ReRenderLine(field.Message)
-		horizontalCursorToPosition(field.Position)
+	if len(field.Message) == 0 {
+		return
 	}
+	decrimentPosition()
+	decrimentPositionRange()
+	setMessage(strings.Join(array.RemoveByIndex(strings.Split(field.Message, ""), field.Position), ""))
+	localReRenderLine(field.Message)
+	horizontalCursorToPosition(field.Position)
 }

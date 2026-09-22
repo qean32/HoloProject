@@ -26,7 +26,6 @@ type commandsType struct {
 	INWORK string
 	MANUAL string
 
-	MENU_COMMANDS_LIST string
 	MANU_ADD_COMMAND   string
 	MENU_HASH_STRING   string
 }

@@ -11,11 +11,6 @@ var TMP_DATA = [][]string{}
 var TMP_COMMANDS = [][]string{}
 var SETTINGS = model.Settings{}
 
-func PUSH(event model.Event) {
-	// Callstack_channel <- event
-	CALLSTACK = append(CALLSTACK, event)
-}
-
 func SETDATA() {
 	if len(TMP_COMMANDS) == 0 {
 		strs := (ReadFile(constants.PATH_COMMAND))

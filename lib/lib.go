@@ -5,7 +5,6 @@ import (
 	"main/constants"
 	"main/lib/handler"
 	"main/lib/low"
-	"main/lib/manual"
 	"main/model"
 	"main/terminal"
 	"main/terminal/list"
@@ -18,11 +17,11 @@ func INIT() {
 	terminal.OutputASCII_CENTER(constants.BinaryPROJECT_INIT, " ")
 	terminal.OutputASCII_CENTER(constants.PROJECT_INIT, " ")
 	constants.INIT_ROOT()
+	low.SETDATA()
 	list.List(handler.Menu)
 }
 
 func Event(e model.Event) {
-	defer manual.Manual()
 	function := handler.MAP[e.Key]
 
 	if function != nil {

@@ -13,14 +13,14 @@ func Output(message string) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	fmt.Print(message)
+	fmt.Print(" ", message)
 }
 
 func Outputln(message string) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	fmt.Println(message)
+	fmt.Println(" ", message)
 }
 
 func OutputTechInfo(messages ...any) {
@@ -28,5 +28,5 @@ func OutputTechInfo(messages ...any) {
 	for _, msg := range messages {
 		result += fmt.Sprint(msg)
 	}
-	Outputln("\033[31mТехнический вывод: " + result + "\033[0m")
+	Outputln("\033[31m" + "Технический вывод: " + result + "\033[0m")
 }
