@@ -17,6 +17,12 @@ func incrementPosition() bool {
 		cursor.Down(1)
 		return true
 	}
+	if list.Length > 1 {
+		list.Position = 0
+		jumpToStartList()
+		cursor.Down(1)
+		return true
+	}
 	return false
 }
 
@@ -24,6 +30,14 @@ func decrimentPosition() bool {
 	if list.Position > 0 {
 		list.Position--
 		cursor.Up(1)
+		return true
+	}
+	if list.Length > 1 {
+		diff := list.Length - 1 - list.Position
+		if diff > 0 {
+			cursor.Down(diff)
+		}
+		list.Position = list.Length - 1
 		return true
 	}
 	return false

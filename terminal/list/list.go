@@ -79,8 +79,8 @@ func renderList(options []model.Option) {
 
 func _select(event model.Event) {
 	jumpToEndList()
-	cursor.Show()
 	terminal.DownAndStart()
+	cursor.Show()
 	callstack.PushCallStack(event)
 }
 
