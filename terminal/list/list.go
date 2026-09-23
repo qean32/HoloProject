@@ -49,11 +49,7 @@ func List(options []model.Option) {
 			moveDown()
 		case keys.Up:
 			moveUp()
-		case keys.Escape:
-			low.StopProcess()
-			return true, nil
-		case keys.CtrlC:
-			low.StopProcess()
+		case keys.Escape, keys.CtrlC:
 			return true, nil
 		}
 

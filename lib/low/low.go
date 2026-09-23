@@ -46,6 +46,7 @@ func ClearLog() {
 }
 
 func StopProcess() {
+	RUN_CMD("clear")
 	os.Exit(0)
 }
 
