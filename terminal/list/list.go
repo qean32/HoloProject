@@ -15,6 +15,9 @@ import (
 )
 
 func List(options []model.Option) {
+	if len(options) == 0 {
+		return
+	}
 	terminal.OutputTechInfo("[LIST] start")
 	defer reset()
 
@@ -81,7 +84,7 @@ func _select(event model.Event) {
 	jumpToEndList()
 	terminal.DownAndStart()
 	cursor.Show()
-	callstack.PushCallStack(event)
+	callstack.PushCallStack(low.GetShortEvent(event))
 }
 
 func moveUp() {

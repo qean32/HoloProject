@@ -3,6 +3,7 @@ package lib
 import (
 	"bufio"
 	"main/constants"
+	"main/constants/response"
 	"main/lib/handler"
 	"main/lib/low"
 	"main/model"
@@ -28,6 +29,6 @@ func Event(e model.Event) {
 		function(e)
 		low.LOG(e)
 	} else {
-		terminal.Outputln(constants.UNDEFINED_COMMAND)
+		response.UNDEFINED_KEYWORD()
 	}
 }

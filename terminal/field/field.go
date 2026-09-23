@@ -7,7 +7,7 @@ import (
 	"main/terminal"
 )
 
-const prefix = "~ "
+const prefix = "-> "
 
 func Field() string {
 	terminal.OutputTechInfo("[Field] start")

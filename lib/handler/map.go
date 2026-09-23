@@ -19,10 +19,12 @@ var MAP = map[string]model.EventFunction{
 	literals.COMMANDS_LIST.RUN_MULTIPLE_COMMANDS: RunMultipleCommands,
 
 	literals.COMMANDS_LIST.CLEARLOG: ClearLog,
-	literals.COMMANDS_LIST.MENU:     RunMenu,
-	literals.COMMANDS_LIST.DROP:     Drop,
-	literals.COMMANDS_LIST.STOP:     Stop,
-	literals.COMMANDS_LIST.HELP:     Help,
+	literals.COMMANDS_LIST.LOGS:     func(e model.Event) { OpenLogs() },
+
+	literals.COMMANDS_LIST.MENU: RunMenu,
+	literals.COMMANDS_LIST.DROP: Drop,
+	literals.COMMANDS_LIST.STOP: Stop,
+	literals.COMMANDS_LIST.HELP: Help,
 
 	literals.COMMANDS_LIST.COMMANDS_LIST:    func(e model.Event) { Menu_runCommandsList() },
 	literals.COMMANDS_LIST.MANUAL:           func(e model.Event) { manual.Manual() },

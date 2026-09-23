@@ -18,10 +18,12 @@ var COMMANDS_LIST = commandsType{
 	GENERATEKEY:    "gkey",
 
 	CLEARLOG: "clog",
-	DROP:     "drop",
-	STOP:     "stop",
-	HELP:     "help",
-	INWORK:   "inwork",
+	LOGS:     "logs",
+
+	DROP:   "drop",
+	STOP:   "stop",
+	HELP:   "help",
+	INWORK: "inwork",
 
 	DECLARE:               "declare",
 	COMMANDS_LIST:         "clist",

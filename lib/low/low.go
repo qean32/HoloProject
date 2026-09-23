@@ -30,11 +30,15 @@ func CurrentTime() string {
 
 func RUN_CMD(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println("$ Ошибка при запуске команды", err)
+	if err := cmd.Start(); err != nil {
+		fmt.Println("$ Ошибка при запуске команды:", err)
 		return
 	}
+	go func() {
+		if err := cmd.Wait(); err != nil {
+			fmt.Println("$ Команда завершилась с ошибкой:", err)
+		}
+	}()
 }
 
 func ClearLog() {
@@ -43,4 +47,9 @@ func ClearLog() {
 
 func StopProcess() {
 	os.Exit(0)
+}
+
+func GetShortEvent(event model.Event) model.Event {
+	event.DateTime = CurrentTime()
+	return event
 }

@@ -2,9 +2,8 @@ package manual
 
 import (
 	"main/callstack"
-	"main/constants"
+	"main/constants/response"
 	"main/lib/parse"
-	"main/terminal"
 	"main/terminal/field"
 	"strings"
 )
@@ -19,7 +18,7 @@ func Manual() {
 		if !_error {
 			callstack.PushCallStack(event)
 		} else {
-			terminal.Outputln(constants.SYNTAX_ERROR)
+			response.SYNTAX_ERROR()
 		}
 	}
 }

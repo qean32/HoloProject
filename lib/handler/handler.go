@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"main/constants"
 	"main/constants/literals"
+	"main/constants/response"
 	"main/lib/array"
 	"main/lib/filter"
 	"main/lib/low"
@@ -36,7 +37,7 @@ func Decrypt(e model.Event) {
 	if index != -1 {
 		terminal.Output(low.TMP_DATA[index][1])
 	} else {
-		terminal.Output(constants.UNDEFINED_KEYWORD)
+		response.UNDEFINED_KEYWORD()
 	}
 }
 
@@ -80,7 +81,7 @@ func RunCommand(e model.Event) {
 	if index != -1 {
 		low.RUN_CMD(low.TMP_COMMANDS[index][1])
 	} else {
-		terminal.Output(constants.UNDEFINED_KEYWORD)
+		response.UNDEFINED_KEYWORD()
 	}
 }
 
@@ -96,7 +97,7 @@ func RunMultipleCommands(e model.Event) {
 			low.RUN_CMD(commands[i])
 		}
 	} else {
-		terminal.Output(constants.UNDEFINED_KEYWORD)
+		response.UNDEFINED_KEYWORD()
 	}
 }
 
@@ -112,8 +113,12 @@ func RemoveCommand(e model.Event) {
 		low.TMP_COMMANDS = filtered
 		low.WriteFile(strings.Join(array.MatrixToArrayString(filtered), "\n"), constants.PATH_COMMAND)
 	} else {
-		terminal.Output(constants.UNDEFINED_KEYWORD)
+		response.UNDEFINED_KEYWORD()
 	}
+}
+
+func OpenLogs() {
+	low.RUN_CMD(constants.Root + constants.PATH_LOG)
 }
 
 func Notes(e model.Event) {}

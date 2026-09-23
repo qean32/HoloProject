@@ -8,10 +8,12 @@ type commandsType struct {
 	GENERATEKEY    string
 
 	CLEARLOG string
-	DROP     string
-	STOP     string
-	HELP     string
-	INWORK   string
+	LOGS     string
+
+	DROP   string
+	STOP   string
+	HELP   string
+	INWORK string
 
 	DECLARE               string
 	COMMANDS_LIST         string

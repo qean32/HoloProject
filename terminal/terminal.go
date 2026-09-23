@@ -9,32 +9,33 @@ var (
 	mu sync.Mutex
 )
 
-func Output(messages ...string) {
-	var result string
-	for _, msg := range messages {
-		result += fmt.Sprint(msg)
-	}
+func Output(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	fmt.Print(" ", result)
+	fmt.Print(" ", calsMessages(messages...))
 }
 
-func Outputln(messages ...string) {
-	var result string
-	for _, msg := range messages {
-		result += fmt.Sprint(msg)
-	}
+func Outputln(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	fmt.Println(" ", result)
+	fmt.Println(" ", calsMessages(messages...))
 }
 
 func OutputTechInfo(messages ...any) {
+	// Outputln("\033[31m" + "Технический вывод: " + calsMessages(messages...) + "\033[0m")
+}
+
+func OutputResponse(messages ...any) {
+	fmt.Println(append([]any{" <- "}, messages...)...)
+}
+
+func calsMessages(messages ...any) string {
 	var result string
 	for _, msg := range messages {
 		result += fmt.Sprint(msg)
 	}
-	// Outputln("\033[31m" + "Технический вывод: " + result + "\033[0m")
+
+	return result
 }

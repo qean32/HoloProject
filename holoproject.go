@@ -2,9 +2,8 @@ package main
 
 import (
 	"main/callstack"
-	"main/constants/literals"
 	"main/lib"
-	"main/model"
+	"main/lib/manual"
 	"main/terminal"
 )
 
@@ -25,7 +24,7 @@ func RunLoop() {
 			terminal.OutputTechInfo(event)
 			lib.Event(event)
 		}
-		lib.Event(model.Event{Key: literals.COMMANDS_LIST.MANUAL})
+		manual.Manual()
 		<-callstack.Changed()
 	}
 }

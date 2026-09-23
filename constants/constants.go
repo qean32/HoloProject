@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-const MODE = "dev"
+const MODE = "prod"
 const PROJECT_NAME = "holo"
 
 var Root = "./private"

@@ -18,6 +18,7 @@ var MAP = map[string]model.FnReturnEvent{
 	literals.COMMANDS_LIST.RUN_MULTIPLE_COMMANDS: ShortEventWithKeyword,
 	literals.COMMANDS_LIST.REMOVE_COMMAND:        ShortEventWithKeyword,
 	literals.COMMANDS_LIST.MENU:                  ShortEvent,
+	literals.COMMANDS_LIST.LOGS:                  ShortEvent,
 }
 
 func ParseCripto(arr []string) (e model.Event, err bool) {
