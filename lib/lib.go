@@ -2,6 +2,8 @@ package lib
 
 import (
 	"bufio"
+	"os"
+
 	"main/constants"
 	"main/constants/response"
 	"main/lib/handler"
@@ -9,14 +11,13 @@ import (
 	"main/model"
 	"main/terminal"
 	"main/terminal/list"
-	"os"
 )
 
 var READER = bufio.NewReader(os.Stdin)
 
 func INIT() {
-	terminal.OutputASCII_CENTER(constants.BinaryPROJECT_INIT, " ")
-	terminal.OutputASCII_CENTER(constants.PROJECT_INIT, " ")
+	terminal.PrintASCIICenter(constants.BinaryPROJECT_INIT, " ")
+	terminal.PrintASCIICenter(constants.PROJECT_INIT, " ")
 	constants.INIT_ROOT()
 	low.SETDATA()
 	list.List(handler.Menu)
@@ -25,10 +26,10 @@ func INIT() {
 func Event(e model.Event) {
 	function := handler.MAP[e.Key]
 
-	if function != nil {
-		function(e)
-		low.LOG(e)
-	} else {
-		response.UNDEFINED_KEYWORD()
+	if function == nil {
+		response.UndefinedKeyword()
+		return
 	}
+	function(e)
+	low.LOG(e)
 }

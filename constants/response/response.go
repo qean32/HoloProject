@@ -5,14 +5,14 @@ import (
 	"main/terminal"
 )
 
-func UNDEFINED_COMMAND() {
-	terminal.OutputResponse(constants.UNDEFINED_COMMAND)
+func Undefinedcommand() {
+	terminal.PrintResponse(constants.Undefinedcommand)
 }
 
-func UNDEFINED_KEYWORD() {
-	terminal.OutputResponse(constants.UNDEFINED_KEYWORD)
+func UndefinedKeyword() {
+	terminal.PrintResponse(constants.UndefinedKeyword)
 }
 
-func SYNTAX_ERROR() {
-	terminal.OutputResponse(constants.SYNTAX_ERROR)
+func SyntaxError() {
+	terminal.PrintResponse(constants.SyntaxError)
 }

@@ -19,11 +19,11 @@ func reset() {
 	questionnaire.Result = map[string]string{}
 }
 
-func set(Questions []model.Question) {
-	questionnaire.Questions = Questions
+func set(questions []model.Question) {
+	questionnaire.Questions = questions
 	questionnaire.Result = map[string]string{}
 }
 
-func pushAnswer(key string, answer string) {
+func pushAnswer(key, answer string) {
 	questionnaire.Result[key] = answer
 }

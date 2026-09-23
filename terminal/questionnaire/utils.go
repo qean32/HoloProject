@@ -6,5 +6,5 @@ import (
 )
 
 func isAcceptableYeaOrNot(answer string) bool {
-	return slices.Index(constants.AcceptableYeaOrNot, answer) != -1
+	return slices.Contains(constants.AcceptableYeaOrNot, answer)
 }

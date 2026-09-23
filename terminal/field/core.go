@@ -2,6 +2,7 @@ package field
 
 import (
 	"fmt"
+
 	"main/model"
 )
 
@@ -27,7 +28,7 @@ func incrementPosition() {
 	}
 }
 
-func decrimentPosition() {
+func decrementPosition() {
 	if field.Position > 0 {
 		field.Position--
 	}
@@ -37,14 +38,13 @@ func incrementPositionRange() {
 	field.PositionRange++
 }
 
-func decrimentPositionRange() {
+func decrementPositionRange() {
 	if field.PositionRange > 0 {
 		field.PositionRange--
 	}
 }
 
 func horizontalCursorToLeft() {
-	// DO NOT USE OUTSIDE FIELD !!!
 	if field.Position > 0 {
 		fmt.Print("\033[1D")
 		changePositionCursor(-1, false)
@@ -78,9 +78,9 @@ func changePositionCursor(operation int, moveRange bool) {
 		incrementPosition()
 	} else {
 		if moveRange {
-			decrimentPositionRange()
+			decrementPositionRange()
 		}
-		decrimentPosition()
+		decrementPosition()
 	}
 }
 

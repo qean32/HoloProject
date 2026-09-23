@@ -1,9 +1,10 @@
 package field
 
 import (
+	"strings"
+
 	"main/lib/array"
 	"main/terminal"
-	"strings"
 )
 
 func localReRenderLine(message string) {
@@ -29,8 +30,8 @@ func removeChar() {
 	if len(field.Message) == 0 {
 		return
 	}
-	decrimentPosition()
-	decrimentPositionRange()
+	decrementPosition()
+	decrementPositionRange()
 	setMessage(strings.Join(array.RemoveByIndex(strings.Split(field.Message, ""), field.Position), ""))
 	localReRenderLine(field.Message)
 	horizontalCursorToPosition(field.Position)

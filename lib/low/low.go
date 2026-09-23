@@ -3,25 +3,26 @@ package low
 import (
 	"bufio"
 	"fmt"
-	"main/constants"
-	"main/constants/literals"
-	"main/model"
 	"os"
 	"os/exec"
 	"slices"
 	"strings"
 	"time"
+
+	"main/constants"
+	"main/constants/literals"
+	"main/model"
 )
 
-var READER = bufio.NewReader(os.Stdin)
+var reader = bufio.NewReader(os.Stdin)
 
 func LOG(e model.Event) {
-	if slices.IndexFunc(e.Flags, func(item string) bool { return strings.TrimSpace(item) == literals.FLAGS.NOLOG }) == -1 {
+	noLog := slices.ContainsFunc(e.Flags, func(item string) bool {
+		return strings.TrimSpace(item) == literals.FLAGS.NOLOG
+	})
+	if !noLog {
 		PushToFile(constants.PATH_LOG, fmt.Sprintf("%#v", e))
 	}
-}
-
-func GenerateMasterKey() {
 }
 
 func CurrentTime() string {
@@ -41,11 +42,7 @@ func RUN_CMD(command string) {
 	}()
 }
 
-func ClearLog() {
-	ClearFile(constants.PATH_LOG)
-}
-
-func StopProcess() {
+func Exit() {
 	RUN_CMD("clear")
 	os.Exit(0)
 }

@@ -1,9 +1,9 @@
 package constants
 
-const UNDEFINED_COMMAND = "Undefined command"
-const SYNTAX_ERROR = "Syntax error"
+const Undefinedcommand = "Undefined command"
+const SyntaxError = "Syntax error"
 const STOP_COMMAND = "Command stop"
-const UNDEFINED_KEYWORD = "Undefined word key"
+const UndefinedKeyword = "Undefined word key"
 
 const PATH_COMMAND = "/command.asc"
 const PATH_LOG = "/log.asc"

@@ -1,8 +1,8 @@
 package literals
 
 type commandsType struct {
-	CRIPTO  string
-	ECRIPTO string
+	CRYPTO   string
+	DECRYPTO string
 
 	GENERATEMASTER string
 	GENERATEKEY    string
@@ -15,17 +15,18 @@ type commandsType struct {
 	HELP   string
 	INWORK string
 
-	DECLARE               string
-	COMMANDS_LIST         string
-	RUN_COMMAND           string
-	RUN_MULTIPLE_COMMANDS string
-	REMOVE_COMMAND        string
+	DECLARE            string
+	COMMANDLIST        string
+	RUNCOMMAND         string
+	RUNMULTIPLECOMMAND string
+	REMOVECOMMAND      string
 
 	MENU   string
 	MANUAL string
 
-	MANU_ADD_COMMAND string
-	MENU_HASH        string
+	MANUADDCOMMAND string
+	MENUCRYPTO     string
+	MENUDECRYPTO   string
 }
 
 type SGRtype struct {

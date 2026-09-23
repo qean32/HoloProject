@@ -10,112 +10,99 @@ import (
 )
 
 var MAP = map[string]model.FnReturnEvent{
-	literals.COMMANDS_LIST.CRIPTO:  ParseCripto,
-	literals.COMMANDS_LIST.ECRIPTO: ParseEcripto,
-	literals.COMMANDS_LIST.DECLARE: ParseDeclare,
+	literals.COMMANDLIST.CRYPTO:   parseCripto,
+	literals.COMMANDLIST.DECRYPTO: parseEcrypto,
+	literals.COMMANDLIST.DECLARE:  parseDeclare,
 
-	literals.COMMANDS_LIST.RUN_COMMAND:           ShortEventWithKeyword,
-	literals.COMMANDS_LIST.RUN_MULTIPLE_COMMANDS: ShortEventWithKeyword,
-	literals.COMMANDS_LIST.REMOVE_COMMAND:        ShortEventWithKeyword,
-	literals.COMMANDS_LIST.MENU:                  ShortEvent,
-	literals.COMMANDS_LIST.LOGS:                  ShortEvent,
+	literals.COMMANDLIST.RUNCOMMAND:         eventWithKeyword,
+	literals.COMMANDLIST.RUNMULTIPLECOMMAND: eventWithKeyword,
+	literals.COMMANDLIST.REMOVECOMMAND:      eventWithKeyword,
+	literals.COMMANDLIST.MENU:               event,
+	literals.COMMANDLIST.LOGS:               event,
 }
 
-func ParseCripto(arr []string) (e model.Event, err bool) {
+func parseCripto(arr []string) (model.Event, bool) {
 	payload := getPayload(arr)
-
 	if len(arr) < 3 || payload == "" {
-		err = true
-		return
+		return model.Event{}, true
 	}
 
-	e = model.Event{
+	return model.Event{
 		DateTime: low.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Password: arr[2],
 		Payload:  payload,
 		Flags:    filter.FilterIsFlag(arr),
-	}
-	return
+	}, false
 }
 
-func ParseEcripto(arr []string) (e model.Event, err bool) {
+func parseEcrypto(arr []string) (model.Event, bool) {
 	if len(arr) < 3 {
-		err = true
-		return
+		return model.Event{}, true
 	}
 
-	e = model.Event{
+	return model.Event{
 		DateTime: low.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Password: arr[2],
 		Flags:    filter.FilterIsFlag(arr),
-	}
-	return
+	}, false
 }
 
-func ParseDeclare(arr []string) (e model.Event, err bool) {
+func parseDeclare(arr []string) (model.Event, bool) {
 	payload := getPayload(arr)
-
 	if len(arr) < 3 || payload == "" {
-		err = true
-		return
+		return model.Event{}, true
 	}
 
-	e = model.Event{
+	return model.Event{
 		DateTime: low.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Payload:  payload,
 		Flags:    filter.FilterIsFlag(arr),
-	}
-	return
+	}, false
 }
 
-func ShortEvent(arr []string) (e model.Event, err bool) {
+func event(arr []string) (model.Event, bool) {
 	if len(arr) == 0 {
-		err = true
-		return
+		return model.Event{}, true
 	}
 
-	e = model.Event{
+	return model.Event{
 		DateTime: low.CurrentTime(),
 		Key:      arr[0],
 		Flags:    filter.FilterIsFlag(arr),
-	}
-	return
+	}, false
 }
 
-func ShortEventWithKeyword(arr []string) (e model.Event, err bool) {
+func eventWithKeyword(arr []string) (model.Event, bool) {
 	if len(arr) < 2 {
-		err = true
-		return
+		return model.Event{}, true
 	}
 
-	e = model.Event{
+	return model.Event{
 		DateTime: low.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Flags:    filter.FilterIsFlag(arr),
-	}
-	return
+	}, false
 }
 
-func ParseEvent(command string, key string) (e model.Event, err bool) {
-	fn := MAP[key]
-
+func ParseEvent(command, key string) (model.Event, bool) {
 	arr := strings.Split(command, " ")
 
-	if fn == nil {
-		return ShortEvent(arr)
+	if fn := MAP[key]; fn != nil {
+		return fn(arr)
 	}
-	return fn(arr)
+	return event(arr)
 }
 
 func getPayload(arr []string) string {
 	command := strings.Join(arr, " ")
+
 	start := strings.Index(command, "{")
 	if start == -1 {
 		return ""

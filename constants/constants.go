@@ -47,8 +47,8 @@ var HelpMessage = `
 %v
 %v  Команда        Описание                          Пример
 %v
-%v  cripto         Шифрование строки                 cripto key_word key_password { payload }
-%v  ecripto        Дешифровка строки                 ecripto key_word key_password
+%v  crypto         Шифрование строки                 crypto key_word key_password { payload }
+%v  ecrypto        Дешифровка строки                 ecrypto key_word key_password
 %v
 %v  gmaster        Генерация мастер-ключа
 %v  gkey           Генерация ключа для шифра

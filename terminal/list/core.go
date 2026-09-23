@@ -1,8 +1,9 @@
 package list
 
 import (
-	"atomicgo.dev/cursor"
 	"main/model"
+
+	"atomicgo.dev/cursor"
 )
 
 var list = model.List{
@@ -26,7 +27,7 @@ func incrementPosition() bool {
 	return false
 }
 
-func decrimentPosition() bool {
+func decrementPosition() bool {
 	if list.Position > 0 {
 		list.Position--
 		cursor.Up(1)

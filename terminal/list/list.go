@@ -2,23 +2,24 @@ package list
 
 import (
 	"fmt"
-	"main/callstack"
-	"main/constants/literals"
-	"main/lib/low"
-	"main/model"
-	"main/terminal"
 	"strconv"
 
 	"atomicgo.dev/cursor"
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
+
+	"main/callstack"
+	"main/constants/literals"
+	"main/lib/low"
+	"main/model"
+	"main/terminal"
 )
 
 func List(options []model.Option) {
 	if len(options) == 0 {
 		return
 	}
-	terminal.OutputTechInfo("[LIST] start")
+	terminal.PrintTechInfo("[LIST] start")
 	defer reset()
 
 	cursor.Hide()
@@ -43,7 +44,7 @@ func List(options []model.Option) {
 		}
 		switch key.Code {
 		case keys.Enter:
-			_select(options[list.Position].Event)
+			selectOption(options[list.Position].Event)
 			return true, nil
 		case keys.Down:
 			moveDown()
@@ -55,7 +56,7 @@ func List(options []model.Option) {
 
 		return false, nil
 	})
-	terminal.OutputTechInfo("[LIST] listener returned")
+	terminal.PrintTechInfo("[LIST] listener returned")
 }
 
 func renderList(options []model.Option) {
@@ -64,19 +65,19 @@ func renderList(options []model.Option) {
 		startChar := getStartChar(isSelected)
 
 		style := literals.SGR.DIM
+		color := literals.SGR.DIM
 		if isSelected {
-			startChar = terminal.GetCustomMessage(startChar, literals.SGR.GREEN)
-		} else {
-			startChar = terminal.GetCustomMessage(startChar, literals.SGR.DIM)
+			color = literals.SGR.GREEN
 		}
+		startChar = terminal.GetCustomMessage(startChar, color)
 
 		cursor.ClearLine()
-		terminal.Output(startChar + terminal.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
+		terminal.Print(startChar + terminal.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
 		terminal.DownAndStart()
 	}
 }
 
-func _select(event model.Event) {
+func selectOption(event model.Event) {
 	jumpToEndList()
 	terminal.DownAndStart()
 	cursor.Show()
@@ -84,7 +85,7 @@ func _select(event model.Event) {
 }
 
 func moveUp() {
-	if decrimentPosition() {
+	if decrementPosition() {
 		reRenderList()
 	}
 }
