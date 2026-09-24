@@ -43,11 +43,15 @@ func RUN_CMD(command string) {
 }
 
 func Exit() {
-	RUN_CMD("clear")
+	clearTerminal()
 	os.Exit(0)
 }
 
 func GetShortEvent(event model.Event) model.Event {
 	event.DateTime = CurrentTime()
 	return event
+}
+
+func clearTerminal() {
+	fmt.Print("\033[H\033[2J")
 }

@@ -3,6 +3,7 @@ package low
 import (
 	"bufio"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"main/constants"
@@ -42,15 +43,30 @@ func PushToFile(path, newText string) bool {
 	return WriteFile(strings.Join(append(data, newText+"\n"), " \n"), path)
 }
 
-func CreateFile(path string) bool {
-	file, err := os.Create(constants.Root + path)
-	if err != nil {
-		return false
-	}
-	file.Close()
-	return true
+func CreateFile(path string, content string) bool {
+	err := os.WriteFile(constants.Root+path, []byte(content), 0644)
+	return err == nil
 }
 
 func ClearFile(path string) {
 	WriteFile("", path)
+}
+
+func ListFilesByExt(dir string, ext string) ([]string, error) {
+	var files []string
+
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+		if filepath.Ext(entry.Name()) == ext {
+			files = append(files, entry.Name())
+		}
+	}
+	return files, nil
 }

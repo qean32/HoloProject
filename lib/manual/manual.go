@@ -12,11 +12,13 @@ import (
 func Manual() {
 	command := field.Field()
 	if len(command) <= 1 {
+		response.SyntaxError()
 		return
 	}
 
 	trimmed := strings.TrimSpace(command)
 	if trimmed == "" {
+		response.SyntaxError()
 		return
 	}
 

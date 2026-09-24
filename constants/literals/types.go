@@ -29,6 +29,12 @@ type commandsType struct {
 	MENUDECRYPTO   string
 }
 
+type titleType struct {
+	Menu         string
+	ListCommand  string
+	EnterCommand string
+}
+
 type SGRtype struct {
 	BOLD   int
 	ITALIC int

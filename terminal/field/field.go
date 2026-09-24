@@ -4,15 +4,13 @@ import (
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
 
+	"main/constants"
 	"main/lib/low"
 	"main/terminal"
 )
 
-const prefix = "-> "
-
 func Field() string {
-	terminal.PrintTechInfo("[Field] start")
-	terminal.Print(prefix)
+	terminal.Print(constants.FIELDPREFIX)
 	reset()
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		char := key.String()
@@ -47,6 +45,5 @@ func Field() string {
 		return false, nil
 	})
 
-	terminal.PrintTechInfo("[Field] listener returned")
 	return field.Message
 }

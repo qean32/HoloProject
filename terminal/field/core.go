@@ -3,6 +3,7 @@ package field
 import (
 	"fmt"
 
+	"main/constants"
 	"main/model"
 )
 
@@ -62,7 +63,7 @@ func horizontalCursorToPosition(position int) {
 	if position < 0 || position > field.PositionRange {
 		return
 	}
-	fmt.Printf("\033[%dG", len(prefix)+position+2)
+	fmt.Printf("\033[%dG", len(constants.FIELDPREFIX)+position+2)
 	field.Position = position
 }
 

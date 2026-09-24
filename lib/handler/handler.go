@@ -61,17 +61,11 @@ func help(e model.Event) {
 }
 
 func declare(e model.Event) {
-	low.PushToFile(constants.PATH_COMMAND, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
-	low.TMP_COMMANDS = append(low.TMP_COMMANDS, []string{e.KeyWord, e.Payload})
+	low.CreateFile(constants.Cmd+e.KeyWord+".bat", e.Payload)
 }
 
 func runCommand(e model.Event) {
-	index := findCommand(e.KeyWord)
-	if index == -1 {
-		response.UndefinedKeyword()
-		return
-	}
-	low.RUN_CMD(low.TMP_COMMANDS[index][1])
+	low.RUN_CMD(constants.Root + constants.Cmd + e.KeyWord)
 }
 
 func runMultipleCommand(e model.Event) {
@@ -85,7 +79,7 @@ func runMultipleCommand(e model.Event) {
 	}
 }
 
-func listCommand(e model.Event) {
+func listCommand() {
 	terminal.Print(strings.Join(low.ReadFile(constants.PATH_COMMAND), "\n~ "))
 }
 
@@ -106,17 +100,20 @@ func openLog() {
 }
 
 func runMenu(e model.Event) {
-	list.List(Menu)
+	list.List(Menu, literals.Titles.Menu)
 }
 
 func menuCommandList() {
+	commands, _ := low.ListFilesByExt(constants.Root+constants.Cmd, constants.Bat)
+
 	list.List(
-		array.Map(low.TMP_COMMANDS, func(value []string) model.Option {
+		array.Map(commands, func(value string) model.Option {
 			return model.Option{
-				Message: value[0],
-				Event:   model.Event{Key: literals.COMMANDLIST.RUNCOMMAND, KeyWord: value[0]},
+				Message: value[:len(value)-4],
+				Event:   model.Event{Key: literals.COMMANDLIST.RUNCOMMAND, KeyWord: value},
 			}
 		}),
+		literals.Titles.ListCommand,
 	)
 }
 
@@ -136,7 +133,7 @@ func menuQuestionnaireAddCommand(e model.Event) {
 				return true
 			},
 		},
-	})
+	}, literals.Titles.EnterCommand)
 
 	declare(model.Event{
 		Key:      literals.COMMANDLIST.DECLARE,

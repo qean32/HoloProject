@@ -31,3 +31,9 @@ var COMMANDLIST = commandsType{
 	MENUDECRYPTO:   "MENUDECRYPTO",
 	MENUCRYPTO:     "MENUCRYPTO",
 }
+
+var Titles = titleType{
+	Menu:         "Меню",
+	ListCommand:  "Список команд",
+	EnterCommand: "Добавить команду",
+}

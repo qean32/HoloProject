@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"main/constants"
+	"main/constants/literals"
 	"main/constants/response"
 	"main/lib/handler"
 	"main/lib/low"
@@ -20,7 +21,7 @@ func INIT() {
 	terminal.PrintASCIICenter(constants.PROJECT_INIT, " ")
 	constants.INIT_ROOT()
 	low.SETDATA()
-	list.List(handler.Menu)
+	list.List(handler.Menu, literals.Titles.Menu)
 }
 
 func Event(e model.Event) {

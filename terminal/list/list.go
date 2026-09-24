@@ -15,15 +15,16 @@ import (
 	"main/terminal"
 )
 
-func List(options []model.Option) {
+func List(options []model.Option, title string) {
 	if len(options) == 0 {
 		return
 	}
-	terminal.PrintTechInfo("[LIST] start")
+	terminal.Println(title, ": ")
+	terminal.Println(terminal.GetCustomMessage("──────────────────────── \n│", literals.SGR.DIM))
 	defer reset()
 
 	cursor.Hide()
-	set(options)
+	set(options, title)
 	renderList(options)
 	jumpToStartList()
 
@@ -56,7 +57,6 @@ func List(options []model.Option) {
 
 		return false, nil
 	})
-	terminal.PrintTechInfo("[LIST] listener returned")
 }
 
 func renderList(options []model.Option) {

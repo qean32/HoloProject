@@ -2,6 +2,7 @@ package terminal
 
 import (
 	"fmt"
+	"main/constants"
 	"strings"
 	"sync"
 )
@@ -11,13 +12,13 @@ var mu sync.Mutex
 func Print(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
-	fmt.Print(" ", concatMessages(messages...))
+	fmt.Print(concatMessages(messages...))
 }
 
 func Println(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
-	fmt.Println(" ", concatMessages(messages...))
+	fmt.Println(concatMessages(messages...))
 }
 
 func PrintTechInfo(messages ...any) {
@@ -29,7 +30,7 @@ func PrintTechInfo(messages ...any) {
 func PrintResponse(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
-	fmt.Println(append([]any{" <- "}, messages...)...)
+	fmt.Println(append([]any{constants.RESPONSEPREFIX}, messages...)...)
 }
 
 func concatMessages(messages ...any) string {
