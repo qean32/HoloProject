@@ -4,14 +4,16 @@ import (
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
 
-	"main/constants"
 	"main/lib/low"
+	"main/model"
 	"main/terminal"
 )
 
-func Field() string {
-	terminal.Print(constants.FIELDPREFIX)
+func Field(payload model.FieldPayload) string {
 	reset()
+	setPrefix(payload)
+	terminal.Print(terminal.GetCustomMessage(field.Prefix, field.PrefixSRG...))
+
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		char := key.String()
 

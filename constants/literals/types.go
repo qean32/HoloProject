@@ -61,7 +61,7 @@ type flagsType struct {
 var SGR = SGRtype{
 	BOLD:      1,
 	ITALIC:    3,
-	DIM:       2,
+	DIM:       2, // 2
 	UNDERLINE: 4,
 
 	RED:     31,

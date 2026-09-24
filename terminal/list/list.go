@@ -19,8 +19,8 @@ func List(options []model.Option, title string) {
 	if len(options) == 0 {
 		return
 	}
-	terminal.Println(title, ": ")
-	terminal.Println(terminal.GetCustomMessage("──────────────────────── \n│", literals.SGR.DIM))
+	terminal.Println(title)
+	terminal.TopLine()
 	defer reset()
 
 	cursor.Hide()

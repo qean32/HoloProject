@@ -1,7 +1,6 @@
 package questionnaire
 
 import (
-	"main/constants/literals"
 	"main/model"
 	"main/terminal"
 )
@@ -12,7 +11,6 @@ var questionnaire = model.Questionnaire{
 }
 
 func Questionnaire(questions []model.Question, title string) map[string]string {
-	terminal.Println(terminal.GetCustomMessage("────────────────────────────────", literals.SGR.DIM))
 	set(questions, title)
 	runQuestionnaire()
 
@@ -32,4 +30,5 @@ func set(questions []model.Question, title string) {
 
 func pushAnswer(key, answer string) {
 	questionnaire.Result[key] = answer
+	terminal.DownAndStart()
 }

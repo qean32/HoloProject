@@ -3,6 +3,7 @@ package terminal
 import (
 	"fmt"
 	"main/constants"
+	"main/constants/literals"
 	"strings"
 	"sync"
 )
@@ -39,4 +40,8 @@ func concatMessages(messages ...any) string {
 		sb.WriteString(fmt.Sprint(msg))
 	}
 	return sb.String()
+}
+
+func TopLine() {
+	Println(GetCustomMessage("┌──", literals.SGR.DIM))
 }

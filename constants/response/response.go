@@ -16,3 +16,7 @@ func UndefinedKeyword() {
 func SyntaxError() {
 	terminal.PrintResponse(constants.SyntaxError)
 }
+
+func Success() {
+	terminal.PrintResponse(constants.SyntaxError)
+}

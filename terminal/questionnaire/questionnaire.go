@@ -7,15 +7,12 @@ import (
 	"main/terminal/field"
 )
 
-func start(message string) {
-	terminal.Println(terminal.GetCustomMessage("─────────", literals.SGR.DIM))
-	terminal.Print(terminal.GetCustomMessage(message, literals.SGR.DIM))
-}
-
 func askQuestion(question model.Question) {
-	start(question.Message)
-	terminal.DownAndStart()
-	answer := field.Field()
+	terminal.TopLine()
+	answer := field.Field(model.FieldPayload{
+		Prefix:    "│ " + question.Message + " -> ",
+		PrefixSRG: []int{literals.SGR.DIM},
+	})
 
 	if question.Callback(answer) {
 		pushAnswer(question.Key, answer)

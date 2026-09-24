@@ -4,13 +4,15 @@ import (
 	"strings"
 
 	"main/callstack"
+	"main/constants"
 	"main/constants/response"
 	"main/lib/parse"
+	"main/model"
 	"main/terminal/field"
 )
 
 func Manual() {
-	command := field.Field()
+	command := field.Field(model.FieldPayload{Prefix: constants.FIELDPREFIX})
 	if len(command) <= 1 {
 		response.SyntaxError()
 		return

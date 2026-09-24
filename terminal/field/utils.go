@@ -3,13 +3,12 @@ package field
 import (
 	"strings"
 
-	"main/constants"
 	"main/lib/array"
 	"main/terminal"
 )
 
 func localReRenderLine(message string) {
-	terminal.ReRenderLine(constants.FIELDPREFIX + message)
+	terminal.ReRenderLine(terminal.GetCustomMessage(field.Prefix+message, field.PrefixSRG...))
 }
 
 func pushChar(char string) {

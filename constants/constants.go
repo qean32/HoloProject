@@ -69,11 +69,11 @@ var HelpMessage = `
 %v
 `
 
-const CHAR_SELECTED_ITEM = "│ -> "
-const CHAR_UN_SELECTED_ITEM = "│ "
+const CHAR_SELECTED_ITEM = "│> "
+const CHAR_UN_SELECTED_ITEM = "│  "
 
-const FIELDPREFIX = "-> "
-const RESPONSEPREFIX = "<- "
+const FIELDPREFIX = "> "
+const RESPONSEPREFIX = "< "
 
 var (
 	StyleError    = []int{literals.SGR.RED, literals.SGR.BOLD}

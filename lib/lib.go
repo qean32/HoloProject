@@ -25,6 +25,7 @@ func INIT() {
 }
 
 func Event(e model.Event) {
+	defer response.Success()
 	function := handler.MAP[e.Key]
 
 	if function == nil {
