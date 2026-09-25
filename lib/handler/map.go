@@ -22,6 +22,8 @@ var MAP = map[string]model.EventFunction{
 	literals.COMMANDLIST.CLEARLOG: clearLog,
 	literals.COMMANDLIST.LOGS:     ignoreEvent(openLog),
 
+	literals.COMMANDLIST.RESPONSE: _response,
+
 	literals.COMMANDLIST.MENU: runMenu,
 	literals.COMMANDLIST.DROP: drop,
 	literals.COMMANDLIST.STOP: ignoreEvent(low.Exit),

@@ -5,13 +5,12 @@ import (
 	"os"
 
 	"main/constants"
-	"main/constants/literals"
 	"main/constants/response"
 	"main/lib/handler"
 	"main/lib/low"
+	"main/lib/manual"
 	"main/model"
 	"main/terminal"
-	"main/terminal/list"
 )
 
 var READER = bufio.NewReader(os.Stdin)
@@ -21,15 +20,14 @@ func INIT() {
 	terminal.PrintASCIICenter(constants.PROJECT_INIT, " ")
 	constants.INIT_ROOT()
 	low.SETDATA()
-	list.List(handler.Menu, literals.Titles.Menu)
+	manual.Manual()
 }
 
 func Event(e model.Event) {
-	defer response.Success()
 	function := handler.MAP[e.Key]
 
 	if function == nil {
-		response.UndefinedKeyword()
+		Event(response.UndefinedCommand())
 		return
 	}
 	function(e)

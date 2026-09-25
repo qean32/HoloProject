@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"main/callstack"
 	"main/constants"
 	"main/constants/literals"
 	"main/model"
@@ -32,14 +33,18 @@ func CurrentTime() string {
 func RUN_CMD(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	if err := cmd.Start(); err != nil {
-		fmt.Println("$ Ошибка при запуске команды:", err)
+		callstack.PushCallStack(model.Event{
+			Key:     literals.COMMANDLIST.RESPONSE,
+			Payload: "$ Ошибка при запуске команды",
+		})
 		return
 	}
-	go func() {
-		if err := cmd.Wait(); err != nil {
-			fmt.Println("$ Команда завершилась с ошибкой:", err)
-		}
-	}()
+	if err := cmd.Wait(); err != nil {
+		callstack.PushCallStack(model.Event{
+			Key:     literals.COMMANDLIST.RESPONSE,
+			Payload: "$ Команда завершилась с ошибкой",
+		})
+	}
 }
 
 func Exit() {

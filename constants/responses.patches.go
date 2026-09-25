@@ -1,11 +1,11 @@
 package constants
 
 const (
-	Undefinedcommand = "Undefined command"
+	UndefinedCommand = "Undefined command"
 	SyntaxError      = "Syntax error"
 	STOP_COMMAND     = "Command stop"
 	UndefinedKeyword = "Undefined word key"
-	Success          = "Success"
+	Success          = "/ᐠ - ˕ -マ ᶻ 𝗓 𐰁"
 
 	PATH_COMMAND  = "/command.asc"
 	PATH_LOG      = "/log.asc"

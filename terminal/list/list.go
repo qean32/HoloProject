@@ -52,6 +52,7 @@ func List(options []model.Option, title string) {
 		case keys.Up:
 			moveUp()
 		case keys.Escape, keys.CtrlC:
+			jumpToEndList()
 			return true, nil
 		}
 
@@ -72,7 +73,11 @@ func renderList(options []model.Option) {
 		startChar = terminal.GetCustomMessage(startChar, color)
 
 		cursor.ClearLine()
-		terminal.Print(startChar + terminal.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
+		if isSelected {
+			terminal.Print(terminal.GetCustomMessage("│", literals.SGR.DIM), startChar+terminal.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
+		} else {
+			terminal.Print(startChar + terminal.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
+		}
 		terminal.DownAndStart()
 	}
 }

@@ -2,21 +2,34 @@ package response
 
 import (
 	"main/constants"
-	"main/terminal"
+	"main/constants/literals"
+	"main/model"
 )
 
-func Undefinedcommand() {
-	terminal.PrintResponse(constants.Undefinedcommand)
+func UndefinedCommand() model.Event {
+	return model.Event{
+		Key:     literals.COMMANDLIST.RESPONSE,
+		Payload: constants.UndefinedCommand,
+	}
 }
 
-func UndefinedKeyword() {
-	terminal.PrintResponse(constants.UndefinedKeyword)
+func UndefinedKeyword() model.Event {
+	return model.Event{
+		Key:     literals.COMMANDLIST.RESPONSE,
+		Payload: constants.UndefinedKeyword,
+	}
 }
 
-func SyntaxError() {
-	terminal.PrintResponse(constants.SyntaxError)
+func SyntaxError() model.Event {
+	return model.Event{
+		Key:     literals.COMMANDLIST.RESPONSE,
+		Payload: constants.SyntaxError,
+	}
 }
 
-func Success() {
-	terminal.PrintResponse(constants.SyntaxError)
+func Success() model.Event {
+	return model.Event{
+		Key:     literals.COMMANDLIST.RESPONSE,
+		Payload: constants.Success,
+	}
 }

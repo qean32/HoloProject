@@ -24,6 +24,8 @@ type commandsType struct {
 	MENU   string
 	MANUAL string
 
+	RESPONSE string
+
 	MANUADDCOMMAND string
 	MENUCRYPTO     string
 	MENUDECRYPTO   string

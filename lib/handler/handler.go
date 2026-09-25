@@ -8,6 +8,7 @@ import (
 
 	"atomicgo.dev/cursor"
 
+	"main/callstack"
 	"main/constants"
 	"main/constants/literals"
 	"main/constants/response"
@@ -19,6 +20,10 @@ import (
 	"main/terminal/list"
 	"main/terminal/questionnaire"
 )
+
+func _response(e model.Event) {
+	terminal.Println(e.Payload)
+}
 
 func inwork(e model.Event) {
 	terminal.Println("в разработке!")
@@ -34,7 +39,7 @@ func decrypt(e model.Event) {
 		return item[0] == e.KeyWord
 	})
 	if index == -1 {
-		response.UndefinedKeyword()
+		callstack.PushCallStack(response.UndefinedKeyword())
 		return
 	}
 	terminal.Print(low.TMP_DATA[index][1])
@@ -46,8 +51,7 @@ func clearLog(e model.Event) {
 	low.ClearFile(constants.PATH_LOG)
 }
 
-func generateMasterKey(e model.Event) {
-}
+func generateMasterKey(e model.Event) {}
 
 func drop(e model.Event) {
 	os.RemoveAll(constants.Root)
@@ -69,9 +73,9 @@ func runCommand(e model.Event) {
 }
 
 func runMultipleCommand(e model.Event) {
-	index := findCommand(e.KeyWord)
+	index := FindCommand(e.KeyWord)
 	if index == -1 {
-		response.UndefinedKeyword()
+		callstack.PushCallStack(response.UndefinedKeyword())
 		return
 	}
 	for _, cmd := range strings.Split(low.TMP_COMMANDS[index][1], ";") {
@@ -84,8 +88,8 @@ func listCommand() {
 }
 
 func removeCommand(e model.Event) {
-	if findCommand(e.KeyWord) == -1 {
-		response.UndefinedKeyword()
+	if FindCommand(e.KeyWord) == -1 {
+		callstack.PushCallStack(response.UndefinedKeyword())
 		return
 	}
 	filtered := filter.FILTER(low.TMP_COMMANDS, func(item []string) bool {
@@ -143,9 +147,13 @@ func menuQuestionnaireAddCommand(e model.Event) {
 	})
 }
 
-func findCommand(keyword string) int {
+func FindCommand(keyword string) int {
 	kw := strings.TrimSpace(keyword)
 	return slices.IndexFunc(low.TMP_COMMANDS, func(item []string) bool {
 		return item[0] == kw
 	})
+}
+
+func IgnoreEvent(fn func()) model.EventFunction {
+	return func(model.Event) { fn() }
 }

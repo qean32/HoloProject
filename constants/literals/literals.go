@@ -25,6 +25,8 @@ var COMMANDLIST = commandsType{
 	RUNMULTIPLECOMMAND: "runm",
 	REMOVECOMMAND:      "rmc",
 
+	RESPONSE: "response",
+
 	MENU: "menu",
 
 	MANUADDCOMMAND: "MANUADDCOMMAND",
