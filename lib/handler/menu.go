@@ -7,27 +7,27 @@ import (
 
 var Menu = []model.Option{
 	{
-		Message: "Запустить команду", Event: model.Event{Key: literals.COMMANDLIST.COMMANDLIST},
+		Message: "Запустить команду", Event: model.Event{Key: literals.EventList.EventList},
 	},
 	{
-		Message: "Ручной ввод", Event: model.Event{Key: literals.COMMANDLIST.MANUAL},
+		Message: "Ручной ввод", Event: model.Event{Key: literals.EventList.MANUAL},
 	},
 	{
-		Message: "Добавить команду", Event: model.Event{Key: literals.COMMANDLIST.MANUADDCOMMAND},
+		Message: "Добавить команду", Event: model.Event{Key: literals.EventList.MANUADDCMD},
 	},
 	{
-		Message: "Шифрование строки", Event: model.Event{Key: literals.COMMANDLIST.INWORK},
+		Message: "Шифрование строки", Event: model.Event{Key: literals.EventList.INWORK},
 	},
 	{
-		Message: "Очистка логов", Event: model.Event{Key: literals.COMMANDLIST.CLEARLOG},
+		Message: "Очистка логов", Event: model.Event{Key: literals.EventList.CLEARLOG},
 	},
 	{
-		Message: "Генерация мастер ключа", Event: model.Event{Key: literals.COMMANDLIST.INWORK},
+		Message: "Генерация мастер ключа", Event: model.Event{Key: literals.EventList.INWORK},
 	},
 	{
-		Message: "Помощь", Event: model.Event{Key: literals.COMMANDLIST.HELP},
+		Message: "Помощь", Event: model.Event{Key: literals.EventList.HELP},
 	},
 	{
-		Message: "Выход", Event: model.Event{Key: literals.COMMANDLIST.STOP},
+		Message: "Выход", Event: model.Event{Key: literals.EventList.STOP},
 	},
 }

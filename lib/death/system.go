@@ -1,4 +1,4 @@
-package low
+package death
 
 import (
 	"bufio"
@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"main/callstack/event"
 	"main/constants"
 )
 
@@ -50,6 +51,14 @@ func CreateFile(path string, content string) bool {
 
 func ClearFile(path string) {
 	WriteFile("", path)
+}
+
+func RemoveFile(path string) {
+	err := os.Remove(constants.Root + path)
+	if err != nil {
+		event.Response("Ошибка:", err)
+		return
+	}
 }
 
 func ListFilesByExt(dir string, ext string) ([]string, error) {

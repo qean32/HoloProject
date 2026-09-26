@@ -2,7 +2,6 @@ package questionnaire
 
 import (
 	"main/model"
-	"main/terminal"
 )
 
 var questionnaire = model.Questionnaire{
@@ -26,9 +25,4 @@ func set(questions []model.Question, title string) {
 	questionnaire.Questions = questions
 	questionnaire.Title = title
 	questionnaire.Result = map[string]string{}
-}
-
-func pushAnswer(key, answer string) {
-	questionnaire.Result[key] = answer
-	terminal.DownAndStart()
 }

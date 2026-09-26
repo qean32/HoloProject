@@ -4,11 +4,11 @@ import (
 	"bufio"
 	"os"
 
+	"main/callstack/event"
+	"main/callstack/manual"
 	"main/constants"
-	"main/constants/response"
+	"main/lib/death"
 	"main/lib/handler"
-	"main/lib/low"
-	"main/lib/manual"
 	"main/model"
 	"main/terminal"
 )
@@ -19,7 +19,7 @@ func INIT() {
 	terminal.PrintASCIICenter(constants.BinaryPROJECT_INIT, " ")
 	terminal.PrintASCIICenter(constants.PROJECT_INIT, " ")
 	constants.INIT_ROOT()
-	low.SETDATA()
+	death.SETDATA()
 	manual.Manual()
 }
 
@@ -27,9 +27,9 @@ func Event(e model.Event) {
 	function := handler.MAP[e.Key]
 
 	if function == nil {
-		Event(response.UndefinedCommand())
+		event.UndefinedCommand()
 		return
 	}
 	function(e)
-	low.LOG(e)
+	death.Logger(e)
 }

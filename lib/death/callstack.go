@@ -1,26 +1,18 @@
-package low
+package death
 
 import (
 	"strings"
 
-	"main/constants"
 	"main/model"
 )
 
 var (
-	CALLSTACK    = []model.Event{}
 	TMP_DATA     = [][]string{}
 	TMP_COMMANDS = [][]string{}
 	SETTINGS     = model.Settings{}
 )
 
 func SETDATA() {
-	if len(TMP_COMMANDS) == 0 {
-		TMP_COMMANDS = parsePairs(ReadFile(constants.PATH_COMMAND))
-	}
-	if len(TMP_DATA) == 0 {
-		TMP_DATA = parsePairs(ReadFile(constants.PATH_DATA))
-	}
 }
 
 func parsePairs(lines []string) [][]string {

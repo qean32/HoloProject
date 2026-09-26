@@ -10,7 +10,8 @@ import (
 
 	"main/callstack"
 	"main/constants/literals"
-	"main/lib/low"
+	"main/lib/death"
+	"main/lib/utils"
 	"main/model"
 	"main/terminal"
 )
@@ -20,7 +21,7 @@ func List(options []model.Option, title string) {
 		return
 	}
 	terminal.Println(title)
-	terminal.TopLine()
+	terminal.PrintTopLine()
 	defer reset()
 
 	cursor.Hide()
@@ -70,13 +71,13 @@ func renderList(options []model.Option) {
 		if isSelected {
 			color = literals.SGR.GREEN
 		}
-		startChar = terminal.GetCustomMessage(startChar, color)
+		startChar = utils.GetCustomMessage(startChar, color)
 
 		cursor.ClearLine()
 		if isSelected {
-			terminal.Print(terminal.GetCustomMessage("│", literals.SGR.DIM), startChar+terminal.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
+			terminal.Print(utils.GetCustomMessage("│", literals.SGR.DIM), startChar+utils.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
 		} else {
-			terminal.Print(startChar + terminal.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
+			terminal.Print(startChar + utils.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
 		}
 		terminal.DownAndStart()
 	}
@@ -86,7 +87,46 @@ func selectOption(event model.Event) {
 	jumpToEndList()
 	terminal.DownAndStart()
 	cursor.Show()
-	callstack.PushCallStack(low.GetShortEvent(event))
+	callstack.PushCallStack(death.GetShortEvent(event))
+}
+
+func reRenderList() {
+	jumpToEndList()
+	terminal.ClearLines(list.Length)
+	renderList(list.Options)
+	jumpToStartList()
+}
+
+func incrementPosition() bool {
+	if list.Position < list.Length-1 {
+		list.Position++
+		cursor.Down(1)
+		return true
+	}
+	if list.Length > 1 {
+		list.Position = 0
+		jumpToStartList()
+		cursor.Down(1)
+		return true
+	}
+	return false
+}
+
+func decrementPosition() bool {
+	if list.Position > 0 {
+		list.Position--
+		cursor.Up(1)
+		return true
+	}
+	if list.Length > 1 {
+		diff := list.Length - 1 - list.Position
+		if diff > 0 {
+			cursor.Down(diff)
+		}
+		list.Position = list.Length - 1
+		return true
+	}
+	return false
 }
 
 func moveUp() {
@@ -99,11 +139,4 @@ func moveDown() {
 	if incrementPosition() {
 		reRenderList()
 	}
-}
-
-func reRenderList() {
-	jumpToEndList()
-	terminal.ClearLines(list.Length)
-	renderList(list.Options)
-	jumpToStartList()
 }

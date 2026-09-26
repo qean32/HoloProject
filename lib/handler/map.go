@@ -1,38 +1,37 @@
 package handler
 
 import (
+	"main/callstack/manual"
 	"main/constants/literals"
-	"main/lib/low"
-	"main/lib/manual"
+	"main/lib/death"
 	"main/model"
 )
 
 var MAP = map[string]model.EventFunction{
-	literals.COMMANDLIST.CRYPTO:   encrypt,
-	literals.COMMANDLIST.DECRYPTO: decrypt,
+	literals.EventList.CRYPTO:   encrypt,
+	literals.EventList.DECRYPTO: decrypt,
 
-	literals.COMMANDLIST.GENERATEKEY:    generateKey,
-	literals.COMMANDLIST.GENERATEMASTER: generateMasterKey,
+	literals.EventList.GENERATEKEY:    generateKey,
+	literals.EventList.GENERATEMASTER: generateMasterKey,
 
-	literals.COMMANDLIST.DECLARE:            declare,
-	literals.COMMANDLIST.RUNCOMMAND:         runCommand,
-	literals.COMMANDLIST.REMOVECOMMAND:      removeCommand,
-	literals.COMMANDLIST.RUNMULTIPLECOMMAND: runMultipleCommand,
+	literals.EventList.DECLARE:   declare,
+	literals.EventList.RUNCMD:    runCmd,
+	literals.EventList.REMOVECMD: removeCmd,
 
-	literals.COMMANDLIST.CLEARLOG: clearLog,
-	literals.COMMANDLIST.LOGS:     ignoreEvent(openLog),
+	literals.EventList.CLEARLOG: clearLog,
+	literals.EventList.LOGS:     ignoreEvent(openLog),
 
-	literals.COMMANDLIST.RESPONSE: _response,
+	literals.EventList.RESPONSE: _response,
 
-	literals.COMMANDLIST.MENU: runMenu,
-	literals.COMMANDLIST.DROP: drop,
-	literals.COMMANDLIST.STOP: ignoreEvent(low.Exit),
-	literals.COMMANDLIST.HELP: help,
+	literals.EventList.MENU: runMenu,
+	literals.EventList.DROP: drop,
+	literals.EventList.STOP: ignoreEvent(death.Exit),
+	literals.EventList.HELP: help,
 
-	literals.COMMANDLIST.COMMANDLIST:    ignoreEvent(menuCommandList),
-	literals.COMMANDLIST.MANUAL:         ignoreEvent(manual.Manual),
-	literals.COMMANDLIST.MANUADDCOMMAND: menuQuestionnaireAddCommand,
-	literals.COMMANDLIST.MENUCRYPTO:     inwork,
+	literals.EventList.EventList:  ignoreEvent(cmdList),
+	literals.EventList.MANUAL:     ignoreEvent(manual.Manual),
+	literals.EventList.MANUADDCMD: questionnaireAddCommand,
+	literals.EventList.MENUCRYPTO: inwork,
 }
 
 func ignoreEvent(fn func()) model.EventFunction {

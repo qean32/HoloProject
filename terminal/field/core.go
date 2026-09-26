@@ -26,9 +26,9 @@ func setMessage(message string) {
 	field.Message = message
 }
 
-func setPrefix(prefix model.FieldPayload) {
-	field.Prefix = prefix.Prefix
-	field.PrefixSRG = prefix.PrefixSRG
+func set(payload model.FieldPayload) {
+	field.Prefix = payload.Prefix
+	field.PrefixSRG = payload.PrefixSRG
 }
 
 func incrementPosition() {

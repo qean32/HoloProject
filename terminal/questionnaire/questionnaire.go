@@ -8,14 +8,14 @@ import (
 )
 
 func askQuestion(question model.Question) {
-	terminal.TopLine()
-	answer := field.Field(model.FieldPayload{
+	terminal.PrintTopLine()
+	_answer := field.Field(model.FieldPayload{
 		Prefix:    "│ " + question.Message + " -> ",
 		PrefixSRG: []int{literals.SGR.DIM},
 	})
 
-	if question.Callback(answer) {
-		pushAnswer(question.Key, answer)
+	if question.Callback(_answer) {
+		answer(question.Key, _answer)
 	}
 }
 
@@ -24,4 +24,9 @@ func runQuestionnaire() {
 	for _, question := range questionnaire.Questions {
 		askQuestion(question)
 	}
+}
+
+func answer(key, answer string) {
+	questionnaire.Result[key] = answer
+	terminal.DownAndStart()
 }

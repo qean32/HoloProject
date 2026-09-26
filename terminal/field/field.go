@@ -4,24 +4,26 @@ import (
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
 
-	"main/lib/low"
+	"main/lib/death"
+	"main/lib/utils"
 	"main/model"
 	"main/terminal"
 )
 
 func Field(payload model.FieldPayload) string {
 	reset()
-	setPrefix(payload)
-	terminal.Print(terminal.GetCustomMessage(field.Prefix, field.PrefixSRG...))
+	set(payload)
+
+	terminal.Print(utils.GetCustomMessage(field.Prefix, field.PrefixSRG...))
 
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
-		char := key.String()
+		symbol := key.String()
 
 		switch key.Code {
 		case keys.Space:
-			char = " "
+			symbol = " "
 		case keys.Backspace:
-			removeChar()
+			removeSymbol()
 		case keys.Enter:
 			terminal.DownAndStart()
 			return true, nil
@@ -34,15 +36,15 @@ func Field(payload model.FieldPayload) string {
 		case keys.Home:
 			horizontalCursorToPosition(0)
 		case keys.Escape:
-			low.Exit()
+			death.Exit()
 			return true, nil
 		case keys.CtrlC:
-			low.Exit()
+			death.Exit()
 			return true, nil
 		}
 
-		if len(char) == 1 {
-			pushChar(char)
+		if len(symbol) == 1 {
+			pushSymbol(symbol)
 		}
 		return false, nil
 	})

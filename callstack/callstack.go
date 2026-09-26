@@ -2,7 +2,6 @@ package callstack
 
 import (
 	"main/model"
-	"main/terminal"
 	"sync"
 )
 
@@ -45,10 +44,9 @@ func Pop() (model.Event, bool) {
 		return model.Event{}, false
 	}
 
-	terminal.PrintTechInfo(queue)
 	last := len(queue) - 1
 	event := queue[last]
-	queue[last] = model.Event{} // обнуляем ссылку для GC
+	queue[last] = model.Event{}
 	queue = queue[:last]
 	return event, true
 }

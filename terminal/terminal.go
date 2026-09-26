@@ -2,10 +2,11 @@ package terminal
 
 import (
 	"fmt"
+	"sync"
+
 	"main/constants"
 	"main/constants/literals"
-	"strings"
-	"sync"
+	"main/lib/utils"
 )
 
 var mu sync.Mutex
@@ -13,19 +14,13 @@ var mu sync.Mutex
 func Print(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
-	fmt.Print(concatMessages(messages...))
+	fmt.Print(utils.ConcatMessage(messages...))
 }
 
 func Println(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
-	fmt.Println(concatMessages(messages...))
-}
-
-func PrintTechInfo(messages ...any) {
-	mu.Lock()
-	defer mu.Unlock()
-	fmt.Printf("\033[31mТехнический вывод: %s\033[0m\n", concatMessages(messages...))
+	fmt.Println(utils.ConcatMessage(messages...))
 }
 
 func PrintResponse(messages ...any) {
@@ -34,14 +29,10 @@ func PrintResponse(messages ...any) {
 	fmt.Println(append([]any{constants.RESPONSEPREFIX}, messages...)...)
 }
 
-func concatMessages(messages ...any) string {
-	var sb strings.Builder
-	for _, msg := range messages {
-		sb.WriteString(fmt.Sprint(msg))
-	}
-	return sb.String()
+func PrintTopLine() {
+	Println(utils.GetCustomMessage("┌──", literals.SGR.DIM))
 }
 
-func TopLine() {
-	Println(GetCustomMessage("┌──", literals.SGR.DIM))
+func PrintTechInfo(messages ...any) {
+	fmt.Printf(utils.GetCustomMessage("Технический вывод: %s", literals.SGR.GREEN), utils.ConcatMessage(messages...))
 }

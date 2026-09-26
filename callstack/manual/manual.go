@@ -4,9 +4,9 @@ import (
 	"strings"
 
 	"main/callstack"
+	"main/callstack/event"
 	"main/constants"
-	"main/constants/response"
-	"main/lib/parse"
+	"main/lib/handler/parse"
 	"main/model"
 	"main/terminal/field"
 )
@@ -16,13 +16,13 @@ func Manual() {
 	trimmed := strings.TrimSpace(command)
 
 	if len(trimmed) <= 1 {
-		callstack.PushCallStack(response.SyntaxError())
+		event.SyntaxError()
 		return
 	}
 
 	_event, hasError := parse.ParseEvent(trimmed, strings.Split(trimmed, " ")[0])
 	if hasError {
-		callstack.PushCallStack(response.SyntaxError())
+		event.SyntaxError()
 		return
 	}
 	callstack.PushCallStack(_event)

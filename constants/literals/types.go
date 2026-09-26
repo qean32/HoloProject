@@ -1,6 +1,6 @@
 package literals
 
-type commandsType struct {
+type eventType struct {
 	CRYPTO   string
 	DECRYPTO string
 
@@ -15,26 +15,44 @@ type commandsType struct {
 	HELP   string
 	INWORK string
 
-	DECLARE            string
-	COMMANDLIST        string
-	RUNCOMMAND         string
-	RUNMULTIPLECOMMAND string
-	REMOVECOMMAND      string
+	DECLARE   string
+	EventList string
+	RUNCMD    string
+	REMOVECMD string
 
 	MENU   string
 	MANUAL string
 
 	RESPONSE string
 
-	MANUADDCOMMAND string
-	MENUCRYPTO     string
-	MENUDECRYPTO   string
+	MANUADDCMD   string
+	MENUCRYPTO   string
+	MENUDECRYPTO string
+}
+
+type extensionType struct {
+	Bat string
+}
+
+type responseType struct {
+	Success          string
+	UndefinedCommand string
+	SyntaxError      string
+}
+
+type pathType struct {
+	PathLog     string
+	PathSetting string
 }
 
 type titleType struct {
-	Menu         string
-	ListCommand  string
-	EnterCommand string
+	Menu     string
+	ListCmd  string
+	EnterCmd string
+}
+
+type flagsType struct {
+	NOLOG string
 }
 
 type SGRtype struct {
@@ -54,25 +72,4 @@ type SGRtype struct {
 	WHITE   int
 
 	RESET int
-}
-
-type flagsType struct {
-	NOLOG string
-}
-
-var SGR = SGRtype{
-	BOLD:      1,
-	ITALIC:    3,
-	DIM:       2, // 2
-	UNDERLINE: 4,
-
-	RED:     31,
-	GREEN:   32,
-	YELLOW:  33,
-	BLUE:    34,
-	MAGENTA: 35,
-	CYAN:    36,
-	WHITE:   37,
-
-	RESET: 0,
 }

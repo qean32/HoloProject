@@ -2,16 +2,11 @@ package terminal
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"atomicgo.dev/cursor"
 	"github.com/nathan-fiscaletti/consolesize-go"
 )
-
-func PrintCenter(output string, separator string) {
-	Print(strings.Repeat(separator, calcCenterCMD(len(output))) + output)
-}
 
 func PrintASCIICenter(ascii string, separator string) {
 	lines := strings.Split(ascii, "\n")
@@ -43,29 +38,19 @@ func PrintASCIICenter(ascii string, separator string) {
 	Print(fmt.Sprintf(ascii, params...))
 }
 
-func calcCenterCMD(length int) int {
-	cols, _ := consolesize.GetConsoleSize()
-	res := cols/2 - length/2
-	if res < 0 {
-		return 0
-	}
-	return res
+func ReRenderLine(message string) {
+	cursor.StartOfLine()
+	cursor.ClearLine()
+	Print(message)
+}
+
+func PrintCenter(output string, separator string) {
+	Print(strings.Repeat(separator, calcCenterCMD(len(output))) + output)
 }
 
 func DownAndStart() {
 	Println()
 	cursor.StartOfLine()
-}
-
-func GetCustomMessage(message string, sgr ...int) string {
-	if len(sgr) == 0 {
-		return message
-	}
-	parts := make([]string, len(sgr))
-	for i, v := range sgr {
-		parts[i] = strconv.Itoa(v)
-	}
-	return fmt.Sprintf("\033[%sm%s\033[0m", strings.Join(parts, ";"), message)
 }
 
 func ClearLines(count int) {
@@ -75,8 +60,11 @@ func ClearLines(count int) {
 	}
 }
 
-func ReRenderLine(message string) {
-	cursor.StartOfLine()
-	cursor.ClearLine()
-	Print(message)
+func calcCenterCMD(length int) int {
+	cols, _ := consolesize.GetConsoleSize()
+	res := cols/2 - length/2
+	if res < 0 {
+		return 0
+	}
+	return res
 }

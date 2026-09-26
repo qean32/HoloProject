@@ -3,18 +3,13 @@ package handler
 import (
 	"fmt"
 	"os"
-	"slices"
-	"strings"
 
 	"atomicgo.dev/cursor"
 
-	"main/callstack"
 	"main/constants"
 	"main/constants/literals"
-	"main/constants/response"
 	"main/lib/array"
-	"main/lib/filter"
-	"main/lib/low"
+	"main/lib/death"
 	"main/model"
 	"main/terminal"
 	"main/terminal/list"
@@ -22,36 +17,16 @@ import (
 )
 
 func _response(e model.Event) {
-	terminal.Println(e.Payload)
+	terminal.PrintResponse(e.Payload)
 }
 
 func inwork(e model.Event) {
 	terminal.Println("в разработке!")
 }
 
-func encrypt(e model.Event) {
-	low.PushToFile(constants.PATH_DATA, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
-	low.TMP_DATA = append(low.TMP_DATA, []string{e.KeyWord, e.Payload})
-}
-
-func decrypt(e model.Event) {
-	index := slices.IndexFunc(low.TMP_DATA, func(item []string) bool {
-		return item[0] == e.KeyWord
-	})
-	if index == -1 {
-		callstack.PushCallStack(response.UndefinedKeyword())
-		return
-	}
-	terminal.Print(low.TMP_DATA[index][1])
-}
-
-func generateKey(e model.Event) {}
-
 func clearLog(e model.Event) {
-	low.ClearFile(constants.PATH_LOG)
+	death.ClearFile(literals.Path.PathLog)
 }
-
-func generateMasterKey(e model.Event) {}
 
 func drop(e model.Event) {
 	os.RemoveAll(constants.Root)
@@ -65,63 +40,41 @@ func help(e model.Event) {
 }
 
 func declare(e model.Event) {
-	low.CreateFile(constants.Cmd+e.KeyWord+".bat", e.Payload)
+	death.CreateFile(constants.Cmd+e.KeyWord+".bat", e.Payload)
 }
 
-func runCommand(e model.Event) {
-	low.RUN_CMD(constants.Root + constants.Cmd + e.KeyWord)
+func runCmd(e model.Event) {
+	death.RunCmd(constants.Root + constants.Cmd + e.KeyWord)
 }
 
-func runMultipleCommand(e model.Event) {
-	index := FindCommand(e.KeyWord)
-	if index == -1 {
-		callstack.PushCallStack(response.UndefinedKeyword())
+func removeCmd(e model.Event) {
+	err := os.Remove("file.txt")
+	if err != nil {
+		fmt.Println("Ошибка:", err)
 		return
 	}
-	for _, cmd := range strings.Split(low.TMP_COMMANDS[index][1], ";") {
-		low.RUN_CMD(cmd)
-	}
-}
-
-func listCommand() {
-	terminal.Print(strings.Join(low.ReadFile(constants.PATH_COMMAND), "\n~ "))
-}
-
-func removeCommand(e model.Event) {
-	if FindCommand(e.KeyWord) == -1 {
-		callstack.PushCallStack(response.UndefinedKeyword())
-		return
-	}
-	filtered := filter.FILTER(low.TMP_COMMANDS, func(item []string) bool {
-		return item[0] != e.KeyWord
-	})
-	low.TMP_COMMANDS = filtered
-	low.WriteFile(strings.Join(array.MatrixToArrayString(filtered), "\n"), constants.PATH_COMMAND)
-}
-
-func openLog() {
-	low.RUN_CMD(constants.Root + constants.PATH_LOG)
+	fmt.Println("Файл удалён")
 }
 
 func runMenu(e model.Event) {
 	list.List(Menu, literals.Titles.Menu)
 }
 
-func menuCommandList() {
-	commands, _ := low.ListFilesByExt(constants.Root+constants.Cmd, constants.Bat)
+func cmdList() {
+	commands, _ := death.ListFilesByExt(constants.Root+constants.Cmd, literals.Extension.Bat)
 
 	list.List(
 		array.Map(commands, func(value string) model.Option {
 			return model.Option{
 				Message: value[:len(value)-4],
-				Event:   model.Event{Key: literals.COMMANDLIST.RUNCOMMAND, KeyWord: value},
+				Event:   model.Event{Key: literals.EventList.RUNCMD, KeyWord: value},
 			}
 		}),
-		literals.Titles.ListCommand,
+		literals.Titles.ListCmd,
 	)
 }
 
-func menuQuestionnaireAddCommand(e model.Event) {
+func questionnaireAddCommand(e model.Event) {
 	q := questionnaire.Questionnaire([]model.Question{
 		{
 			Message: "Ключ",
@@ -137,23 +90,21 @@ func menuQuestionnaireAddCommand(e model.Event) {
 				return true
 			},
 		},
-	}, literals.Titles.EnterCommand)
+	}, literals.Titles.EnterCmd)
 
 	declare(model.Event{
-		Key:      literals.COMMANDLIST.DECLARE,
+		Key:      literals.EventList.DECLARE,
 		KeyWord:  q["KeyWord"],
 		Payload:  q["Payload"],
-		DateTime: low.CurrentTime(),
+		DateTime: death.CurrentTime(),
 	})
 }
 
-func FindCommand(keyword string) int {
-	kw := strings.TrimSpace(keyword)
-	return slices.IndexFunc(low.TMP_COMMANDS, func(item []string) bool {
-		return item[0] == kw
-	})
-}
+func encrypt(e model.Event)           {}
+func decrypt(e model.Event)           {}
+func generateKey(e model.Event)       {}
+func generateMasterKey(e model.Event) {}
 
-func IgnoreEvent(fn func()) model.EventFunction {
-	return func(model.Event) { fn() }
+func openLog() {
+	death.RunCmd(constants.Root + literals.Path.PathLog)
 }

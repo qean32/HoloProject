@@ -5,19 +5,18 @@ import (
 	"os"
 )
 
-const MODE = "prod"
-const PROJECT_NAME = "holoproject"
+const mode = "prod"
+const projectname = "holoproject"
 
 var (
-	Root = "./private/"
+	Root = `.\private\`
 	Cmd  = `cmd\`
 )
 
 func INIT_ROOT() {
-	if MODE == "dev" {
-		Root = "./private"
+	if mode == "dev" {
 	} else {
-		Root = os.TempDir() + `\` + PROJECT_NAME + `\`
+		Root = os.TempDir() + `\` + projectname + `\`
 		os.Mkdir(Root, 0755)
 		os.Mkdir(Root+Cmd, 0755)
 	}

@@ -4,14 +4,15 @@ import (
 	"strings"
 
 	"main/lib/array"
+	"main/lib/utils"
 	"main/terminal"
 )
 
 func localReRenderLine(message string) {
-	terminal.ReRenderLine(terminal.GetCustomMessage(field.Prefix+message, field.PrefixSRG...))
+	terminal.ReRenderLine(utils.GetCustomMessage(field.Prefix+message, field.PrefixSRG...))
 }
 
-func pushChar(char string) {
+func pushSymbol(char string) {
 	if field.Position != len(field.Message) {
 		chars := strings.Split(field.Message, "")
 		setMessage(strings.Join(array.AddAfterIndex(chars, char, field.Position), ""))
@@ -26,7 +27,7 @@ func pushChar(char string) {
 	}
 }
 
-func removeChar() {
+func removeSymbol() {
 	if len(field.Message) == 0 {
 		return
 	}

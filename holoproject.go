@@ -2,8 +2,8 @@ package main
 
 import (
 	"main/callstack"
+	"main/callstack/manual"
 	"main/lib"
-	"main/lib/manual"
 	"main/terminal"
 )
 

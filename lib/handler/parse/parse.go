@@ -4,21 +4,20 @@ import (
 	"strings"
 
 	"main/constants/literals"
-	"main/lib/filter"
-	"main/lib/low"
+	"main/lib/array/filter"
+	"main/lib/death"
 	"main/model"
 )
 
 var MAP = map[string]model.FnReturnEvent{
-	literals.COMMANDLIST.CRYPTO:   parseCripto,
-	literals.COMMANDLIST.DECRYPTO: parseEcrypto,
-	literals.COMMANDLIST.DECLARE:  parseDeclare,
+	literals.EventList.CRYPTO:   parseCripto,
+	literals.EventList.DECRYPTO: parseEcrypto,
+	literals.EventList.DECLARE:  parseDeclare,
 
-	literals.COMMANDLIST.RUNCOMMAND:         eventWithKeyword,
-	literals.COMMANDLIST.RUNMULTIPLECOMMAND: eventWithKeyword,
-	literals.COMMANDLIST.REMOVECOMMAND:      eventWithKeyword,
-	literals.COMMANDLIST.MENU:               event,
-	literals.COMMANDLIST.LOGS:               event,
+	literals.EventList.RUNCMD:             eventWithKeyword,
+	literals.EventList.REMOVECMD:          eventWithKeyword,
+	literals.EventList.MENU:               event,
+	literals.EventList.LOGS:               event,
 }
 
 func parseCripto(arr []string) (model.Event, bool) {
@@ -28,7 +27,7 @@ func parseCripto(arr []string) (model.Event, bool) {
 	}
 
 	return model.Event{
-		DateTime: low.CurrentTime(),
+		DateTime: death.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Password: arr[2],
@@ -43,7 +42,7 @@ func parseEcrypto(arr []string) (model.Event, bool) {
 	}
 
 	return model.Event{
-		DateTime: low.CurrentTime(),
+		DateTime: death.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Password: arr[2],
@@ -58,7 +57,7 @@ func parseDeclare(arr []string) (model.Event, bool) {
 	}
 
 	return model.Event{
-		DateTime: low.CurrentTime(),
+		DateTime: death.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Payload:  payload,
@@ -72,7 +71,7 @@ func event(arr []string) (model.Event, bool) {
 	}
 
 	return model.Event{
-		DateTime: low.CurrentTime(),
+		DateTime: death.CurrentTime(),
 		Key:      arr[0],
 		Flags:    filter.FilterIsFlag(arr),
 	}, false
@@ -84,7 +83,7 @@ func eventWithKeyword(arr []string) (model.Event, bool) {
 	}
 
 	return model.Event{
-		DateTime: low.CurrentTime(),
+		DateTime: death.CurrentTime(),
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Flags:    filter.FilterIsFlag(arr),
