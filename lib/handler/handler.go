@@ -57,40 +57,48 @@ func removeCmd(e model.Event) {
 }
 
 func runMenu(e model.Event) {
-	list.List(Menu, literals.Titles.Menu)
+	list.List(model.ListPayload{
+		Options: Menu,
+		Title:   literals.Titles.Menu,
+	})
 }
 
 func cmdList() {
 	commands, _ := death.ListFilesByExt(constants.Root+constants.Cmd, literals.Extension.Bat)
 
 	list.List(
-		array.Map(commands, func(value string) model.Option {
-			return model.Option{
-				Message: value[:len(value)-4],
-				Event:   model.Event{Key: literals.EventList.RUNCMD, KeyWord: value},
-			}
-		}),
-		literals.Titles.ListCmd,
+		model.ListPayload{
+			Options: array.Map(commands, func(value string) model.Option {
+				return model.Option{
+					Message: value[:len(value)-4],
+					Event:   model.Event{Key: literals.EventList.RUNCMD, KeyWord: value},
+				}
+			}),
+			Title: literals.Titles.ListCmd,
+		},
 	)
 }
 
 func questionnaireAddCommand(e model.Event) {
-	q := questionnaire.Questionnaire([]model.Question{
-		{
-			Message: "Ключ",
-			Key:     "KeyWord",
-			Callback: func(res string) bool {
-				return true
+	q := questionnaire.Questionnaire(model.QuestionnairePayload{
+		Questions: []model.Question{
+			{
+				Message: "Ключ",
+				Key:     "KeyWord",
+				Callback: func(res string) bool {
+					return true
+				},
+			},
+			{
+				Message: "Команда",
+				Key:     "Payload",
+				Callback: func(res string) bool {
+					return true
+				},
 			},
 		},
-		{
-			Message: "Команда",
-			Key:     "Payload",
-			Callback: func(res string) bool {
-				return true
-			},
-		},
-	}, literals.Titles.EnterCmd)
+		Title: literals.Titles.EnterCmd,
+	})
 
 	declare(model.Event{
 		Key:      literals.EventList.DECLARE,

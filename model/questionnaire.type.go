@@ -5,3 +5,8 @@ type Questionnaire struct {
 	Questions []Question
 	Result    map[string]string
 }
+
+type QuestionnairePayload struct {
+	Questions []Question
+	Title     string
+}

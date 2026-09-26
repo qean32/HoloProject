@@ -17,9 +17,9 @@ func reset() {
 	list.Length = 0
 }
 
-func set(options []model.Option, title string) {
-	list.Options = options
-	list.Title = title
+func set(payload model.ListPayload) {
+	list.Options = payload.Options
+	list.Title = payload.Title
 	list.Position = 0
-	list.Length = len(options)
+	list.Length = len(payload.Options)
 }

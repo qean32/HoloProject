@@ -16,17 +16,17 @@ import (
 	"main/terminal"
 )
 
-func List(options []model.Option, title string) {
-	if len(options) == 0 {
+func List(payload model.ListPayload) {
+	defer reset()
+	if len(payload.Options) == 0 {
 		return
 	}
-	terminal.Println(title)
-	terminal.PrintTopLine()
-	defer reset()
-
 	cursor.Hide()
-	set(options, title)
-	renderList(options)
+	terminal.Println(payload.Title)
+	terminal.PrintTopLine()
+
+	set(payload)
+	renderList(payload.Options)
 	jumpToStartList()
 
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
@@ -46,7 +46,7 @@ func List(options []model.Option, title string) {
 		}
 		switch key.Code {
 		case keys.Enter:
-			selectOption(options[list.Position].Event)
+			_select()
 			return true, nil
 		case keys.Down:
 			moveDown()
@@ -64,7 +64,7 @@ func List(options []model.Option, title string) {
 func renderList(options []model.Option) {
 	for i, item := range options {
 		isSelected := i == list.Position
-		startChar := getStartChar(isSelected)
+		startChar := getStartSymbol(isSelected)
 
 		style := literals.SGR.DIM
 		color := literals.SGR.DIM
@@ -83,11 +83,11 @@ func renderList(options []model.Option) {
 	}
 }
 
-func selectOption(event model.Event) {
+func _select() {
 	jumpToEndList()
 	terminal.DownAndStart()
 	cursor.Show()
-	callstack.PushCallStack(death.GetShortEvent(event))
+	callstack.PushCallStack(death.GetShortEvent(list.Options[list.Position].Event))
 }
 
 func reRenderList() {

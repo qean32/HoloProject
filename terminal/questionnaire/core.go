@@ -9,8 +9,8 @@ var questionnaire = model.Questionnaire{
 	Result:    map[string]string{},
 }
 
-func Questionnaire(questions []model.Question, title string) map[string]string {
-	set(questions, title)
+func Questionnaire(payload model.QuestionnairePayload) map[string]string {
+	set(payload)
 	runQuestionnaire()
 
 	return questionnaire.Result
@@ -21,8 +21,8 @@ func reset() {
 	questionnaire.Result = map[string]string{}
 }
 
-func set(questions []model.Question, title string) {
-	questionnaire.Questions = questions
-	questionnaire.Title = title
+func set(payload model.QuestionnairePayload) {
+	questionnaire.Questions = payload.Questions
+	questionnaire.Title = payload.Title
 	questionnaire.Result = map[string]string{}
 }

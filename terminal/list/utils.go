@@ -6,7 +6,7 @@ import (
 	"atomicgo.dev/cursor"
 )
 
-func getStartChar(isSelected bool) string {
+func getStartSymbol(isSelected bool) string {
 	if isSelected {
 		return constants.CHAR_SELECTED_ITEM
 	}

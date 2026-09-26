@@ -11,7 +11,7 @@ import (
 )
 
 func Field(payload model.FieldPayload) string {
-	reset()
+	defer reset()
 	set(payload)
 
 	terminal.Print(utils.GetCustomMessage(field.Prefix, field.PrefixSRG...))

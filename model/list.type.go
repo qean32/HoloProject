@@ -6,3 +6,8 @@ type List struct {
 	Length   int
 	Options  []Option
 }
+
+type ListPayload struct {
+	Options []Option
+	Title   string
+}
