@@ -6,16 +6,20 @@ import (
 )
 
 const MODE = "prod"
-const PROJECT_NAME = "holo"
+const PROJECT_NAME = "holoproject"
 
-var Root = "./private"
+var (
+	Root = "./private/"
+	Cmd  = `cmd\`
+)
 
 func INIT_ROOT() {
 	if MODE == "dev" {
 		Root = "./private"
 	} else {
-		os.Mkdir(os.TempDir()+`\`+PROJECT_NAME, 0755)
-		Root = os.TempDir() + `\` + PROJECT_NAME
+		Root = os.TempDir() + `\` + PROJECT_NAME + `\`
+		os.Mkdir(Root, 0755)
+		os.Mkdir(Root+Cmd, 0755)
 	}
 }
 
@@ -24,31 +28,30 @@ var BinaryPROJECT_INIT = `
 `
 
 var PROJECT_INIT = `
-%v __  __     ______     __         ______     ______   ______     ______       __     ______     ______     ______     
-%v/\ \_\ \   /\  __ \   /\ \       /\  __ \   /\  == \ /\  == \   /\  __ \     /\ \   /\  ___\   /\  ___\   /\__  _\    
-%v\ \  __ \  \ \ \/\ \  \ \ \____  \ \ \/\ \  \ \  _-/ \ \  __<   \ \ \/\ \   _\_\ \  \ \  __\   \ \ \____  \/_/\ \/    
-%v \ \_\ \_\  \ \_____\  \ \_____\  \ \_____\  \ \_\    \ \_\ \_\  \ \_____\ /\_____\  \ \_____\  \ \_____\    \ \_\    
-%v  \/_/\/_/   \/_____/   \/_____/   \/_____/   \/_/     \/_/ /_/   \/_____/ \/_____/   \/_____/   \/_____/     \/_/    
+%v __  __    ______    __        ______     ______  ______    ______      __    ______    ______    ______     
+%v/\ \_\ \  /\  __ \  /\ \      /\  __ \   /\  == \/\  == \  /\  __ \    /\ \  /\  ___\  /\  ___\  /\__  _\    
+%v\ \  __ \ \ \ \/\ \ \ \ \____ \ \ \/\ \  \ \  _-/\ \  __<  \ \ \/\ \  _\_\ \ \ \  __\  \ \ \____ \/_/\ \/    
+%v \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\  \ \_\   \ \_\ \_\ \ \_____\/\_____\ \ \_____\ \ \_____\   \ \_\    
+%v  \/_/\/_/  \/_____/  \/_____/  \/_____/   \/_/    \/_/ /_/  \/_____/\/_____/  \/_____/  \/_____/    \/_/    
 %v
 `
 
 // ASCII
-// "\033[31m" red color text
 // https://translated.turbopages.org/proxy_u/en-ru.ru.6c604ba4-6a11ef9b-b4e5d92b-74722d776562/https/student.cs.uwaterloo.ca/~cs452/terminal.html
 // https://www.asciiart.eu/text-to-ascii-art respect
 // https://patorjk.com/software/taag/#p=testall&f=Broadway&t=holoproject+2&x=none&v=4&h=4&w=80&we=false
 
 var HelpMessage = `
-%v  __  __     ______     __         ______     ______   ______     ______       __     ______     ______     ______      __  __     ______     __         ______  
-%v /\ \_\ \   /\  __ \   /\ \       /\  __ \   /\  == \ /\  == \   /\  __ \     /\ \   /\  ___\   /\  ___\   /\__  _\    /\ \_\ \   /\  ___\   /\ \       /\  == \ 
-%v \ \  __ \  \ \ \/\ \  \ \ \____  \ \ \/\ \  \ \  _-/ \ \  __<   \ \ \/\ \   _\_\ \  \ \  __\   \ \ \____  \/_/\ \/    \ \  __ \  \ \  __\   \ \ \____  \ \  _-/ 
-%v  \ \_\ \_\  \ \_____\  \ \_____\  \ \_____\  \ \_\    \ \_\ \_\  \ \_____\ /\_____\  \ \_____\  \ \_____\    \ \_\     \ \_\ \_\  \ \_____\  \ \_____\  \ \_\   
-%v   \/_/\/_/   \/_____/   \/_____/   \/_____/   \/_/     \/_/ /_/   \/_____/ \/_____/   \/_____/   \/_____/     \/_/      \/_/\/_/   \/_____/   \/_____/   \/_/   
+%v  __  __    ______    __        ______      ______  ______    ______      __    ______    ______    ______     __  __    ______    __        ______  
+%v /\ \_\ \  /\  __ \  /\ \      /\  __ \    /\  == \/\  == \  /\  __ \    /\ \  /\  ___\  /\  ___\  /\__  _\   /\ \_\ \  /\  ___\  /\ \      /\  == \ 
+%v \ \  __ \ \ \ \/\ \ \ \ \____ \ \ \/\ \   \ \  _-/\ \  __<  \ \ \/\ \  _\_\ \ \ \  __\  \ \ \____ \/_/\ \/   \ \  __ \ \ \  __\  \ \ \____ \ \  _-/ 
+%v  \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\   \ \_\   \ \_\ \_\ \ \_____\/\_____\ \ \_____\ \ \_____\   \ \_\    \ \_\ \_\ \ \_____\ \ \_____\ \ \_\   
+%v   \/_/\/_/  \/_____/  \/_____/  \/_____/    \/_/    \/_/ /_/  \/_____/\/_____/  \/_____/  \/_____/    \/_/     \/_/\/_/  \/_____/  \/_____/  \/_/   
 %v
 %v  Команда        Описание                          Пример
 %v
-%v  cripto         Шифрование строки                 cripto key_word key_password { payload }
-%v  ecripto        Дешифровка строки                 ecripto key_word key_password
+%v  crypto         Шифрование строки                 crypto key_word key_password { payload }
+%v  ecrypto        Дешифровка строки                 ecrypto key_word key_password
 %v
 %v  gmaster        Генерация мастер-ключа
 %v  gkey           Генерация ключа для шифра
@@ -58,20 +61,19 @@ var HelpMessage = `
 %v  stop           Остановить приложение
 %v  help           Список команд
 %v
-%v  declare        Добавить команду                 declare key_word { payload }
+%v  declare        Добавить команду                  declare key_word { payload }
 %v  commands       Просмотреть список команд
 %v  run            Запустить команду                 run key_word
 %v  runm           Запустить множественную           runm key_word
 %v  rmc            Удалить команду                   rmc key_word
 %v
-%v  note           Открыть запись
-%v  dnote          Создание записи                   dnote key_word key_password
-%v  notes          Получить список записей
-%v
 `
 
-const CHAR_SELECTED_ITEM = "-> "
-const CHAR_UN_SELECTED_ITEM = ""
+const CHAR_SELECTED_ITEM = "- "
+const CHAR_UN_SELECTED_ITEM = "│  "
+
+const FIELDPREFIX = "ввод "
+const RESPONSEPREFIX = "вывод"
 
 var (
 	StyleError    = []int{literals.SGR.RED, literals.SGR.BOLD}

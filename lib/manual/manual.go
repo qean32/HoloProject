@@ -1,24 +1,29 @@
 package manual
 
 import (
+	"strings"
+
 	"main/callstack"
+	"main/constants"
 	"main/constants/response"
 	"main/lib/parse"
+	"main/model"
 	"main/terminal/field"
-	"strings"
 )
 
 func Manual() {
-	command := field.Field()
+	command := field.Field(model.FieldPayload{Prefix: constants.FIELDPREFIX})
+	trimmed := strings.TrimSpace(command)
 
-	if len(command) > 1 {
-		trimString := strings.TrimSpace(command)
-		event, _error := parse.ParseEvent(trimString, strings.Split(trimString, " ")[0])
-
-		if !_error {
-			callstack.PushCallStack(event)
-		} else {
-			response.SYNTAX_ERROR()
-		}
+	if len(trimmed) <= 1 {
+		callstack.PushCallStack(response.SyntaxError())
+		return
 	}
+
+	_event, hasError := parse.ParseEvent(trimmed, strings.Split(trimmed, " ")[0])
+	if hasError {
+		callstack.PushCallStack(response.SyntaxError())
+		return
+	}
+	callstack.PushCallStack(_event)
 }

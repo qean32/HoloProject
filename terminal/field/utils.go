@@ -1,13 +1,14 @@
 package field
 
 import (
+	"strings"
+
 	"main/lib/array"
 	"main/terminal"
-	"strings"
 )
 
 func localReRenderLine(message string) {
-	terminal.ReRenderLine(prefix + message)
+	terminal.ReRenderLine(terminal.GetCustomMessage(field.Prefix+message, field.PrefixSRG...))
 }
 
 func pushChar(char string) {
@@ -29,8 +30,8 @@ func removeChar() {
 	if len(field.Message) == 0 {
 		return
 	}
-	decrimentPosition()
-	decrimentPositionRange()
+	decrementPosition()
+	decrementPositionRange()
 	setMessage(strings.Join(array.RemoveByIndex(strings.Split(field.Message, ""), field.Position), ""))
 	localReRenderLine(field.Message)
 	horizontalCursorToPosition(field.Position)

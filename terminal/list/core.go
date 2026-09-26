@@ -1,11 +1,13 @@
 package list
 
 import (
-	"atomicgo.dev/cursor"
 	"main/model"
+
+	"atomicgo.dev/cursor"
 )
 
 var list = model.List{
+	Title:    "",
 	Position: 0,
 	Length:   0,
 	Options:  []model.Option{},
@@ -26,7 +28,7 @@ func incrementPosition() bool {
 	return false
 }
 
-func decrimentPosition() bool {
+func decrementPosition() bool {
 	if list.Position > 0 {
 		list.Position--
 		cursor.Up(1)
@@ -49,8 +51,9 @@ func reset() {
 	list.Length = 0
 }
 
-func set(options []model.Option) {
+func set(options []model.Option, title string) {
 	list.Options = options
+	list.Title = title
 	list.Position = 0
 	list.Length = len(options)
 }

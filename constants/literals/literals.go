@@ -4,15 +4,9 @@ var FLAGS = flagsType{
 	NOLOG: "-nl",
 }
 
-/*
- CRIPTO добавить сохранение даты
- CRIPTO добавить шифрование
- NOTE сделать записную строку сохранение даты шифрование пароль
-*/
-
-var COMMANDS_LIST = commandsType{
-	CRIPTO:  "cripto",
-	ECRIPTO: "ecripto",
+var COMMANDLIST = commandsType{
+	CRYPTO:   "crypto",
+	DECRYPTO: "ecrypto",
 
 	GENERATEMASTER: "gmaster",
 	GENERATEKEY:    "gkey",
@@ -25,14 +19,23 @@ var COMMANDS_LIST = commandsType{
 	HELP:   "help",
 	INWORK: "inwork",
 
-	DECLARE:               "declare",
-	COMMANDS_LIST:         "clist",
-	RUN_COMMAND:           "run",
-	RUN_MULTIPLE_COMMANDS: "runm",
-	REMOVE_COMMAND:        "rmc",
+	DECLARE:            "declare",
+	COMMANDLIST:        "clist",
+	RUNCOMMAND:         "run",
+	RUNMULTIPLECOMMAND: "runm",
+	REMOVECOMMAND:      "rmc",
+
+	RESPONSE: "response",
 
 	MENU: "menu",
 
-	MANU_ADD_COMMAND: "MANU_ADD_COMMAND",
-	MENU_HASH:        "MENU_HASH",
+	MANUADDCOMMAND: "MANUADDCOMMAND",
+	MENUDECRYPTO:   "MENUDECRYPTO",
+	MENUCRYPTO:     "MENUCRYPTO",
+}
+
+var Titles = titleType{
+	Menu:         "Меню",
+	ListCommand:  "Список команд",
+	EnterCommand: "Добавить команду",
 }

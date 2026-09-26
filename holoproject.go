@@ -21,7 +21,7 @@ func RunLoop() {
 			if !ok {
 				break
 			}
-			terminal.OutputTechInfo(event)
+			terminal.PrintTechInfo(event)
 			lib.Event(event)
 		}
 		manual.Manual()

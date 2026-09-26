@@ -10,7 +10,7 @@ func AddAfterIndex[T any](array []T, item T, index int) []T {
 	return result
 }
 
-func Map[T any, U any](slice []T, fn func(T) U) []U {
+func Map[T, U any](slice []T, fn func(T) U) []U {
 	result := make([]U, len(slice))
 	for i, v := range slice {
 		result[i] = fn(v)
@@ -26,11 +26,9 @@ func RemoveByIndex[T any](slice []T, index int) []T {
 }
 
 func MatrixToArrayString(matrix [][]string) []string {
-	var tmpArr []string
-
-	for i := 0; i < len(matrix); i++ {
-		tmpArr = append(tmpArr, strings.Join(matrix[i], " "))
+	result := make([]string, len(matrix))
+	for i, row := range matrix {
+		result[i] = strings.Join(row, " ")
 	}
-
-	return tmpArr
+	return result
 }

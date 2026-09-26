@@ -2,6 +2,13 @@ package handler
 
 import (
 	"fmt"
+	"os"
+	"slices"
+	"strings"
+
+	"atomicgo.dev/cursor"
+
+	"main/callstack"
 	"main/constants"
 	"main/constants/literals"
 	"main/constants/response"
@@ -10,139 +17,111 @@ import (
 	"main/lib/low"
 	"main/model"
 	"main/terminal"
-
 	"main/terminal/list"
 	"main/terminal/questionnaire"
-	"os"
-	"slices"
-	"strings"
-
-	"atomicgo.dev/cursor"
 )
 
-func Inwork(e model.Event) {
-	terminal.Outputln("в разработке!")
+func _response(e model.Event) {
+	terminal.Println(e.Payload)
 }
 
-func Encrypt(e model.Event) {
+func inwork(e model.Event) {
+	terminal.Println("в разработке!")
+}
+
+func encrypt(e model.Event) {
 	low.PushToFile(constants.PATH_DATA, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
 	low.TMP_DATA = append(low.TMP_DATA, []string{e.KeyWord, e.Payload})
 }
 
-func Decrypt(e model.Event) {
+func decrypt(e model.Event) {
 	index := slices.IndexFunc(low.TMP_DATA, func(item []string) bool {
 		return item[0] == e.KeyWord
 	})
-
-	if index != -1 {
-		terminal.Output(low.TMP_DATA[index][1])
-	} else {
-		response.UNDEFINED_KEYWORD()
+	if index == -1 {
+		callstack.PushCallStack(response.UndefinedKeyword())
+		return
 	}
+	terminal.Print(low.TMP_DATA[index][1])
 }
 
-func GenerateKey(e model.Event) {}
+func generateKey(e model.Event) {}
 
-func ClearLog(e model.Event) {
+func clearLog(e model.Event) {
 	low.ClearFile(constants.PATH_LOG)
 }
 
-func GenerateMasterKey(e model.Event) {
-	low.CreateFile(constants.PATH_LOG)
-	low.CreateFile(constants.PATH_COMMAND)
-	low.CreateFile(constants.PATH_DATA)
-}
+func generateMasterKey(e model.Event) {}
 
-func Drop(e model.Event) {
+func drop(e model.Event) {
 	os.RemoveAll(constants.Root)
 	os.Mkdir(constants.Root, 0755)
 }
 
-func Stop(e model.Event) {
-	low.StopProcess()
-}
-
-func Help(e model.Event) {
+func help(e model.Event) {
 	terminal.DownAndStart()
 	cursor.StartOfLine()
-	terminal.OutputASCII_CENTER(constants.HelpMessage, "")
+	terminal.PrintASCIICenter(constants.HelpMessage, "")
 }
 
-func Declare(e model.Event) {
-	low.PushToFile(constants.PATH_COMMAND, fmt.Sprintf("%s %s", e.KeyWord, e.Payload))
-	low.TMP_COMMANDS = append(low.TMP_COMMANDS, []string{e.KeyWord, e.Payload})
+func declare(e model.Event) {
+	low.CreateFile(constants.Cmd+e.KeyWord+".bat", e.Payload)
 }
 
-func RunCommand(e model.Event) {
-	index := slices.IndexFunc(low.TMP_COMMANDS, func(item []string) bool {
-		return item[0] == strings.TrimSpace(e.KeyWord)
+func runCommand(e model.Event) {
+	low.RUN_CMD(constants.Root + constants.Cmd + e.KeyWord)
+}
+
+func runMultipleCommand(e model.Event) {
+	index := FindCommand(e.KeyWord)
+	if index == -1 {
+		callstack.PushCallStack(response.UndefinedKeyword())
+		return
+	}
+	for _, cmd := range strings.Split(low.TMP_COMMANDS[index][1], ";") {
+		low.RUN_CMD(cmd)
+	}
+}
+
+func listCommand() {
+	terminal.Print(strings.Join(low.ReadFile(constants.PATH_COMMAND), "\n~ "))
+}
+
+func removeCommand(e model.Event) {
+	if FindCommand(e.KeyWord) == -1 {
+		callstack.PushCallStack(response.UndefinedKeyword())
+		return
+	}
+	filtered := filter.FILTER(low.TMP_COMMANDS, func(item []string) bool {
+		return item[0] != e.KeyWord
 	})
-
-	if index != -1 {
-		low.RUN_CMD(low.TMP_COMMANDS[index][1])
-	} else {
-		response.UNDEFINED_KEYWORD()
-	}
+	low.TMP_COMMANDS = filtered
+	low.WriteFile(strings.Join(array.MatrixToArrayString(filtered), "\n"), constants.PATH_COMMAND)
 }
 
-func RunMultipleCommands(e model.Event) {
-	index := slices.IndexFunc(low.TMP_COMMANDS, func(item []string) bool {
-		return item[0] == strings.TrimSpace(e.KeyWord)
-	})
-
-	if index != -1 {
-		commands := strings.Split(low.TMP_COMMANDS[index][1], ";")
-
-		for i := 0; i < len(commands); i++ {
-			low.RUN_CMD(commands[i])
-		}
-	} else {
-		response.UNDEFINED_KEYWORD()
-	}
-}
-
-func ListCommands(e model.Event) {
-	terminal.Output(strings.Join(low.ReadFile(constants.PATH_COMMAND), "\n~ "))
-}
-
-func RemoveCommand(e model.Event) {
-	if slices.IndexFunc(low.TMP_COMMANDS, func(item []string) bool {
-		return item[0] == e.KeyWord
-	}) != -1 {
-		filtered := filter.FILTER(low.TMP_COMMANDS, func(item []string) bool { return item[0] != e.KeyWord })
-		low.TMP_COMMANDS = filtered
-		low.WriteFile(strings.Join(array.MatrixToArrayString(filtered), "\n"), constants.PATH_COMMAND)
-	} else {
-		response.UNDEFINED_KEYWORD()
-	}
-}
-
-func OpenLogs() {
+func openLog() {
 	low.RUN_CMD(constants.Root + constants.PATH_LOG)
 }
 
-func Notes(e model.Event) {}
-
-func RunMenu(e model.Event) {
-	list.List(Menu)
+func runMenu(e model.Event) {
+	list.List(Menu, literals.Titles.Menu)
 }
 
-func Note(e model.Event) {}
+func menuCommandList() {
+	commands, _ := low.ListFilesByExt(constants.Root+constants.Cmd, constants.Bat)
 
-func DeleteNote(e model.Event) {}
-
-func Menu_runCommandsList() {
 	list.List(
-		array.Map(low.TMP_COMMANDS, func(value []string) model.Option {
+		array.Map(commands, func(value string) model.Option {
 			return model.Option{
-				Message: value[0],
-				Event:   model.Event{Key: literals.COMMANDS_LIST.RUN_COMMAND, KeyWord: value[0]},
+				Message: value[:len(value)-4],
+				Event:   model.Event{Key: literals.COMMANDLIST.RUNCOMMAND, KeyWord: value},
 			}
 		}),
+		literals.Titles.ListCommand,
 	)
 }
 
-func Menu_runQuestionnaireAddCommand(e model.Event) {
+func menuQuestionnaireAddCommand(e model.Event) {
 	q := questionnaire.Questionnaire([]model.Question{
 		{
 			Message: "Ключ",
@@ -158,12 +137,23 @@ func Menu_runQuestionnaireAddCommand(e model.Event) {
 				return true
 			},
 		},
-	})
+	}, literals.Titles.EnterCommand)
 
-	Declare(model.Event{
-		Key:      literals.COMMANDS_LIST.DECLARE,
+	declare(model.Event{
+		Key:      literals.COMMANDLIST.DECLARE,
 		KeyWord:  q["KeyWord"],
 		Payload:  q["Payload"],
 		DateTime: low.CurrentTime(),
 	})
+}
+
+func FindCommand(keyword string) int {
+	kw := strings.TrimSpace(keyword)
+	return slices.IndexFunc(low.TMP_COMMANDS, func(item []string) bool {
+		return item[0] == kw
+	})
+}
+
+func IgnoreEvent(fn func()) model.EventFunction {
+	return func(model.Event) { fn() }
 }

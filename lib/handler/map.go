@@ -2,32 +2,39 @@ package handler
 
 import (
 	"main/constants/literals"
+	"main/lib/low"
 	"main/lib/manual"
 	"main/model"
 )
 
 var MAP = map[string]model.EventFunction{
-	literals.COMMANDS_LIST.CRIPTO:  Encrypt,
-	literals.COMMANDS_LIST.ECRIPTO: Decrypt,
+	literals.COMMANDLIST.CRYPTO:   encrypt,
+	literals.COMMANDLIST.DECRYPTO: decrypt,
 
-	literals.COMMANDS_LIST.GENERATEKEY:    GenerateKey,
-	literals.COMMANDS_LIST.GENERATEMASTER: GenerateMasterKey,
+	literals.COMMANDLIST.GENERATEKEY:    generateKey,
+	literals.COMMANDLIST.GENERATEMASTER: generateMasterKey,
 
-	literals.COMMANDS_LIST.DECLARE:               Declare,
-	literals.COMMANDS_LIST.RUN_COMMAND:           RunCommand,
-	literals.COMMANDS_LIST.REMOVE_COMMAND:        RemoveCommand,
-	literals.COMMANDS_LIST.RUN_MULTIPLE_COMMANDS: RunMultipleCommands,
+	literals.COMMANDLIST.DECLARE:            declare,
+	literals.COMMANDLIST.RUNCOMMAND:         runCommand,
+	literals.COMMANDLIST.REMOVECOMMAND:      removeCommand,
+	literals.COMMANDLIST.RUNMULTIPLECOMMAND: runMultipleCommand,
 
-	literals.COMMANDS_LIST.CLEARLOG: ClearLog,
-	literals.COMMANDS_LIST.LOGS:     func(e model.Event) { OpenLogs() },
+	literals.COMMANDLIST.CLEARLOG: clearLog,
+	literals.COMMANDLIST.LOGS:     ignoreEvent(openLog),
 
-	literals.COMMANDS_LIST.MENU: RunMenu,
-	literals.COMMANDS_LIST.DROP: Drop,
-	literals.COMMANDS_LIST.STOP: Stop,
-	literals.COMMANDS_LIST.HELP: Help,
+	literals.COMMANDLIST.RESPONSE: _response,
 
-	literals.COMMANDS_LIST.COMMANDS_LIST:    func(e model.Event) { Menu_runCommandsList() },
-	literals.COMMANDS_LIST.MANUAL:           func(e model.Event) { manual.Manual() },
-	literals.COMMANDS_LIST.MANU_ADD_COMMAND: Menu_runQuestionnaireAddCommand,
-	literals.COMMANDS_LIST.MENU_HASH:        Inwork,
+	literals.COMMANDLIST.MENU: runMenu,
+	literals.COMMANDLIST.DROP: drop,
+	literals.COMMANDLIST.STOP: ignoreEvent(low.Exit),
+	literals.COMMANDLIST.HELP: help,
+
+	literals.COMMANDLIST.COMMANDLIST:    ignoreEvent(menuCommandList),
+	literals.COMMANDLIST.MANUAL:         ignoreEvent(manual.Manual),
+	literals.COMMANDLIST.MANUADDCOMMAND: menuQuestionnaireAddCommand,
+	literals.COMMANDLIST.MENUCRYPTO:     inwork,
+}
+
+func ignoreEvent(fn func()) model.EventFunction {
+	return func(model.Event) { fn() }
 }

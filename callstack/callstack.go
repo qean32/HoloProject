@@ -2,6 +2,7 @@ package callstack
 
 import (
 	"main/model"
+	"main/terminal"
 	"sync"
 )
 
@@ -22,7 +23,7 @@ func PushCallStack(event model.Event) {
 	}
 }
 
-func Pop() (model.Event, bool) {
+func Shift() (model.Event, bool) {
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -33,6 +34,22 @@ func Pop() (model.Event, bool) {
 	event := queue[0]
 	queue[0] = model.Event{}
 	queue = queue[1:]
+	return event, true
+}
+
+func Pop() (model.Event, bool) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	if len(queue) == 0 {
+		return model.Event{}, false
+	}
+
+	terminal.PrintTechInfo(queue)
+	last := len(queue) - 1
+	event := queue[last]
+	queue[last] = model.Event{} // обнуляем ссылку для GC
+	queue = queue[:last]
 	return event, true
 }
 

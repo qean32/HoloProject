@@ -3,25 +3,27 @@ package low
 import (
 	"bufio"
 	"fmt"
-	"main/constants"
-	"main/constants/literals"
-	"main/model"
 	"os"
 	"os/exec"
 	"slices"
 	"strings"
 	"time"
+
+	"main/callstack"
+	"main/constants"
+	"main/constants/literals"
+	"main/model"
 )
 
-var READER = bufio.NewReader(os.Stdin)
+var reader = bufio.NewReader(os.Stdin)
 
 func LOG(e model.Event) {
-	if slices.IndexFunc(e.Flags, func(item string) bool { return strings.TrimSpace(item) == literals.FLAGS.NOLOG }) == -1 {
+	noLog := slices.ContainsFunc(e.Flags, func(item string) bool {
+		return strings.TrimSpace(item) == literals.FLAGS.NOLOG
+	})
+	if !noLog {
 		PushToFile(constants.PATH_LOG, fmt.Sprintf("%#v", e))
 	}
-}
-
-func GenerateMasterKey() {
 }
 
 func CurrentTime() string {
@@ -31,26 +33,30 @@ func CurrentTime() string {
 func RUN_CMD(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	if err := cmd.Start(); err != nil {
-		fmt.Println("$ Ошибка при запуске команды:", err)
+		callstack.PushCallStack(model.Event{
+			Key:     literals.COMMANDLIST.RESPONSE,
+			Payload: "$ Ошибка при запуске команды",
+		})
 		return
 	}
-	go func() {
-		if err := cmd.Wait(); err != nil {
-			fmt.Println("$ Команда завершилась с ошибкой:", err)
-		}
-	}()
+	if err := cmd.Wait(); err != nil {
+		callstack.PushCallStack(model.Event{
+			Key:     literals.COMMANDLIST.RESPONSE,
+			Payload: "$ Команда завершилась с ошибкой",
+		})
+	}
 }
 
-func ClearLog() {
-	ClearFile(constants.PATH_LOG)
-}
-
-func StopProcess() {
-	RUN_CMD("clear")
+func Exit() {
+	clearTerminal()
 	os.Exit(0)
 }
 
 func GetShortEvent(event model.Event) model.Event {
 	event.DateTime = CurrentTime()
 	return event
+}
+
+func clearTerminal() {
+	fmt.Print("\033[H\033[2J")
 }

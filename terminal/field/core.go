@@ -2,6 +2,8 @@ package field
 
 import (
 	"fmt"
+
+	"main/constants"
 	"main/model"
 )
 
@@ -9,16 +11,24 @@ var field = model.FieldType{
 	Position:      0,
 	PositionRange: 0,
 	Message:       "",
+	PrefixSRG:     []int{},
+	Prefix:        constants.FIELDPREFIX,
 }
 
 func reset() {
 	field.Message = ""
 	field.Position = 0
 	field.PositionRange = 0
+	field.Prefix = constants.FIELDPREFIX
 }
 
 func setMessage(message string) {
 	field.Message = message
+}
+
+func setPrefix(prefix model.FieldPayload) {
+	field.Prefix = prefix.Prefix
+	field.PrefixSRG = prefix.PrefixSRG
 }
 
 func incrementPosition() {
@@ -27,7 +37,7 @@ func incrementPosition() {
 	}
 }
 
-func decrimentPosition() {
+func decrementPosition() {
 	if field.Position > 0 {
 		field.Position--
 	}
@@ -37,14 +47,13 @@ func incrementPositionRange() {
 	field.PositionRange++
 }
 
-func decrimentPositionRange() {
+func decrementPositionRange() {
 	if field.PositionRange > 0 {
 		field.PositionRange--
 	}
 }
 
 func horizontalCursorToLeft() {
-	// DO NOT USE OUTSIDE FIELD !!!
 	if field.Position > 0 {
 		fmt.Print("\033[1D")
 		changePositionCursor(-1, false)
@@ -62,7 +71,7 @@ func horizontalCursorToPosition(position int) {
 	if position < 0 || position > field.PositionRange {
 		return
 	}
-	fmt.Printf("\033[%dG", len(prefix)+position+2)
+	fmt.Printf("\033[%dG", len([]rune(field.Prefix))+position+1)
 	field.Position = position
 }
 
@@ -78,9 +87,9 @@ func changePositionCursor(operation int, moveRange bool) {
 		incrementPosition()
 	} else {
 		if moveRange {
-			decrimentPositionRange()
+			decrementPositionRange()
 		}
-		decrimentPosition()
+		decrementPosition()
 	}
 }
 

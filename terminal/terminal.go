@@ -2,40 +2,46 @@ package terminal
 
 import (
 	"fmt"
+	"main/constants"
+	"main/constants/literals"
+	"strings"
 	"sync"
 )
 
-var (
-	mu sync.Mutex
-)
+var mu sync.Mutex
 
-func Output(messages ...any) {
+func Print(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
-
-	fmt.Print(" ", calsMessages(messages...))
+	fmt.Print(concatMessages(messages...))
 }
 
-func Outputln(messages ...any) {
+func Println(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
-
-	fmt.Println(" ", calsMessages(messages...))
+	fmt.Println(concatMessages(messages...))
 }
 
-func OutputTechInfo(messages ...any) {
-	// Outputln("\033[31m" + "Технический вывод: " + calsMessages(messages...) + "\033[0m")
+func PrintTechInfo(messages ...any) {
+	mu.Lock()
+	defer mu.Unlock()
+	fmt.Printf("\033[31mТехнический вывод: %s\033[0m\n", concatMessages(messages...))
 }
 
-func OutputResponse(messages ...any) {
-	fmt.Println(append([]any{" <- "}, messages...)...)
+func PrintResponse(messages ...any) {
+	mu.Lock()
+	defer mu.Unlock()
+	fmt.Println(append([]any{constants.RESPONSEPREFIX}, messages...)...)
 }
 
-func calsMessages(messages ...any) string {
-	var result string
+func concatMessages(messages ...any) string {
+	var sb strings.Builder
 	for _, msg := range messages {
-		result += fmt.Sprint(msg)
+		sb.WriteString(fmt.Sprint(msg))
 	}
+	return sb.String()
+}
 
-	return result
+func TopLine() {
+	Println(GetCustomMessage("┌──", literals.SGR.DIM))
 }

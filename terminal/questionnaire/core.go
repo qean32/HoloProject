@@ -1,14 +1,17 @@
 package questionnaire
 
-import "main/model"
+import (
+	"main/model"
+	"main/terminal"
+)
 
 var questionnaire = model.Questionnaire{
 	Questions: []model.Question{},
 	Result:    map[string]string{},
 }
 
-func Questionnaire(questions []model.Question) map[string]string {
-	set(questions)
+func Questionnaire(questions []model.Question, title string) map[string]string {
+	set(questions, title)
 	runQuestionnaire()
 
 	return questionnaire.Result
@@ -19,11 +22,13 @@ func reset() {
 	questionnaire.Result = map[string]string{}
 }
 
-func set(Questions []model.Question) {
-	questionnaire.Questions = Questions
+func set(questions []model.Question, title string) {
+	questionnaire.Questions = questions
+	questionnaire.Title = title
 	questionnaire.Result = map[string]string{}
 }
 
-func pushAnswer(key string, answer string) {
+func pushAnswer(key, answer string) {
 	questionnaire.Result[key] = answer
+	terminal.DownAndStart()
 }
