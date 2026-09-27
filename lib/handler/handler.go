@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"fmt"
 	"os"
 
 	"atomicgo.dev/cursor"
 
+	"main/callstack/event"
 	"main/constants"
 	"main/constants/literals"
 	"main/lib/array"
@@ -48,12 +48,11 @@ func runCmd(e model.Event) {
 }
 
 func removeCmd(e model.Event) {
-	err := os.Remove("file.txt")
+	err := os.Remove(constants.Root + constants.Cmd + e.KeyWord)
 	if err != nil {
-		fmt.Println("Ошибка:", err)
+		event.Response("Ошибка:", err)
 		return
 	}
-	fmt.Println("Файл удалён")
 }
 
 func runMenu(e model.Event) {
@@ -63,7 +62,7 @@ func runMenu(e model.Event) {
 	})
 }
 
-func cmdList() {
+func cmdList(eventKey string) {
 	commands, _ := death.ListFilesByExt(constants.Root+constants.Cmd, literals.Extension.Bat)
 
 	list.List(
@@ -71,7 +70,7 @@ func cmdList() {
 			Options: array.Map(commands, func(value string) model.Option {
 				return model.Option{
 					Message: value[:len(value)-4],
-					Event:   model.Event{Key: literals.EventList.RUNCMD, KeyWord: value},
+					Event:   model.Event{Key: eventKey, KeyWord: value},
 				}
 			}),
 			Title: literals.Titles.ListCmd,

@@ -35,9 +35,11 @@ var EventList = eventType{
 	INWORK: "inwork",
 
 	DECLARE:   "declare",
-	EventList: "clist",
 	RUNCMD:    "run",
 	REMOVECMD: "rmc",
+
+	EVENTLIST:       "clist",
+	EVENTLISTREMOVE: "clistremove",
 
 	RESPONSE: "response",
 

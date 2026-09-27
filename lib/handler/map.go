@@ -28,7 +28,16 @@ var MAP = map[string]model.EventFunction{
 	literals.EventList.STOP: ignoreEvent(death.Exit),
 	literals.EventList.HELP: help,
 
-	literals.EventList.EventList:  ignoreEvent(cmdList),
+	literals.EventList.EVENTLIST: ignoreEvent(
+		func() {
+			cmdList(literals.EventList.RUNCMD)
+		},
+	),
+	literals.EventList.EVENTLISTREMOVE: ignoreEvent(
+		func() {
+			cmdList(literals.EventList.REMOVECMD)
+		},
+	),
 	literals.EventList.MANUAL:     ignoreEvent(manual.Manual),
 	literals.EventList.MANUADDCMD: questionnaireAddCommand,
 	literals.EventList.MENUCRYPTO: inwork,

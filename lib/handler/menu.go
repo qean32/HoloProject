@@ -7,19 +7,16 @@ import (
 
 var Menu = []model.Option{
 	{
-		Message: "Запустить команду", Event: model.Event{Key: literals.EventList.EventList},
+		Message: "Запустить команду", Event: model.Event{Key: literals.EventList.EVENTLIST},
 	},
 	{
 		Message: "Ручной ввод", Event: model.Event{Key: literals.EventList.MANUAL},
 	},
 	{
+		Message: "Удалить команду", Event: model.Event{Key: literals.EventList.EVENTLISTREMOVE},
+	},
+	{
 		Message: "Добавить команду", Event: model.Event{Key: literals.EventList.MANUADDCMD},
-	},
-	{
-		Message: "Шифрование строки", Event: model.Event{Key: literals.EventList.INWORK},
-	},
-	{
-		Message: "Очистка логов", Event: model.Event{Key: literals.EventList.CLEARLOG},
 	},
 	{
 		Message: "Генерация мастер ключа", Event: model.Event{Key: literals.EventList.INWORK},

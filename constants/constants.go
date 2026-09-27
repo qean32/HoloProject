@@ -71,11 +71,12 @@ var HelpMessage = `
 const CHAR_SELECTED_ITEM = "- "
 const CHAR_UN_SELECTED_ITEM = "│  "
 
-const FIELDPREFIX = "ввод "
-const RESPONSEPREFIX = "вывод"
+const FIELDPREFIX = "> "
+const RESPONSEPREFIX = "<"
 
 var (
 	StyleError    = []int{literals.SGR.RED, literals.SGR.BOLD}
+	StyleDim      = []int{literals.SGR.DIM}
 	StyleSelected = []int{literals.SGR.RED, literals.SGR.BOLD, literals.SGR.UNDERLINE}
 )
 

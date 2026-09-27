@@ -16,9 +16,11 @@ type eventType struct {
 	INWORK string
 
 	DECLARE   string
-	EventList string
 	RUNCMD    string
 	REMOVECMD string
+
+	EVENTLIST       string
+	EVENTLISTREMOVE string
 
 	MENU   string
 	MANUAL string

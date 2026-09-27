@@ -13,8 +13,8 @@ import (
 func Field(payload model.FieldPayload) string {
 	defer reset()
 	set(payload)
-
 	terminal.Print(utils.GetCustomMessage(field.Prefix, field.PrefixSRG...))
+	localReRenderLine("")
 
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		symbol := key.String()

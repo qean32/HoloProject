@@ -34,5 +34,5 @@ func PrintTopLine() {
 }
 
 func PrintTechInfo(messages ...any) {
-	fmt.Printf(utils.GetCustomMessage("Технический вывод: %s", literals.SGR.GREEN), utils.ConcatMessage(messages...))
+	Println(fmt.Sprintf(utils.GetCustomMessage("Технический вывод: %s", literals.SGR.GREEN), utils.ConcatMessage(messages...)))
 }

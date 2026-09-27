@@ -6,9 +6,14 @@ import (
 	"main/lib/array"
 	"main/lib/utils"
 	"main/terminal"
+
+	"atomicgo.dev/cursor"
 )
 
 func localReRenderLine(message string) {
+	terminal.DownAndStart()
+	terminal.Print(" ")
+	cursor.Up(1)
 	terminal.ReRenderLine(utils.GetCustomMessage(field.Prefix+message, field.PrefixSRG...))
 }
 
