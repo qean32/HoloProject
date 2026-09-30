@@ -14,12 +14,13 @@ var MAP = map[string]model.EventFunction{
 	literals.EventList.GENERATEKEY:    inwork,
 	literals.EventList.GENERATEMASTER: inwork,
 
-	literals.EventList.DECLARE:   declare,
-	literals.EventList.RUNCMD:    runCmd,
-	literals.EventList.REMOVECMD: removeCmd,
+	literals.EventList.BAT:       bat,
+	literals.EventList.RUNBAT:    runCmd,
+	literals.EventList.REMOVEBAT: questionnaireAccess,
+	literals.EventList.RRBAT:     removeCmd,
 
 	literals.EventList.CLEARLOG: clearLog,
-	literals.EventList.LOGS:     ignoreEvent(openLog),
+	literals.EventList.LOG:      ignoreEvent(openLog),
 
 	literals.EventList.RESPONSE: _response,
 
@@ -28,19 +29,15 @@ var MAP = map[string]model.EventFunction{
 	literals.EventList.STOP: ignoreEvent(death.Exit),
 	literals.EventList.HELP: help,
 
-	literals.EventList.EVENTLIST: ignoreEvent(
+	literals.EventList.BATLIST: ignoreEvent(
 		func() {
-			cmdList(literals.EventList.RUNCMD)
+			batList(literals.EventList.RUNBAT)
 		},
 	),
-	literals.EventList.EVENTLISTREMOVE: ignoreEvent(
-		func() {
-			cmdList(literals.EventList.REMOVECMD)
-		},
-	),
-	literals.EventList.MANUAL:     ignoreEvent(manual.Manual),
-	literals.EventList.MANUADDCMD: questionnaireAddCommand,
-	literals.EventList.MENUCRYPTO: inwork,
+	literals.EventList.BATLISTREMOVE: ignoreEvent(removeBatList),
+	literals.EventList.MANUAL:        ignoreEvent(manual.Manual),
+	literals.EventList.MANUADDCMD:    questionnaireAddCommand,
+	literals.EventList.MENUCRYPTO:    inwork,
 }
 
 func ignoreEvent(fn func()) model.EventFunction {

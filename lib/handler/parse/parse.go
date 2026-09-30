@@ -12,12 +12,12 @@ import (
 var MAP = map[string]model.FnReturnEvent{
 	literals.EventList.CRYPTO:   parseCripto,
 	literals.EventList.DECRYPTO: parseEcrypto,
-	literals.EventList.DECLARE:  parseDeclare,
+	literals.EventList.BAT:      parseDeclare,
 
-	literals.EventList.RUNCMD:             eventWithKeyword,
-	literals.EventList.REMOVECMD:          eventWithKeyword,
-	literals.EventList.MENU:               event,
-	literals.EventList.LOGS:               event,
+	literals.EventList.RUNBAT:    eventWithKeyword,
+	literals.EventList.REMOVEBAT: eventWithKeyword,
+	literals.EventList.MENU:      event,
+	literals.EventList.LOG:       event,
 }
 
 func parseCripto(arr []string) (model.Event, bool) {

@@ -27,33 +27,36 @@ var EventList = eventType{
 	GENERATEKEY:    "gkey",
 
 	CLEARLOG: "clog",
-	LOGS:     "logs",
+	LOG:      "log",
 
-	DROP:   "drop",
-	STOP:   "stop",
-	HELP:   "help",
-	INWORK: "inwork",
+	DROP: "drop",
+	STOP: "stop",
+	HELP: "help",
 
-	DECLARE:   "declare",
-	RUNCMD:    "run",
-	REMOVECMD: "rmc",
+	BAT:       "bat",
+	RUNBAT:    "run",
+	REMOVEBAT: "rbat",
 
-	EVENTLIST:       "clist",
-	EVENTLISTREMOVE: "clistremove",
-
-	RESPONSE: "response",
+	BATLIST:       "list",
+	BATLISTREMOVE: "listremove",
 
 	MENU: "menu",
 
+	// ТЕХНИЧЕСКИЕ
+
+	INWORK:       "inwork",
+	RESPONSE:     "response",
 	MANUADDCMD:   "MANUADDCMD",
 	MENUDECRYPTO: "MENUDECRYPTO",
 	MENUCRYPTO:   "MENUCRYPTO",
+	RRBAT:        "%333RRBAT",
 }
 
 var Titles = titleType{
 	Menu:     "Меню",
 	ListCmd:  "Список команд",
 	EnterCmd: "Добавить команду",
+	Access:   "Подтвердите действие (yea/no)",
 }
 
 var SGR = SGRtype{

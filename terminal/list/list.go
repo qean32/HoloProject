@@ -9,6 +9,7 @@ import (
 	"atomicgo.dev/keyboard/keys"
 
 	"main/callstack"
+	"main/constants"
 	"main/constants/literals"
 	"main/lib/death"
 	"main/lib/utils"
@@ -22,7 +23,7 @@ func List(payload model.ListPayload) {
 		return
 	}
 	cursor.Hide()
-	terminal.Println(payload.Title)
+	terminal.Println(utils.GetCustomMessage(payload.Title+" ↓", constants.StyleDim...))
 	terminal.PrintTopLine()
 
 	set(payload)
@@ -53,6 +54,7 @@ func List(payload model.ListPayload) {
 		case keys.Up:
 			moveUp()
 		case keys.Escape, keys.CtrlC:
+			cursor.Show()
 			jumpToEndList()
 			return true, nil
 		}

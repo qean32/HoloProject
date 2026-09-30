@@ -7,13 +7,13 @@ import (
 
 var Menu = []model.Option{
 	{
-		Message: "Запустить команду", Event: model.Event{Key: literals.EventList.EVENTLIST},
+		Message: "Запустить команду", Event: model.Event{Key: literals.EventList.BATLIST},
 	},
 	{
 		Message: "Ручной ввод", Event: model.Event{Key: literals.EventList.MANUAL},
 	},
 	{
-		Message: "Удалить команду", Event: model.Event{Key: literals.EventList.EVENTLISTREMOVE},
+		Message: "Удалить команду", Event: model.Event{Key: literals.EventList.BATLISTREMOVE},
 	},
 	{
 		Message: "Добавить команду", Event: model.Event{Key: literals.EventList.MANUADDCMD},

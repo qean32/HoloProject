@@ -8,28 +8,30 @@ type eventType struct {
 	GENERATEKEY    string
 
 	CLEARLOG string
-	LOGS     string
+	LOG      string
 
-	DROP   string
-	STOP   string
-	HELP   string
-	INWORK string
+	DROP string
+	STOP string
+	HELP string
 
-	DECLARE   string
-	RUNCMD    string
-	REMOVECMD string
+	BAT       string
+	RUNBAT    string
+	REMOVEBAT string
 
-	EVENTLIST       string
-	EVENTLISTREMOVE string
+	BATLIST       string
+	BATLISTREMOVE string
 
 	MENU   string
 	MANUAL string
 
-	RESPONSE string
+	// ТЕХНИЧЕСКИЕ
 
+	RESPONSE     string
+	INWORK       string
 	MANUADDCMD   string
 	MENUCRYPTO   string
 	MENUDECRYPTO string
+	RRBAT        string
 }
 
 type extensionType struct {
@@ -51,6 +53,7 @@ type titleType struct {
 	Menu     string
 	ListCmd  string
 	EnterCmd string
+	Access   string
 }
 
 type flagsType struct {

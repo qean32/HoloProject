@@ -47,24 +47,22 @@ var HelpMessage = `
 %v  \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\   \ \_\   \ \_\ \_\ \ \_____\/\_____\ \ \_____\ \ \_____\   \ \_\    \ \_\ \_\ \ \_____\ \ \_____\ \ \_\   
 %v   \/_/\/_/  \/_____/  \/_____/  \/_____/    \/_/    \/_/ /_/  \/_____/\/_____/  \/_____/  \/_____/    \/_/     \/_/\/_/  \/_____/  \/_____/  \/_/   
 %v
-%v  Команда        Описание                          Пример
+%v  crypto         *ифрование
+%v  ecrypto        *ешифрование
 %v
-%v  crypto         Шифрование строки                 crypto key_word key_password { payload }
-%v  ecrypto        Дешифровка строки                 ecrypto key_word key_password
+%v  bat            *обавить .bat                     bat key_word { payload }
+%v  list           *писок .bat
+%v  run            *апустить .bat                    run key_word
+%v  rbat            *далить .bat                      rbat key_word
 %v
-%v  gmaster        Генерация мастер-ключа
-%v  gkey           Генерация ключа для шифра
+%v  gmaster        *енерация мастер-ключа
+%v  gkey           *енерация ключа
 %v
-%v  clog           Очистка логов
-%v  drop           Удалить данные приложения
-%v  stop           Остановить приложение
-%v  help           Список команд
-%v
-%v  declare        Добавить команду                  declare key_word { payload }
-%v  commands       Просмотреть список команд
-%v  run            Запустить команду                 run key_word
-%v  runm           Запустить множественную           runm key_word
-%v  rmc            Удалить команду                   rmc key_word
+%v  clog
+%v  log
+%v  drop
+%v  stop
+%v  help
 %v
 `
 
@@ -72,7 +70,7 @@ const CHAR_SELECTED_ITEM = "+ "
 const CHAR_UN_SELECTED_ITEM = "│  "
 
 const FIELDPREFIX = "-> "
-const RESPONSEPREFIX = " <-"
+const RESPONSEPREFIX = " <- вывод"
 
 var (
 	StyleError    = []int{literals.SGR.RED, literals.SGR.BOLD}
@@ -80,4 +78,4 @@ var (
 	StyleSelected = []int{literals.SGR.RED, literals.SGR.BOLD, literals.SGR.UNDERLINE}
 )
 
-var AcceptableYeaOrNot []string = []string{"yes", "no", "y", "n", "yea", "not"}
+var AcceptableYeaOrNot []string = []string{"yes", "y", "yea"}

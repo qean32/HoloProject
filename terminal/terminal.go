@@ -31,7 +31,8 @@ func PrintResponse(messages ...any) {
 }
 
 func PrintTopLine() {
-	Println(utils.GetCustomMessage("┌──", literals.SGR.DIM))
+	// Println(utils.GetCustomMessage("┌──", literals.SGR.DIM))
+	Println("")
 }
 
 func PrintTechInfo(messages ...any) {
