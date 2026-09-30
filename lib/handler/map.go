@@ -8,11 +8,11 @@ import (
 )
 
 var MAP = map[string]model.EventFunction{
-	literals.EventList.CRYPTO:   encrypt,
-	literals.EventList.DECRYPTO: decrypt,
+	literals.EventList.CRYPTO:   inwork,
+	literals.EventList.DECRYPTO: inwork,
 
-	literals.EventList.GENERATEKEY:    generateKey,
-	literals.EventList.GENERATEMASTER: generateMasterKey,
+	literals.EventList.GENERATEKEY:    inwork,
+	literals.EventList.GENERATEMASTER: inwork,
 
 	literals.EventList.DECLARE:   declare,
 	literals.EventList.RUNCMD:    runCmd,

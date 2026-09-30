@@ -32,11 +32,11 @@ func CurrentTime() string {
 func RunCmd(command string) {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	if err := cmd.Start(); err != nil {
-		event.Response("$ Ошибка при запуске команды", err)
+		event.Response("$ Ошибка при запуске команды ", err)
 		return
 	}
 	if err := cmd.Wait(); err != nil {
-		event.Response("$ Команда завершилась с ошибкой", err)
+		event.Response("$ Команда завершилась с ошибкой ", err)
 	}
 }
 

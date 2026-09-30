@@ -7,6 +7,8 @@ import (
 	"main/terminal"
 )
 
+var mode = "prod"
+
 func main() {
 	lib.INIT()
 	go RunLoop()
@@ -21,7 +23,9 @@ func RunLoop() {
 			if !ok {
 				break
 			}
-			terminal.PrintTechInfo(event)
+			if mode != "prod" {
+				terminal.PrintTechInfo(event)
+			}
 			lib.Event(event)
 		}
 		manual.Manual()

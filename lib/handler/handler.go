@@ -50,7 +50,7 @@ func runCmd(e model.Event) {
 func removeCmd(e model.Event) {
 	err := os.Remove(constants.Root + constants.Cmd + e.KeyWord)
 	if err != nil {
-		event.Response("Ошибка:", err)
+		event.Response("Ошибка: ", err)
 		return
 	}
 }
