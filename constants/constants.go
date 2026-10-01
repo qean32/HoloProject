@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-const mode = "prod"
+const Mode = "prod"
 const projectname = "holoproject"
 
 var (
@@ -14,7 +14,7 @@ var (
 )
 
 func INIT_ROOT() {
-	if mode == "dev" {
+	if Mode == "dev" {
 	} else {
 		Root = os.TempDir() + `\` + projectname + `\`
 		os.Mkdir(Root, 0755)
@@ -53,11 +53,12 @@ var HelpMessage = `
 %v  bat            *обавить .bat                     bat key_word { payload }
 %v  list           *писок .bat
 %v  run            *апустить .bat                    run key_word
-%v  rbat            *далить .bat                      rbat key_word
+%v  rbat           *далить .bat                      rbat key_word
 %v
 %v  gmaster        *енерация мастер-ключа
 %v  gkey           *енерация ключа
 %v
+%v  menu
 %v  clog
 %v  log
 %v  drop

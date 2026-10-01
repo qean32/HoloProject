@@ -2,6 +2,7 @@ package terminal
 
 import (
 	"fmt"
+	"main/constants"
 	"strings"
 
 	"atomicgo.dev/cursor"
@@ -67,4 +68,9 @@ func calcCenterCMD(length int) int {
 		return 0
 	}
 	return res
+}
+
+func RenderBaner() {
+	PrintASCIICenter(constants.BinaryPROJECT_INIT, " ")
+	PrintASCIICenter(constants.PROJECT_INIT, " ")
 }

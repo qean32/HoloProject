@@ -38,6 +38,8 @@ var MAP = map[string]model.EventFunction{
 	literals.EventList.MANUAL:        ignoreEvent(manual.Manual),
 	literals.EventList.MANUADDCMD:    questionnaireAddCommand,
 	literals.EventList.MENUCRYPTO:    inwork,
+	literals.EventList.RESET:         ignoreEvent(reset),
+	literals.EventList.QNEXT:         ignoreEvent(_qnext),
 }
 
 func ignoreEvent(fn func()) model.EventFunction {

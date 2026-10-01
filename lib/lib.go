@@ -16,8 +16,7 @@ import (
 var READER = bufio.NewReader(os.Stdin)
 
 func INIT() {
-	terminal.PrintASCIICenter(constants.BinaryPROJECT_INIT, " ")
-	terminal.PrintASCIICenter(constants.PROJECT_INIT, " ")
+	terminal.RenderBaner()
 	constants.INIT_ROOT()
 	death.SETDATA()
 	manual.Manual()

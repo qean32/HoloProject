@@ -41,7 +41,7 @@ func RunCmd(command string) {
 }
 
 func Exit() {
-	clearTerminal()
+	ClearTerminal()
 	os.Exit(0)
 }
 
@@ -50,6 +50,9 @@ func GetShortEvent(event model.Event) model.Event {
 	return event
 }
 
-func clearTerminal() {
-	fmt.Print("\033[H\033[2J")
+func ClearTerminal() {
+	// fmt.Print("\033[H\033[2J") работает не корректно
+	cmd := exec.Command("cmd", "/c", "cls")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }

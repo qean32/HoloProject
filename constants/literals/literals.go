@@ -40,7 +40,8 @@ var EventList = eventType{
 	BATLIST:       "list",
 	BATLISTREMOVE: "listremove",
 
-	MENU: "menu",
+	MENU:  "menu",
+	QNEXT: "qnext",
 
 	// ТЕХНИЧЕСКИЕ
 
@@ -50,6 +51,7 @@ var EventList = eventType{
 	MENUDECRYPTO: "MENUDECRYPTO",
 	MENUCRYPTO:   "MENUCRYPTO",
 	RRBAT:        "%333RRBAT",
+	RESET:        "reset",
 }
 
 var Titles = titleType{

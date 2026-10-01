@@ -7,6 +7,7 @@ import (
 
 	"main/callstack"
 	"main/callstack/event"
+	"main/callstack/manual"
 	"main/constants"
 	"main/constants/literals"
 	"main/lib/array"
@@ -14,8 +15,19 @@ import (
 	"main/model"
 	"main/terminal"
 	"main/terminal/list"
+	"main/terminal/qNext"
 	"main/terminal/questionnaire"
 )
+
+func reset() {
+	death.ClearTerminal()
+	terminal.RenderBaner()
+	manual.Manual()
+}
+
+func _qnext() {
+	qnext.QNext()
+}
 
 func _response(e model.Event) {
 	terminal.PrintResponse(e.Payload)

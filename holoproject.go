@@ -2,12 +2,11 @@ package main
 
 import (
 	"main/callstack"
-	"main/callstack/manual"
+	"main/constants"
 	"main/lib"
 	"main/terminal"
+	qnext "main/terminal/qNext"
 )
-
-var mode = "prod"
 
 func main() {
 	lib.INIT()
@@ -23,12 +22,12 @@ func RunLoop() {
 			if !ok {
 				break
 			}
-			if mode != "prod" {
+			if constants.Mode != "prod" {
 				terminal.PrintTechInfo(event)
 			}
 			lib.Event(event)
 		}
-		manual.Manual()
+		qnext.QNext()
 		<-callstack.Changed()
 	}
 }

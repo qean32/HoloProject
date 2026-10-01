@@ -23,6 +23,7 @@ type eventType struct {
 
 	MENU   string
 	MANUAL string
+	QNEXT  string
 
 	// ТЕХНИЧЕСКИЕ
 
@@ -32,6 +33,7 @@ type eventType struct {
 	MENUCRYPTO   string
 	MENUDECRYPTO string
 	RRBAT        string
+	RESET        string
 }
 
 type extensionType struct {
