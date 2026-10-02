@@ -7,6 +7,7 @@ import (
 	"main/callstack/event"
 	"main/callstack/manual"
 	"main/constants"
+	"main/constants/literals"
 	"main/lib/death"
 	"main/lib/handler"
 	"main/model"
@@ -23,6 +24,10 @@ func INIT() {
 }
 
 func Event(e model.Event) {
+	if e.Key != literals.EventList.RESPONSE {
+		defer event.Success()
+	}
+
 	function := handler.MAP[e.Key]
 
 	if function == nil {

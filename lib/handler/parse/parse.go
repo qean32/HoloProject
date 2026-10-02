@@ -15,7 +15,7 @@ var MAP = map[string]model.FnReturnEvent{
 	literals.EventList.BAT:      parseDeclare,
 
 	literals.EventList.RUNBAT:    eventWithKeyword,
-	literals.EventList.REMOVEBAT: eventWithKeyword,
+	literals.EventList.REMOVEBAT: eventWithKeywordRemoveBat,
 	literals.EventList.MENU:      event,
 	literals.EventList.LOG:       event,
 }
@@ -87,6 +87,23 @@ func eventWithKeyword(arr []string) (model.Event, bool) {
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Flags:    filter.FilterIsFlag(arr),
+	}, false
+}
+
+func eventWithKeywordRemoveBat(arr []string) (model.Event, bool) {
+	if len(arr) < 2 {
+		return model.Event{}, true
+	}
+
+	return model.Event{
+		DateTime: death.CurrentTime(),
+		Key:      arr[0],
+		KeyWord:  arr[1],
+		SubEvent: &model.Event{
+			Key:     literals.EventList.RRBAT,
+			KeyWord: arr[1] + literals.Extension.Bat,
+		},
+		Flags: filter.FilterIsFlag(arr),
 	}, false
 }
 

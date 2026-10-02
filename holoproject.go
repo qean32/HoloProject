@@ -2,7 +2,6 @@ package main
 
 import (
 	"main/callstack"
-	"main/constants"
 	"main/lib"
 	"main/terminal"
 	qnext "main/terminal/qNext"
@@ -22,7 +21,7 @@ func RunLoop() {
 			if !ok {
 				break
 			}
-			if constants.Mode != "prod" {
+			if true {
 				terminal.PrintTechInfo(event)
 			}
 			lib.Event(event)

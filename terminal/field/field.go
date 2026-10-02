@@ -1,6 +1,8 @@
 package field
 
 import (
+	"strings"
+
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
 
@@ -49,5 +51,5 @@ func Field(payload model.FieldPayload) string {
 		return false, nil
 	})
 
-	return field.Message
+	return strings.ToLower(field.Message)
 }

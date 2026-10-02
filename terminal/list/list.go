@@ -9,6 +9,7 @@ import (
 	"atomicgo.dev/keyboard/keys"
 
 	"main/callstack"
+	"main/callstack/event"
 	"main/constants"
 	"main/constants/literals"
 	"main/lib/death"
@@ -18,8 +19,10 @@ import (
 )
 
 func List(payload model.ListPayload) {
+	terminal.DownAndStart()
 	defer reset()
 	if len(payload.Options) == 0 {
+		event.Response("Список пуст! xD")
 		return
 	}
 	cursor.Hide()
