@@ -1,7 +1,7 @@
 package questionnaire
 
 import (
-	"main/constants/literals"
+	"main/constants/sgr"
 	"main/model"
 	"main/terminal"
 	"main/terminal/field"
@@ -11,7 +11,7 @@ func askQuestion(question model.Question) {
 	terminal.PrintTopLine()
 	_answer := field.Field(model.FieldPayload{
 		Prefix:    "│ " + question.Message + " -> ",
-		PrefixSRG: []int{literals.SGR.DIM},
+		PrefixSRG: []int{sgr.DIM},
 	})
 
 	if question.Callback(_answer) {

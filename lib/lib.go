@@ -7,8 +7,7 @@ import (
 	"main/callstack/event"
 	"main/callstack/manual"
 	"main/constants"
-	"main/constants/literals"
-	"main/lib/death"
+	eventlist "main/constants/event-list"
 	"main/lib/handler"
 	"main/model"
 	"main/terminal"
@@ -17,23 +16,25 @@ import (
 var READER = bufio.NewReader(os.Stdin)
 
 func INIT() {
-	terminal.RenderBaner()
 	constants.INIT_ROOT()
-	death.SETDATA()
+	terminal.RenderBaner()
 	manual.Manual()
 }
 
-func Event(e model.Event) {
-	if e.Key != literals.EventList.RESPONSE {
+func Event(event_ model.Event) {
+	if event_.Key != eventlist.RESPONSE {
 		defer event.Success()
 	}
 
-	function := handler.MAP[e.Key]
-
-	if function == nil {
-		event.UndefinedCommand()
+	if err := handler.Dispatch(event_); err != nil {
+		event.Response("Ошибка: ", err)
+		// if logErr := death.Logger(event_); logErr != nil {
+		// 	event.Response("Ошибка лога: ", logErr)
+		// }
 		return
 	}
-	function(e)
-	death.Logger(e)
+
+	// if err := death.Logger(event_); err != nil {
+	// 	event.Response("Ошибка лога: ", err)
+	// }
 }

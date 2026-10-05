@@ -2,27 +2,27 @@ package event
 
 import (
 	"main/callstack"
-	"main/constants/literals"
+	"main/constants/event-list"
 	"main/model"
 )
 
 func UndefinedCommand() {
 	callstack.PushCallStack(model.Event{
-		Key:     literals.EventList.RESPONSE,
-		Payload: literals.Response.UndefinedCommand,
+		Key:     eventlist.RESPONSE,
+		Payload: "Неизвестная команда",
 	})
 }
 
 func SyntaxError() {
 	callstack.PushCallStack(model.Event{
-		Key:     literals.EventList.RESPONSE,
-		Payload: literals.Response.SyntaxError,
+		Key:     eventlist.RESPONSE,
+		Payload: "Syntax error",
 	})
 }
 
 func Success() {
 	callstack.PushCallStack(model.Event{
-		Key:     literals.EventList.RESPONSE,
-		Payload: literals.Response.Success,
+		Key:     eventlist.RESPONSE,
+		Payload: "/ᐠ-˕-マᶻ",
 	})
 }

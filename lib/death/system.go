@@ -2,18 +2,18 @@ package death
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"main/callstack/event"
 	"main/constants"
 )
 
-func ReadFile(path string) []string {
+func ReadFile(path string) ([]string, error) {
 	file, err := os.Open(constants.Root + path)
 	if err != nil {
-		return nil
+		return nil, fmt.Errorf("открытие %s: %w", path, err)
 	}
 	defer file.Close()
 
@@ -22,43 +22,49 @@ func ReadFile(path string) []string {
 	for scanner.Scan() {
 		data = append(data, scanner.Text())
 	}
-	return data
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("чтение %s: %w", path, err)
+	}
+	return data, nil
 }
 
-func WriteFile(data, path string) bool {
+func WriteFile(data, path string) error {
 	file, err := os.Create(constants.Root + path)
 	if err != nil {
-		return false
+		return fmt.Errorf("создание %s: %w", path, err)
 	}
 	defer file.Close()
 
-	_, err = file.WriteString(data)
-	return err == nil
+	if _, err := file.WriteString(data); err != nil {
+		return fmt.Errorf("запись %s: %w", path, err)
+	}
+	return nil
 }
 
-func PushToFile(path, newText string) bool {
-	data := ReadFile(path)
-	if data == nil {
-		return false
+func PushToFile(path, newText string) error {
+	data, err := ReadFile(path)
+	if err != nil {
+		return err
 	}
 	return WriteFile(strings.Join(append(data, newText+"\n"), " \n"), path)
 }
 
-func CreateFile(path string, content string) bool {
-	err := os.WriteFile(constants.Root+path, []byte(content), 0644)
-	return err == nil
-}
-
-func ClearFile(path string) {
-	WriteFile("", path)
-}
-
-func RemoveFile(path string) {
-	err := os.Remove(constants.Root + path)
-	if err != nil {
-		event.Response("Ошибка:", err)
-		return
+func CreateFile(path string, content string) error {
+	if err := os.WriteFile(constants.Root+path, []byte(content), 0644); err != nil {
+		return fmt.Errorf("создание %s: %w", path, err)
 	}
+	return nil
+}
+
+func ClearFile(path string) error {
+	return WriteFile("", path)
+}
+
+func RemoveFile(path string) error {
+	if err := os.Remove(constants.Root + path); err != nil {
+		return fmt.Errorf("удаление %s: %w", path, err)
+	}
+	return nil
 }
 
 func ListFilesByExt(dir string, ext string) ([]string, error) {
@@ -66,7 +72,7 @@ func ListFilesByExt(dir string, ext string) ([]string, error) {
 
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("чтение %s: %w", dir, err)
 	}
 
 	for _, entry := range entries {

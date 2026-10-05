@@ -11,7 +11,7 @@ import (
 	"main/callstack"
 	"main/callstack/event"
 	"main/constants"
-	"main/constants/literals"
+	"main/constants/sgr"
 	"main/lib/death"
 	"main/lib/utils"
 	"main/model"
@@ -71,16 +71,16 @@ func renderList(options []model.Option) {
 		isSelected := i == list.Position
 		startChar := getStartSymbol(isSelected)
 
-		style := literals.SGR.DIM
-		color := literals.SGR.DIM
+		style := sgr.DIM
+		color := sgr.DIM
 		if isSelected {
-			color = literals.SGR.GREEN
+			color = sgr.GREEN
 		}
 		startChar = utils.GetCustomMessage(startChar, color)
 
 		cursor.ClearLine()
 		if isSelected {
-			terminal.Print(utils.GetCustomMessage("│", literals.SGR.DIM), startChar+utils.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
+			terminal.Print(utils.GetCustomMessage("│", sgr.DIM), startChar+utils.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
 		} else {
 			terminal.Print(startChar + utils.GetCustomMessage(fmt.Sprintf("%d. %s", i+1, item.Message), style))
 		}

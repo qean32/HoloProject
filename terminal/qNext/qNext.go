@@ -2,7 +2,7 @@ package qnext
 
 import (
 	"main/callstack"
-	"main/constants/literals"
+	eventlist "main/constants/event-list"
 	"main/lib/death"
 	"main/model"
 	"main/terminal"
@@ -19,7 +19,7 @@ func QNext() {
 		switch key.Code {
 		case keys.Enter:
 			cursor.Show()
-			callstack.PushCallStack(model.Event{Key: literals.EventList.RESET})
+			callstack.PushCallStack(model.Event{Key: eventlist.RESET})
 			return true, nil
 		case keys.Escape, keys.CtrlC:
 			cursor.Show()

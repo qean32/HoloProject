@@ -3,10 +3,10 @@ package filter
 import "strings"
 
 func FilterIsFlag[T string](arr []T) []T {
-	return FILTER(arr, isFlag)
+	return Filter(arr, isFlag)
 }
 
-func FILTER[T any](arr []T, f func(item T) bool) []T {
+func Filter[T any](arr []T, f func(item T) bool) []T {
 	filtered := make([]T, 0, len(arr))
 	for _, e := range arr {
 		if f(e) {

@@ -1,44 +1,56 @@
 package parse
 
 import (
+	"errors"
+	"fmt"
 	"strings"
 
-	"main/constants/literals"
+	eventlist "main/constants/event-list"
+	"main/constants/literal"
 	"main/lib/array/filter"
 	"main/lib/death"
 	"main/model"
 )
 
-var MAP = map[string]model.FnReturnEvent{
-	literals.EventList.CRYPTO:   parseCripto,
-	literals.EventList.DECRYPTO: parseEcrypto,
-	literals.EventList.BAT:      parseDeclare,
+var (
+	ErrEmptyCommand = errors.New("пустая команда")
+	ErrTooFewArgs   = errors.New("недостаточно аргументов")
+	ErrNoPayload    = errors.New("payload не найден")
+)
 
-	literals.EventList.RUNBAT:    eventWithKeyword,
-	literals.EventList.REMOVEBAT: eventWithKeywordRemoveBat,
-	literals.EventList.MENU:      event,
-	literals.EventList.LOG:       event,
+var MAP = map[string]model.ParseEvent{
+	eventlist.CRYPTO:   parseCripto,
+	eventlist.DECRYPTO: parseEcrypto,
+	eventlist.BAT:      parseDeclare,
+
+	eventlist.RUNBAT:    eventWithKeyword,
+	eventlist.REMOVEBAT: eventWithKeywordRemoveBat,
+	eventlist.MENU:      event,
+	eventlist.OPENLOG:   event,
 }
 
-func parseCripto(arr []string) (model.Event, bool) {
-	payload := getPayload(arr)
-	if len(arr) < 3 || payload == "" {
-		return model.Event{}, true
-	}
-
-	return model.Event{
-		DateTime: death.CurrentTime(),
-		Key:      arr[0],
-		KeyWord:  arr[1],
-		Password: arr[2],
-		Payload:  payload,
-		Flags:    filter.FilterIsFlag(arr),
-	}, false
-}
-
-func parseEcrypto(arr []string) (model.Event, bool) {
+func parseCripto(arr []string) (model.Event, error) {
 	if len(arr) < 3 {
-		return model.Event{}, true
+		return model.Event{}, fmt.Errorf("%w: crypto", ErrTooFewArgs)
+	}
+	payload := getPayload(arr)
+	if payload == "" {
+		return model.Event{}, fmt.Errorf("%w: crypto", ErrNoPayload)
+	}
+
+	return model.Event{
+		DateTime: death.CurrentTime(),
+		Key:      arr[0],
+		KeyWord:  arr[1],
+		Password: arr[2],
+		Payload:  payload,
+		Flags:    filter.FilterIsFlag(arr),
+	}, nil
+}
+
+func parseEcrypto(arr []string) (model.Event, error) {
+	if len(arr) < 3 {
+		return model.Event{}, fmt.Errorf("%w: decrypt", ErrTooFewArgs)
 	}
 
 	return model.Event{
@@ -47,13 +59,16 @@ func parseEcrypto(arr []string) (model.Event, bool) {
 		KeyWord:  arr[1],
 		Password: arr[2],
 		Flags:    filter.FilterIsFlag(arr),
-	}, false
+	}, nil
 }
 
-func parseDeclare(arr []string) (model.Event, bool) {
+func parseDeclare(arr []string) (model.Event, error) {
+	if len(arr) < 3 {
+		return model.Event{}, fmt.Errorf("%w: bat", ErrTooFewArgs)
+	}
 	payload := getPayload(arr)
-	if len(arr) < 3 || payload == "" {
-		return model.Event{}, true
+	if payload == "" {
+		return model.Event{}, fmt.Errorf("%w: bat", ErrNoPayload)
 	}
 
 	return model.Event{
@@ -62,24 +77,24 @@ func parseDeclare(arr []string) (model.Event, bool) {
 		KeyWord:  arr[1],
 		Payload:  payload,
 		Flags:    filter.FilterIsFlag(arr),
-	}, false
+	}, nil
 }
 
-func event(arr []string) (model.Event, bool) {
+func event(arr []string) (model.Event, error) {
 	if len(arr) == 0 {
-		return model.Event{}, true
+		return model.Event{}, ErrEmptyCommand
 	}
 
 	return model.Event{
 		DateTime: death.CurrentTime(),
 		Key:      arr[0],
 		Flags:    filter.FilterIsFlag(arr),
-	}, false
+	}, nil
 }
 
-func eventWithKeyword(arr []string) (model.Event, bool) {
+func eventWithKeyword(arr []string) (model.Event, error) {
 	if len(arr) < 2 {
-		return model.Event{}, true
+		return model.Event{}, ErrTooFewArgs
 	}
 
 	return model.Event{
@@ -87,12 +102,12 @@ func eventWithKeyword(arr []string) (model.Event, bool) {
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		Flags:    filter.FilterIsFlag(arr),
-	}, false
+	}, nil
 }
 
-func eventWithKeywordRemoveBat(arr []string) (model.Event, bool) {
+func eventWithKeywordRemoveBat(arr []string) (model.Event, error) {
 	if len(arr) < 2 {
-		return model.Event{}, true
+		return model.Event{}, ErrTooFewArgs
 	}
 
 	return model.Event{
@@ -100,17 +115,17 @@ func eventWithKeywordRemoveBat(arr []string) (model.Event, bool) {
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		SubEvent: &model.Event{
-			Key:     literals.EventList.RRBAT,
-			KeyWord: arr[1] + literals.Extension.Bat,
+			Key:     eventlist.RRBAT,
+			KeyWord: arr[1] + literal.Extension.Bat,
 		},
 		Flags: filter.FilterIsFlag(arr),
-	}, false
+	}, nil
 }
 
-func ParseEvent(command, key string) (model.Event, bool) {
+func ParseEvent(command, key string) (model.Event, error) {
 	arr := strings.Split(command, " ")
 
-	if fn := MAP[key]; fn != nil {
+	if fn, ok := MAP[key]; ok {
 		return fn(arr)
 	}
 	return event(arr)

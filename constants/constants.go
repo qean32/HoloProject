@@ -1,8 +1,9 @@
 package constants
 
 import (
-	"main/constants/literals"
 	"os"
+
+	"main/constants/sgr"
 )
 
 const Mode = "prod"
@@ -74,9 +75,9 @@ const FIELDPREFIX = "-> "
 const RESPONSEPREFIX = ""
 
 var (
-	StyleError    = []int{literals.SGR.RED, literals.SGR.BOLD}
-	StyleDim      = []int{literals.SGR.DIM}
-	StyleSelected = []int{literals.SGR.RED, literals.SGR.BOLD, literals.SGR.UNDERLINE}
+	StyleError    = []int{sgr.RED, sgr.BOLD}
+	StyleDim      = []int{sgr.DIM}
+	StyleSelected = []int{sgr.RED, sgr.BOLD, sgr.UNDERLINE}
 )
 
 var AcceptableYeaOrNot []string = []string{"yes", "y", "yea"}

@@ -20,10 +20,10 @@ func Manual() {
 		return
 	}
 
-	_event, hasError := parse.ParseEvent(trimmed, strings.Split(trimmed, " ")[0])
-	if hasError {
-		event.SyntaxError()
+	event_, err := parse.ParseEvent(trimmed, strings.Split(trimmed, " ")[0])
+	if err != nil {
+		event.Response(err)
 		return
 	}
-	callstack.PushCallStack(_event)
+	callstack.PushCallStack(event_)
 }
