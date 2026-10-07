@@ -81,19 +81,20 @@ func runBatList(_ model.Event) error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
 		return model.Event{
 			Key:     eventlist.RUNBAT,
-			KeyWord: value,
+			KeyWord: trimExtention(value),
 		}
 	})
 }
 
 func removeBatList(_ model.Event) error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
+		trimmed := trimExtention(value)
 		return model.Event{
 			Key:     eventlist.RRBAT,
-			KeyWord: value,
+			KeyWord: trimmed,
 			SubEvent: &model.Event{
 				Key:     eventlist.RRBAT,
-				KeyWord: value,
+				KeyWord: trimmed,
 			},
 		}
 	})

@@ -21,7 +21,7 @@ func RunLoop() {
 			if !ok {
 				break
 			}
-			if true {
+			if false {
 				terminal.PrintTechInfo(event)
 			}
 			lib.Event(event)

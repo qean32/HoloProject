@@ -26,7 +26,7 @@ func List(payload model.ListPayload) {
 		return
 	}
 	cursor.Hide()
-	terminal.Println(utils.GetCustomMessage(payload.Title+" ↓", constants.StyleDim...))
+	terminal.Println(utils.GetCustomMessage(payload.Title+" ↓"+ " (Ctrl+C Back)", constants.StyleDim...))
 	terminal.PrintTopLine()
 
 	set(payload)

@@ -10,8 +10,8 @@ const Mode = "prod"
 const projectname = "holoproject"
 
 var (
-	Root = `.\private\`
-	Cmd  = `cmd\`
+	Root = `private`
+	Cmd  = `cmd`
 )
 
 func INIT_ROOT() {

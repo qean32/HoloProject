@@ -50,7 +50,7 @@ func PushToFile(path, newText string) error {
 }
 
 func CreateFile(path string, content string) error {
-	if err := os.WriteFile(constants.Root+path, []byte(content), 0644); err != nil {
+	if err := os.WriteFile(path, []byte(content), 0644); err != nil {
 		return fmt.Errorf("создание %s: %w", path, err)
 	}
 	return nil
