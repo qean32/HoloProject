@@ -11,9 +11,9 @@ import (
 )
 
 func ReadFile(path string) ([]string, error) {
-	file, err := os.Open(constants.Root + path)
+	file, err := os.Open(filepath.Join(constants.Root, path))
 	if err != nil {
-		return nil, fmt.Errorf("открытие %s: %w", path, err)
+		return nil, fmt.Errorf("Открытие %s: %w", path, err)
 	}
 	defer file.Close()
 
@@ -29,7 +29,7 @@ func ReadFile(path string) ([]string, error) {
 }
 
 func WriteFile(data, path string) error {
-	file, err := os.Create(constants.Root + path)
+	file, err := os.Create(filepath.Join(constants.Root, path))
 	if err != nil {
 		return fmt.Errorf("создание %s: %w", path, err)
 	}
@@ -50,7 +50,7 @@ func PushToFile(path, newText string) error {
 }
 
 func CreateFile(path string, content string) error {
-	if err := os.WriteFile(path, []byte(content), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(constants.Root, path), []byte(content), 0644); err != nil {
 		return fmt.Errorf("создание %s: %w", path, err)
 	}
 	return nil
@@ -61,7 +61,7 @@ func ClearFile(path string) error {
 }
 
 func RemoveFile(path string) error {
-	if err := os.Remove(constants.Root + path); err != nil {
+	if err := os.Remove(filepath.Join(constants.Root, path)); err != nil {
 		return fmt.Errorf("удаление %s: %w", path, err)
 	}
 	return nil
@@ -84,4 +84,19 @@ func ListFilesByExt(dir string, ext string) ([]string, error) {
 		}
 	}
 	return files, nil
+}
+
+func Exists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
+}
+
+func IsDir(path string) bool {
+	info, err := os.Stat(path)
+	return err == nil && info.IsDir()
+}
+
+func IsFile(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
 }

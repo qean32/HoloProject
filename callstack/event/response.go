@@ -26,3 +26,10 @@ func Success() {
 		Payload: "/ᐠ-˕-マᶻ",
 	})
 }
+
+func UnInit() {
+	callstack.PushCallStack(model.Event{
+		Key:     eventlist.RESPONSE,
+		Payload: "Отсутствует инициализация! -init",
+	})
+}

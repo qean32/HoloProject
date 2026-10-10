@@ -1,7 +1,6 @@
 package death
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
@@ -9,13 +8,15 @@ import (
 	"strings"
 	"time"
 
+	eventlist "main/constants/event-list"
 	"main/constants/literal"
 	"main/model"
 )
 
-var reader = bufio.NewReader(os.Stdin)
-
 func Logger(event model.Event) error {
+	if event.Key == eventlist.RESPONSE {
+		return nil
+	}
 	noLog := slices.ContainsFunc(event.Flags, func(item string) bool {
 		return strings.TrimSpace(item) == literal.Flags.NOLOG
 	})

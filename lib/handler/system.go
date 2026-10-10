@@ -25,10 +25,10 @@ func reset(_ model.Event) error {
 
 func drop(_ model.Event) error {
 	if err := os.RemoveAll(constants.Root); err != nil {
-		return fmt.Errorf("удаление %s: %w", constants.Root, err)
+		return fmt.Errorf("Удаление %s: %w", constants.Root, err)
 	}
 	if err := os.MkdirAll(constants.Root, dirPerm); err != nil {
-		return fmt.Errorf("создание %s: %w", constants.Root, err)
+		return fmt.Errorf("Создание %s: %w", constants.Root, err)
 	}
 	return nil
 }
@@ -50,5 +50,12 @@ func openLog(_ model.Event) error {
 
 func inwork(_ model.Event) error {
 	event.Response("В разработке")
+	return nil
+}
+
+func init_(_ model.Event) error {
+	os.Mkdir(constants.Root, 0755)
+	os.Mkdir(filepath.Join(constants.Root, constants.Cmd), 0755)
+	death.CreateFile(literal.Path.PathLog, "")
 	return nil
 }

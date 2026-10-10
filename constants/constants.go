@@ -1,12 +1,20 @@
 package constants
 
 import (
+	"errors"
+	"fmt"
 	"os"
+	"path/filepath"
 
 	"main/constants/sgr"
 )
 
-const Mode = "prod"
+const (
+	ModeDev  = "dev"
+	ModeProd = "prod"
+)
+
+const Mode = ModeProd
 const projectname = "holoproject"
 
 var (
@@ -14,13 +22,16 @@ var (
 	Cmd  = `cmd`
 )
 
-func INIT_ROOT() {
-	if Mode == "dev" {
-	} else {
-		Root = os.TempDir() + `\` + projectname + `\`
-		os.Mkdir(Root, 0755)
-		os.Mkdir(Root+Cmd, 0755)
+func Init_root() error {
+	base := os.TempDir()
+	if base == "" {
+		return errors.New("os.TempDir() вернул пустой путь")
 	}
+	Root = filepath.Join(base, projectname)
+	if err := os.MkdirAll(Root, 0o755); err != nil {
+		return fmt.Errorf("Ошибка инициализации!")
+	}
+	return nil
 }
 
 var BinaryPROJECT_INIT = `

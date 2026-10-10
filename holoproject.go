@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	lib.INIT()
+	lib.Init()
 	go RunLoop()
 
 	select {}
@@ -24,7 +24,7 @@ func RunLoop() {
 			if false {
 				terminal.PrintTechInfo(event)
 			}
-			lib.Event(event)
+			lib.HandleEvent(event)
 		}
 		qnext.QNext()
 		<-callstack.Changed()

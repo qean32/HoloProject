@@ -25,6 +25,7 @@ var (
 
 	MENU  = "menu"
 	QNEXT = "qnext"
+	INIT  = "init"
 
 	// ТЕХНИЧЕСКИЕ
 

@@ -10,6 +10,8 @@ import (
 
 var registry = map[string]model.Handler{
 	// клиентские
+	eventlist.INIT: init_,
+
 	eventlist.BAT:        bat,
 	eventlist.MANUADDBAT: questionnaireAddBat,
 

@@ -1,40 +1,45 @@
 package lib
 
 import (
-	"bufio"
-	"os"
-
 	"main/callstack/event"
 	"main/callstack/manual"
 	"main/constants"
 	eventlist "main/constants/event-list"
+	"main/lib/death"
 	"main/lib/handler"
 	"main/model"
 	"main/terminal"
 )
 
-var READER = bufio.NewReader(os.Stdin)
-
-func INIT() {
-	constants.INIT_ROOT()
+func Init() {
+	if err := constants.Init_root(); err != nil {
+		terminal.Println("Ошибка инициализации")
+		return
+	}
 	terminal.RenderBaner()
 	manual.Manual()
 }
 
-func Event(event_ model.Event) {
-	if event_.Key != eventlist.RESPONSE {
-		defer event.Success()
-	}
+func Event(e model.Event) error {
+	return handler.Dispatch(e)
+}
 
-	if err := handler.Dispatch(event_); err != nil {
+func HandleEvent(e model.Event) error {
+	if err := Event(e); err != nil {
 		event.Response("Ошибка: ", err)
-		// if logErr := death.Logger(event_); logErr != nil {
-		// 	event.Response("Ошибка лога: ", logErr)
-		// }
-		return
+		if logErr := death.Logger(e); logErr != nil {
+			event.Response("Ошибка лога: ", logErr)
+		}
+		return err
 	}
 
-	// if err := death.Logger(event_); err != nil {
-	// 	event.Response("Ошибка лога: ", err)
-	// }
+	if e.Key != eventlist.RESPONSE {
+		event.Success()
+	}
+
+	if err := death.Logger(e); err != nil {
+		event.Response("Ошибка лога: ", err)
+		return err
+	}
+	return nil
 }
