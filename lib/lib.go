@@ -9,7 +9,19 @@ import (
 	"main/lib/handler"
 	"main/model"
 	"main/terminal"
+	"slices"
 )
+
+var succesList = []string{
+	eventlist.BAT,
+	eventlist.PURE_REMOVE_BAT,
+	eventlist.TEST,
+	eventlist.CLEARLOG,
+	eventlist.CRYPTO,
+	eventlist.DROP,
+	eventlist.INIT,
+	eventlist.RUNBAT,
+}
 
 func Init() {
 	if err := constants.Init_root(); err != nil {
@@ -33,7 +45,7 @@ func HandleEvent(e model.Event) error {
 		return err
 	}
 
-	if e.Key != eventlist.RESPONSE {
+	if slices.Contains(succesList, e.Key) {
 		event.Success()
 	}
 
