@@ -5,7 +5,6 @@ import (
 	"sync"
 
 	"main/constants"
-	"main/constants/sgr"
 	"main/lib/utils"
 )
 
@@ -33,8 +32,4 @@ func PrintResponse(messages ...any) {
 func PrintTopLine() {
 	// Println(utils.GetCustomMessage("┌──", sgr.DIM))
 	Println("")
-}
-
-func PrintTechInfo(messages ...any) {
-	Println(fmt.Sprintf(utils.GetCustomMessage("Технический вывод: %s", sgr.GREEN), utils.ConcatMessage(messages...)))
 }

@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 
@@ -36,7 +35,7 @@ func runBat(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
 		return fmt.Errorf("Некорректное имя %q: %w", event.KeyWord, err)
 	}
-	if err := death.RunCmd(cmdPath(event.KeyWord)); err != nil {
+	if err := death.RunCmd(filepath.Join(constants.Root, cmdPath(event.KeyWord))); err != nil {
 		return fmt.Errorf("Запуск %s: %w", event.KeyWord, err)
 	}
 	return nil
@@ -46,7 +45,7 @@ func removeCmd(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
 		return fmt.Errorf("Некорректное имя %q: %w", event.KeyWord, err)
 	}
-	if err := os.Remove(cmdPath(event.KeyWord)); err != nil {
+	if err := death.RemoveFile(cmdPath(event.KeyWord)); err != nil {
 		return fmt.Errorf("Удаление %s: %w", event.KeyWord, err)
 	}
 	return nil
