@@ -1,21 +1,15 @@
 package parse
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
+	errorlist "main/constants/error-list"
 	eventlist "main/constants/event-list"
 	"main/constants/literal"
 	"main/lib/array/filter"
 	"main/lib/death"
 	"main/model"
-)
-
-var (
-	ErrEmptyCommand = errors.New("пустая команда")
-	ErrTooFewArgs   = errors.New("недостаточно аргументов")
-	ErrNoPayload    = errors.New("payload не найден")
 )
 
 var MAP = map[string]model.ParseEvent{
@@ -31,11 +25,11 @@ var MAP = map[string]model.ParseEvent{
 
 func parseCripto(arr []string) (model.Event, error) {
 	if len(arr) < 3 {
-		return model.Event{}, fmt.Errorf("%w: crypto", ErrTooFewArgs)
+		return model.Event{}, fmt.Errorf("%w: crypto", errorlist.ErrTooFewArgs)
 	}
 	payload := getPayload(arr)
 	if payload == "" {
-		return model.Event{}, fmt.Errorf("%w: crypto", ErrNoPayload)
+		return model.Event{}, fmt.Errorf("%w: crypto", errorlist.ErrNoPayload)
 	}
 
 	return model.Event{
@@ -50,7 +44,7 @@ func parseCripto(arr []string) (model.Event, error) {
 
 func parseEcrypto(arr []string) (model.Event, error) {
 	if len(arr) < 3 {
-		return model.Event{}, fmt.Errorf("%w: decrypt", ErrTooFewArgs)
+		return model.Event{}, fmt.Errorf("%w: decrypt", errorlist.ErrTooFewArgs)
 	}
 
 	return model.Event{
@@ -64,11 +58,11 @@ func parseEcrypto(arr []string) (model.Event, error) {
 
 func parseDeclare(arr []string) (model.Event, error) {
 	if len(arr) < 3 {
-		return model.Event{}, fmt.Errorf("%w: bat", ErrTooFewArgs)
+		return model.Event{}, fmt.Errorf("%w: bat", errorlist.ErrTooFewArgs)
 	}
 	payload := getPayload(arr)
 	if payload == "" {
-		return model.Event{}, fmt.Errorf("%w: bat", ErrNoPayload)
+		return model.Event{}, fmt.Errorf("%w: bat", errorlist.ErrNoPayload)
 	}
 
 	return model.Event{
@@ -82,7 +76,7 @@ func parseDeclare(arr []string) (model.Event, error) {
 
 func event(arr []string) (model.Event, error) {
 	if len(arr) == 0 {
-		return model.Event{}, ErrEmptyCommand
+		return model.Event{}, errorlist.ErrEmptyCommand
 	}
 
 	return model.Event{
@@ -94,7 +88,7 @@ func event(arr []string) (model.Event, error) {
 
 func eventWithKeyword(arr []string) (model.Event, error) {
 	if len(arr) < 2 {
-		return model.Event{}, ErrTooFewArgs
+		return model.Event{}, errorlist.ErrTooFewArgs
 	}
 
 	return model.Event{
@@ -107,7 +101,7 @@ func eventWithKeyword(arr []string) (model.Event, error) {
 
 func eventWithKeywordRemoveBat(arr []string) (model.Event, error) {
 	if len(arr) < 2 {
-		return model.Event{}, ErrTooFewArgs
+		return model.Event{}, errorlist.ErrTooFewArgs
 	}
 
 	return model.Event{
@@ -115,7 +109,7 @@ func eventWithKeywordRemoveBat(arr []string) (model.Event, error) {
 		Key:      arr[0],
 		KeyWord:  arr[1],
 		SubEvent: &model.Event{
-			Key:     eventlist.RRBAT,
+			Key:     eventlist.PURE_REMOVE_BAT,
 			KeyWord: arr[1] + literal.Extension.Bat,
 		},
 		Flags: filter.FilterIsFlag(arr),

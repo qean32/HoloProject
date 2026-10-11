@@ -26,9 +26,9 @@ func Event(e model.Event) error {
 
 func HandleEvent(e model.Event) error {
 	if err := Event(e); err != nil {
-		event.Response("Ошибка: ", err)
+		event.Response(err)
 		if logErr := death.Logger(e); logErr != nil {
-			event.Response("Ошибка лога: ", logErr)
+			event.Response(logErr)
 		}
 		return err
 	}
@@ -38,7 +38,7 @@ func HandleEvent(e model.Event) error {
 	}
 
 	if err := death.Logger(e); err != nil {
-		event.Response("Ошибка лога: ", err)
+		event.Response(err)
 		return err
 	}
 	return nil

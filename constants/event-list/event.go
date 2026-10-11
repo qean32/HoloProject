@@ -29,12 +29,12 @@ var (
 
 	// ТЕХНИЧЕСКИЕ
 
-	INWORK       = "inwork"
-	RESPONSE     = "response"
-	MANUADDBAT   = "MANUADDBAT"
-	MENUDECRYPTO = "MENUDECRYPTO"
-	MENUCRYPTO   = "MENUCRYPTO"
-	RRBAT        = "%333RRBAT"
-	RESET        = "reset"
-	MANUAL       = "manual"
+	INWORK          = "inwork"
+	RESPONSE        = "response"
+	MANUADDBAT      = "MANUADDBAT"
+	MENUDECRYPTO    = "MENUDECRYPTO"
+	MENUCRYPTO      = "MENUCRYPTO"
+	PURE_REMOVE_BAT = "67REMOVEBAT67"
+	RESET           = "reset"
+	MANUAL          = "manual"
 )

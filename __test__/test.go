@@ -8,7 +8,7 @@ import (
 
 func Test() {
 	callstack.PushCallStack(model.Event{
-		Key:     eventlist.RRBAT,
+		Key:     eventlist.PURE_REMOVE_BAT,
 		KeyWord: "test",
 	})
 	callstack.PushCallStack(model.Event{

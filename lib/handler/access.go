@@ -2,6 +2,7 @@ package handler
 
 import (
 	"main/callstack"
+	errorlist "main/constants/error-list"
 	"main/constants/literal"
 	"main/model"
 	"main/terminal/questionnaire"
@@ -9,7 +10,7 @@ import (
 
 func questionnaireAccess(event model.Event) error {
 	if event.SubEvent == nil {
-		return ErrNoSubEvent
+		return errorlist.ErrNoSubEvent
 	}
 
 	q := questionnaire.Questionnaire(model.QuestionnairePayload{
@@ -24,7 +25,7 @@ func questionnaireAccess(event model.Event) error {
 	})
 
 	if !questionnaire.IsAcceptableYea(q["Response"]) {
-		return ErrAccessDenied
+		return errorlist.ErrAccessDenied
 	}
 
 	callstack.PushCallStack(*event.SubEvent)

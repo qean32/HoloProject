@@ -3,6 +3,7 @@ package main
 import (
 	test "main/__test__"
 	"main/callstack"
+	eventlist "main/constants/event-list"
 	"main/lib"
 	"main/terminal"
 	qnext "main/terminal/qNext"
@@ -25,7 +26,7 @@ func RunLoop() {
 			if !ok {
 				break
 			}
-			if log {
+			if log && event.Key != eventlist.RESPONSE {
 				terminal.PrintTechInfo(event)
 			}
 			lib.HandleEvent(event)

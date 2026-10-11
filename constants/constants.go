@@ -1,11 +1,10 @@
 package constants
 
 import (
-	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 
+	errorlist "main/constants/error-list"
 	"main/constants/sgr"
 )
 
@@ -25,11 +24,11 @@ var (
 func Init_root() error {
 	base := os.TempDir()
 	if base == "" {
-		return errors.New("os.TempDir() вернул пустой путь")
+		return errorlist.ErrTempDirEmpty
 	}
 	Root = filepath.Join(base, projectname)
 	if err := os.MkdirAll(Root, 0o755); err != nil {
-		return fmt.Errorf("Ошибка инициализации!")
+		return errorlist.ErrInitRoot
 	}
 	return nil
 }

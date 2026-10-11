@@ -2,6 +2,7 @@ package handler
 
 import (
 	"main/callstack/manual"
+	errorlist "main/constants/error-list"
 	eventlist "main/constants/event-list"
 	"main/lib/death"
 	"main/model"
@@ -37,11 +38,11 @@ var registry = map[string]model.Handler{
 	eventlist.GENERATEKEY:    generateKey,
 	eventlist.GENERATEMASTER: generateMasterKey,
 	// технические
-	eventlist.RRBAT:      removeCmd,
-	eventlist.RESPONSE:   _response,
-	eventlist.MENUCRYPTO: inwork,
-	eventlist.QNEXT:      ignoreError(qnext.QNext),
-	eventlist.MANUADDBAT: questionnaireAddBat,
+	eventlist.PURE_REMOVE_BAT: removeCmd,
+	eventlist.RESPONSE:        _response,
+	eventlist.MENUCRYPTO:      inwork,
+	eventlist.QNEXT:           ignoreError(qnext.QNext),
+	eventlist.MANUADDBAT:      questionnaireAddBat,
 }
 
 func ignoreError(fn func()) model.Handler {
@@ -54,7 +55,7 @@ func ignoreError(fn func()) model.Handler {
 func Dispatch(e model.Event) error {
 	fn, ok := registry[e.Key]
 	if !ok {
-		return ErrUnknownCommand
+		return errorlist.ErrUnknownCommand
 	}
 	return fn(e)
 }

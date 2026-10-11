@@ -90,10 +90,10 @@ func removeBatList(_ model.Event) error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
 		trimmed := trimExtention(value)
 		return model.Event{
-			Key:     eventlist.RRBAT,
+			Key:     eventlist.PURE_REMOVE_BAT,
 			KeyWord: trimmed,
 			SubEvent: &model.Event{
-				Key:     eventlist.RRBAT,
+				Key:     eventlist.PURE_REMOVE_BAT,
 				KeyWord: trimmed,
 			},
 		}
