@@ -76,7 +76,7 @@ func batList(event model.Event) error {
 	})
 }
 
-func runBatList(_ model.Event) error {
+func runBatList() error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
 		return model.Event{
 			Key:     eventlist.RUNBAT,
@@ -85,7 +85,7 @@ func runBatList(_ model.Event) error {
 	})
 }
 
-func removeBatList(_ model.Event) error {
+func removeBatList() error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
 		trimmed := trimExtention(value)
 		return model.Event{
@@ -99,7 +99,7 @@ func removeBatList(_ model.Event) error {
 	})
 }
 
-func questionnaireAddBat(_ model.Event) error {
+func questionnaireAddBat() error {
 	q := questionnaire.Questionnaire(model.QuestionnairePayload{
 		Questions: []model.Question{
 			{

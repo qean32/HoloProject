@@ -1,6 +1,7 @@
 package handler
 
 import (
+	test "main/__test__"
 	"main/callstack/manual"
 	errorlist "main/constants/error-list"
 	eventlist "main/constants/event-list"
@@ -11,44 +12,51 @@ import (
 
 var registry = map[string]model.Handler{
 	// клиентские
-	eventlist.INIT: init_,
+	eventlist.INIT: ignoreError(init_),
 
 	eventlist.BAT:        bat,
-	eventlist.MANUADDBAT: questionnaireAddBat,
+	eventlist.MANUADDBAT: ignoreEvent(questionnaireAddBat),
 
 	eventlist.RUNBAT:    runBat,
 	eventlist.REMOVEBAT: questionnaireAccess,
 
-	eventlist.BATLIST:       runBatList,
-	eventlist.BATLISTREMOVE: removeBatList,
+	eventlist.BATLIST:       ignoreEvent(runBatList),
+	eventlist.BATLISTREMOVE: ignoreEvent(removeBatList),
 
 	eventlist.HELP:   ignoreError(help),
 	eventlist.MENU:   ignoreError(runMenu),
-	eventlist.RESET:  reset,
-	eventlist.DROP:   drop,
+	eventlist.RESET:  ignoreError(reset),
+	eventlist.DROP:   ignoreEvent(drop),
 	eventlist.STOP:   ignoreError(death.Exit),
 	eventlist.MANUAL: ignoreError(manual.Manual),
 
-	eventlist.CLEARLOG: clearLog,
-	eventlist.OPENLOG:  openLog,
+	eventlist.CLEARLOG: ignoreEvent(clearLog),
+	eventlist.OPENLOG:  ignoreEvent(openLog),
 
-	eventlist.CRYPTO:   encrypt,
-	eventlist.DECRYPTO: decrypt,
+	eventlist.CRYPTO:   ignoreEvent(encrypt),
+	eventlist.DECRYPTO: ignoreEvent(decrypt),
 
-	eventlist.GENERATEKEY:    generateKey,
-	eventlist.GENERATEMASTER: generateMasterKey,
+	eventlist.GENERATEKEY:    ignoreEvent(generateKey),
+	eventlist.GENERATEMASTER: ignoreEvent(generateMasterKey),
 	// технические
 	eventlist.PURE_REMOVE_BAT: removeCmd,
+	eventlist.TEST:            ignoreEvent(test.Test),
 	eventlist.RESPONSE:        _response,
-	eventlist.MENUCRYPTO:      inwork,
+	eventlist.MENUCRYPTO:      ignoreError(inwork),
 	eventlist.QNEXT:           ignoreError(qnext.QNext),
-	eventlist.MANUADDBAT:      questionnaireAddBat,
+	eventlist.MANUADDBAT:      ignoreEvent(questionnaireAddBat),
 }
 
 func ignoreError(fn func()) model.Handler {
 	return func(_ model.Event) error {
 		fn()
 		return nil
+	}
+}
+
+func ignoreEvent(fn func() error) model.Handler {
+	return func(_ model.Event) error {
+		return fn()
 	}
 }
 

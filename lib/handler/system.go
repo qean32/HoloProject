@@ -10,20 +10,18 @@ import (
 	"main/constants"
 	"main/constants/literal"
 	"main/lib/death"
-	"main/model"
 	"main/terminal"
 )
 
 const dirPerm os.FileMode = 0o755
 
-func reset(_ model.Event) error {
+func reset() {
 	death.ClearTerminal()
 	terminal.RenderBaner()
 	manual.Manual()
-	return nil
 }
 
-func drop(_ model.Event) error {
+func drop() error {
 	if err := os.RemoveAll(constants.Root); err != nil {
 		return fmt.Errorf("Удаление %s: %w", constants.Root, err)
 	}
@@ -33,14 +31,14 @@ func drop(_ model.Event) error {
 	return nil
 }
 
-func clearLog(_ model.Event) error {
+func clearLog() error {
 	if err := death.ClearFile(literal.Path.PathLog); err != nil {
 		return fmt.Errorf("очистка лога: %w", err)
 	}
 	return nil
 }
 
-func openLog(_ model.Event) error {
+func openLog() error {
 	path := filepath.Join(constants.Root, literal.Path.PathLog)
 	if err := death.RunCmd(path); err != nil {
 		return fmt.Errorf("открытие %s: %w", path, err)
@@ -48,14 +46,12 @@ func openLog(_ model.Event) error {
 	return nil
 }
 
-func inwork(_ model.Event) error {
+func inwork() {
 	event.Response("В разработке")
-	return nil
 }
 
-func init_(_ model.Event) error {
+func init_() {
 	os.Mkdir(constants.Root, 0755)
 	os.Mkdir(filepath.Join(constants.Root, constants.Cmd), 0755)
 	death.CreateFile(literal.Path.PathLog, "")
-	return nil
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	test "main/__test__"
 	"main/callstack"
 	eventlist "main/constants/event-list"
 	"main/lib"
@@ -11,7 +10,6 @@ import (
 
 func main() {
 	lib.Init()
-	test.Test()
 	go RunLoop()
 
 	select {}

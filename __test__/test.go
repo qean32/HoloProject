@@ -6,7 +6,7 @@ import (
 	"main/model"
 )
 
-func Test() {
+func Test() error {
 	callstack.PushCallStack(model.Event{
 		Key:     eventlist.PURE_REMOVE_BAT,
 		KeyWord: "test",
@@ -18,6 +18,8 @@ func Test() {
 	callstack.PushCallStack(model.Event{
 		Key:     eventlist.BAT,
 		KeyWord: "test",
-		Payload: "start brave",
+		Payload: "echo 67",
 	})
+
+	return nil
 }
