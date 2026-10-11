@@ -1,6 +1,7 @@
 package main
 
 import (
+	test "main/__test__"
 	"main/callstack"
 	"main/lib"
 	"main/terminal"
@@ -9,10 +10,13 @@ import (
 
 func main() {
 	lib.Init()
+	test.Test()
 	go RunLoop()
 
 	select {}
 }
+
+var log = true
 
 func RunLoop() {
 	for {
@@ -21,7 +25,7 @@ func RunLoop() {
 			if !ok {
 				break
 			}
-			if false {
+			if log {
 				terminal.PrintTechInfo(event)
 			}
 			lib.HandleEvent(event)
