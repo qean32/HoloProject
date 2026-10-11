@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"fmt"
 	"path/filepath"
 	"strings"
 
 	"main/constants"
+	errorlist "main/constants/error-list"
 	eventlist "main/constants/event-list"
 	"main/constants/literal"
 	"main/lib/array"
@@ -23,30 +23,30 @@ func _response(event model.Event) error {
 
 func bat(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
-		return fmt.Errorf("Некорректное имя %q: %w", event.KeyWord, err)
+		return errorlist.InvalidName(event.KeyWord, err)
 	}
 	if err := death.CreateFile(cmdPath(event.KeyWord), event.Payload); err != nil {
-		return fmt.Errorf("Создание %s: %w", event.KeyWord, err)
+		return errorlist.Create(event.KeyWord, err)
 	}
 	return nil
 }
 
 func runBat(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
-		return fmt.Errorf("Некорректное имя %q: %w", event.KeyWord, err)
+		return errorlist.InvalidName(event.KeyWord, err)
 	}
 	if err := death.RunCmd(filepath.Join(constants.Root, cmdPath(event.KeyWord))); err != nil {
-		return fmt.Errorf("Запуск %s: %w", event.KeyWord, err)
+		return errorlist.Run(event.KeyWord, err)
 	}
 	return nil
 }
 
 func removeCmd(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
-		return fmt.Errorf("Некорректное имя %q: %w", event.KeyWord, err)
+		return errorlist.InvalidName(event.KeyWord, err)
 	}
 	if err := death.RemoveFile(cmdPath(event.KeyWord)); err != nil {
-		return fmt.Errorf("Удаление %s: %w", event.KeyWord, err)
+		return errorlist.Remove(event.KeyWord, err)
 	}
 	return nil
 }
@@ -55,7 +55,7 @@ func listBatFiles(title string, makeEvent func(name string) model.Event) error {
 	dir := filepath.Join(constants.Root, constants.Cmd)
 	commands, err := death.ListFilesByExt(dir, literal.Extension.Bat)
 	if err != nil {
-		return fmt.Errorf("Чтение %s: %w", dir, err)
+		return errorlist.Read(dir, err)
 	}
 
 	list.List(model.ListPayload{

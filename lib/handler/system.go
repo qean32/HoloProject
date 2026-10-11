@@ -1,13 +1,13 @@
 package handler
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
 	"main/callstack/event"
 	"main/callstack/manual"
 	"main/constants"
+	errorlist "main/constants/error-list"
 	"main/constants/literal"
 	"main/lib/death"
 	"main/terminal"
@@ -23,17 +23,17 @@ func reset() {
 
 func drop() error {
 	if err := os.RemoveAll(constants.Root); err != nil {
-		return fmt.Errorf("Удаление %s: %w", constants.Root, err)
+		return errorlist.Remove(constants.Root, err)
 	}
 	if err := os.MkdirAll(constants.Root, dirPerm); err != nil {
-		return fmt.Errorf("Создание %s: %w", constants.Root, err)
+		return errorlist.Create(constants.Root, err)
 	}
 	return nil
 }
 
 func clearLog() error {
 	if err := death.ClearFile(literal.Path.PathLog); err != nil {
-		return fmt.Errorf("очистка лога: %w", err)
+		return errorlist.ClearLog(err)
 	}
 	return nil
 }
@@ -41,7 +41,7 @@ func clearLog() error {
 func openLog() error {
 	path := filepath.Join(constants.Root, literal.Path.PathLog)
 	if err := death.RunCmd(path); err != nil {
-		return fmt.Errorf("открытие %s: %w", path, err)
+		return errorlist.Open(path, err)
 	}
 	return nil
 }

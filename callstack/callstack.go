@@ -22,6 +22,21 @@ func PushCallStack(event model.Event) {
 	}
 }
 
+func PushCallStackMany(events ...model.Event) {
+	if len(events) == 0 {
+		return
+	}
+
+	mu.Lock()
+	queue = append(queue, events...)
+	mu.Unlock()
+
+	select {
+	case changed <- struct{}{}:
+	default:
+	}
+}
+
 func Shift() (model.Event, bool) {
 	mu.Lock()
 	defer mu.Unlock()

@@ -44,7 +44,6 @@ var registry = map[string]model.Handler{
 	eventlist.RESPONSE:        _response,
 	eventlist.MENUCRYPTO:      ignoreError(inwork),
 	eventlist.QNEXT:           ignoreError(qnext.QNext),
-	eventlist.MANUADDBAT:      ignoreEvent(questionnaireAddBat),
 }
 
 func ignoreError(fn func()) model.Handler {

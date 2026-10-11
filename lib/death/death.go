@@ -11,6 +11,8 @@ import (
 	eventlist "main/constants/event-list"
 	"main/constants/literal"
 	"main/model"
+
+	errorlist "main/constants/error-list"
 )
 
 func Logger(event model.Event) error {
@@ -33,10 +35,10 @@ func CurrentTime() string {
 func RunCmd(command string) error {
 	cmd := exec.Command("CMD.exe", "/C", command)
 	if err := cmd.Start(); err != nil {
-		return fmt.Errorf("запуск команды %q: %w", command, err)
+		return errorlist.RunCommand(command, err)
 	}
 	if err := cmd.Wait(); err != nil {
-		return fmt.Errorf("выполнение команды %q: %w", command, err)
+		return errorlist.ExecCommand(command, err)
 	}
 	return nil
 }
@@ -55,7 +57,7 @@ func ClearTerminal() error {
 	cmd := exec.Command("cmd", "/c", "cls")
 	cmd.Stdout = os.Stdout
 	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("очистка терминала: %w", err)
+		return errorlist.ClearTerminal(err)
 	}
 	return nil
 }

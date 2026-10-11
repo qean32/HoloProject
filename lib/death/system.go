@@ -2,18 +2,18 @@ package death
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"main/constants"
+	errorlist "main/constants/error-list"
 )
 
 func ReadFile(path string) ([]string, error) {
 	file, err := os.Open(filepath.Join(constants.Root, path))
 	if err != nil {
-		return nil, fmt.Errorf("Открытие %s: %w", path, err)
+		return nil, errorlist.OpenFile(path, err)
 	}
 	defer file.Close()
 
@@ -23,7 +23,7 @@ func ReadFile(path string) ([]string, error) {
 		data = append(data, scanner.Text())
 	}
 	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("чтение %s: %w", path, err)
+		return nil, errorlist.ReadFile(path, err)
 	}
 	return data, nil
 }
@@ -31,12 +31,12 @@ func ReadFile(path string) ([]string, error) {
 func WriteFile(data, path string) error {
 	file, err := os.Create(filepath.Join(constants.Root, path))
 	if err != nil {
-		return fmt.Errorf("создание %s: %w", path, err)
+		return errorlist.CreateFile(path, err)
 	}
 	defer file.Close()
 
 	if _, err := file.WriteString(data); err != nil {
-		return fmt.Errorf("запись %s: %w", path, err)
+		return errorlist.WriteFile(path, err)
 	}
 	return nil
 }
@@ -51,7 +51,7 @@ func PushToFile(path, newText string) error {
 
 func CreateFile(path string, content string) error {
 	if err := os.WriteFile(filepath.Join(constants.Root, path), []byte(content), 0644); err != nil {
-		return fmt.Errorf("создание %s: %w", path, err)
+		return errorlist.CreateFile(path, err)
 	}
 	return nil
 }
@@ -62,7 +62,7 @@ func ClearFile(path string) error {
 
 func RemoveFile(path string) error {
 	if err := os.Remove(filepath.Join(constants.Root, path)); err != nil {
-		return fmt.Errorf("удаление %s: %w", path, err)
+		return errorlist.RemoveFile(path, err)
 	}
 	return nil
 }
@@ -72,7 +72,7 @@ func ListFilesByExt(dir string, ext string) ([]string, error) {
 
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		return nil, fmt.Errorf("чтение %s: %w", dir, err)
+		return nil, errorlist.ReadFile(dir, err)
 	}
 
 	for _, entry := range entries {
@@ -94,9 +94,4 @@ func Exists(path string) bool {
 func IsDir(path string) bool {
 	info, err := os.Stat(path)
 	return err == nil && info.IsDir()
-}
-
-func IsFile(path string) bool {
-	_, err := os.Stat(path)
-	return err == nil
 }

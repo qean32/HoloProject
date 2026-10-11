@@ -1,7 +1,6 @@
 package parse
 
 import (
-	"fmt"
 	"strings"
 
 	errorlist "main/constants/error-list"
@@ -25,11 +24,11 @@ var MAP = map[string]model.ParseEvent{
 
 func parseCripto(arr []string) (model.Event, error) {
 	if len(arr) < 3 {
-		return model.Event{}, fmt.Errorf("%w: crypto", errorlist.ErrTooFewArgs)
+		return model.Event{}, errorlist.WithContext("crypto", errorlist.ErrTooFewArgs)
 	}
 	payload := getPayload(arr)
 	if payload == "" {
-		return model.Event{}, fmt.Errorf("%w: crypto", errorlist.ErrNoPayload)
+		return model.Event{}, errorlist.WithContext("crypto", errorlist.ErrNoPayload)
 	}
 
 	return model.Event{
@@ -44,7 +43,7 @@ func parseCripto(arr []string) (model.Event, error) {
 
 func parseEcrypto(arr []string) (model.Event, error) {
 	if len(arr) < 3 {
-		return model.Event{}, fmt.Errorf("%w: decrypt", errorlist.ErrTooFewArgs)
+		return model.Event{}, errorlist.WithContext("decrypt", errorlist.ErrTooFewArgs)
 	}
 
 	return model.Event{
@@ -58,11 +57,11 @@ func parseEcrypto(arr []string) (model.Event, error) {
 
 func parseDeclare(arr []string) (model.Event, error) {
 	if len(arr) < 3 {
-		return model.Event{}, fmt.Errorf("%w: bat", errorlist.ErrTooFewArgs)
+		return model.Event{}, errorlist.WithContext("bat", errorlist.ErrTooFewArgs)
 	}
 	payload := getPayload(arr)
 	if payload == "" {
-		return model.Event{}, fmt.Errorf("%w: bat", errorlist.ErrNoPayload)
+		return model.Event{}, errorlist.WithContext("bat", errorlist.ErrNoPayload)
 	}
 
 	return model.Event{
