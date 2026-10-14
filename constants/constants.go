@@ -74,6 +74,7 @@ var HelpMessage = `
 %v  log
 %v  drop
 %v  stop
+%v  test           *апустить юнит-тесты
 %v  help
 %v
 `

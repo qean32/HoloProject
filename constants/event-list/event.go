@@ -39,3 +39,38 @@ var (
 	TEST            = "test"
 	MANUAL          = "manual"
 )
+
+// All — все события проекта, клиентские и технические.
+// По этому списку проходят встроенные тесты (main/__test__),
+// поэтому новое событие нужно добавлять и сюда.
+var All = []string{
+	// клиентские
+	CRYPTO,
+	DECRYPTO,
+	GENERATEMASTER,
+	GENERATEKEY,
+	CLEARLOG,
+	OPENLOG,
+	DROP,
+	STOP,
+	HELP,
+	BAT,
+	RUNBAT,
+	REMOVEBAT,
+	BATLIST,
+	BATLISTREMOVE,
+	MENU,
+	QNEXT,
+	INIT,
+
+	// технические
+	INWORK,
+	RESPONSE,
+	MANUCREATEBAT,
+	MENUDECRYPTO,
+	MENUCRYPTO,
+	PURE_REMOVE_BAT,
+	RESET,
+	TEST,
+	MANUAL,
+}

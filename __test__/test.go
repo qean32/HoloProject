@@ -1,22 +1,27 @@
+// Package test содержит встроенные проверки проекта.
+// Запускается по событию eventlist.TEST (команда "test").
 package test
 
 import (
-	"main/callstack"
-	eventlist "main/constants/event-list"
-	"main/model"
+	"main/constants/sgr"
+	"main/lib/utils"
+	"main/terminal"
 )
 
+// Test выполняет подтесты по всем Event из eventlist и по всем парсерам,
+// печатает результат каждого подтеста и итоговую сводку.
+//
+// Обработчики событий (main/lib/handler) не вызываются намеренно:
+// пакет handler импортирует этот пакет, поэтому вызов обработчиков
+// создал бы циклическую зависимость. Проверяется контракт события:
+// разбор команды ручного ввода и прохождение через callstack.
 func Test() error {
-	callstack.PushMany(
-		model.Event{Key: eventlist.PURE_REMOVE_BAT, KeyWord: "test"},
-		model.Event{Key: eventlist.RUNBAT, KeyWord: "test"},
-		model.Event{Key: eventlist.BAT, KeyWord: "test", Payload: "start cmd /K echo 67"},
-	)
-	// callstack.PushMany(
-	// 	model.Event{Key: eventlist.PURE_REMOVE_BAT, KeyWord: "test2"},
-	// 	model.Event{Key: eventlist.RUNBAT, KeyWord: "test2"},
-	// 	model.Event{Key: eventlist.BAT, KeyWord: "test2", Payload: "start brave"},
-	// )
+	defer drain()
 
-	return nil
+	terminal.Println(utils.GetCustomMessage(" unit-тесты", sgr.BOLD, sgr.UNDERLINE))
+
+	reports := runAll(eventCases(), parserSubCases())
+	summary(reports)
+
+	return failed(reports)
 }

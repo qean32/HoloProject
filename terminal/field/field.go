@@ -16,5 +16,6 @@ func Field(payload model.FieldPayload) string {
 	terminal.Print(utils.GetCustomMessage(field.Prefix, field.PrefixSRG...))
 	text, _ := r.ReadString('\n')
 
+	terminal.DownAndStart()
 	return strings.TrimSpace(text)
 }
