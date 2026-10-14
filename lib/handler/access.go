@@ -28,6 +28,6 @@ func questionnaireAccess(event model.Event) error {
 		return errorlist.ErrAccessDenied
 	}
 
-	callstack.PushCallStack(*event.SubEvent)
+	callstack.Push(*event.SubEvent)
 	return nil
 }

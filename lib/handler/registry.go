@@ -7,15 +7,14 @@ import (
 	eventlist "main/constants/event-list"
 	"main/lib/death"
 	"main/model"
-	qnext "main/terminal/qNext"
 )
 
 var registry = map[string]model.Handler{
 	// клиентские
 	eventlist.INIT: ignoreError(init_),
 
-	eventlist.BAT:        bat,
-	eventlist.MANUADDBAT: ignoreEvent(questionnaireAddBat),
+	eventlist.BAT:           bat,
+	eventlist.MANUCREATEBAT: ignoreEvent(questionnaireCreateBat),
 
 	eventlist.RUNBAT:    runBat,
 	eventlist.REMOVEBAT: questionnaireAccess,
@@ -43,7 +42,6 @@ var registry = map[string]model.Handler{
 	eventlist.TEST:            ignoreEvent(test.Test),
 	eventlist.RESPONSE:        _response,
 	eventlist.MENUCRYPTO:      ignoreError(inwork),
-	eventlist.QNEXT:           ignoreError(qnext.QNext),
 }
 
 func ignoreError(fn func()) model.Handler {

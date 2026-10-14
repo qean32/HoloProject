@@ -99,7 +99,7 @@ func removeBatList() error {
 	})
 }
 
-func questionnaireAddBat() error {
+func questionnaireCreateBat() error {
 	q := questionnaire.Questionnaire(model.QuestionnairePayload{
 		Questions: []model.Question{
 			{

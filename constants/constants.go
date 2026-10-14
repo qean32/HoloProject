@@ -81,7 +81,7 @@ var HelpMessage = `
 const CHAR_SELECTED_ITEM = "+ "
 const CHAR_UN_SELECTED_ITEM = "│  "
 
-const FIELDPREFIX = "-> "
+const FIELDPREFIX = "> "
 const RESPONSEPREFIX = ""
 
 var (

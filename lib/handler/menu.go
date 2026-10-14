@@ -15,7 +15,7 @@ var Menu = []model.Option{
 	{Message: "Запустить команду", Event: model.Event{Key: eventlist.BATLIST}},
 	{Message: "Ручной ввод", Event: model.Event{Key: eventlist.MANUAL}},
 	{Message: "Удалить команду", Event: model.Event{Key: eventlist.BATLISTREMOVE}},
-	{Message: "Добавить команду", Event: model.Event{Key: eventlist.MANUADDBAT}},
+	{Message: "Добавить команду", Event: model.Event{Key: eventlist.MANUCREATEBAT}},
 	{Message: "Генерация мастер ключа", Event: model.Event{Key: eventlist.INWORK}},
 	{Message: "Помощь", Event: model.Event{Key: eventlist.HELP}},
 	{Message: "Выход", Event: model.Event{Key: eventlist.STOP}},
@@ -29,7 +29,6 @@ func runMenu() {
 }
 
 func help() {
-	terminal.DownAndStart()
 	cursor.StartOfLine()
 	terminal.PrintASCIICenter(constants.HelpMessage, "")
 }

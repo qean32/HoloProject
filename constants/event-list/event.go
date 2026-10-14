@@ -24,14 +24,14 @@ var (
 	BATLISTREMOVE = "listremove"
 
 	MENU  = "menu"
-	QNEXT = "qnext"
+	QNEXT = "qcallback"
 	INIT  = "init"
 
 	// ТЕХНИЧЕСКИЕ
 
 	INWORK          = "inwork"
 	RESPONSE        = "response"
-	MANUADDBAT      = "MANUADDBAT"
+	MANUCREATEBAT   = "MANUCREATEBAT"
 	MENUDECRYPTO    = "MENUDECRYPTO"
 	MENUCRYPTO      = "MENUCRYPTO"
 	PURE_REMOVE_BAT = "67REMOVEBAT67"

@@ -22,11 +22,12 @@ func List(payload model.ListPayload) {
 	terminal.DownAndStart()
 	defer reset()
 	if len(payload.Options) == 0 {
-		event.Response("Список пуст! xD")
+		event.Response("length == zero! ave caesar! ")
 		return
 	}
+
 	cursor.Hide()
-	terminal.Println(utils.GetCustomMessage(payload.Title+" ↓"+ " (Ctrl+C Back)", constants.StyleDim...))
+	terminal.Println(utils.GetCustomMessage(payload.Title+" ↓"+" (ctrl+c back)", constants.StyleDim...))
 	terminal.PrintTopLine()
 
 	set(payload)
@@ -92,7 +93,7 @@ func _select() {
 	jumpToEndList()
 	terminal.DownAndStart()
 	cursor.Show()
-	callstack.PushCallStack(death.GetShortEvent(list.Options[list.Position].Event))
+	callstack.Push(death.GetShortEvent(list.Options[list.Position].Event))
 }
 
 func reRenderList() {

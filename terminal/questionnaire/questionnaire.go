@@ -10,7 +10,7 @@ import (
 func askQuestion(question model.Question) {
 	terminal.PrintTopLine()
 	_answer := field.Field(model.FieldPayload{
-		Prefix:    "│ " + question.Message + " -> ",
+		Prefix:    question.Message + " > ",
 		PrefixSRG: []int{sgr.DIM},
 	})
 
@@ -28,5 +28,4 @@ func runQuestionnaire() {
 
 func answer(key, answer string) {
 	questionnaire.Result[key] = answer
-	terminal.DownAndStart()
 }

@@ -1,21 +1,30 @@
 package main
 
 import (
+	"fmt"
+	"runtime"
+
 	"main/callstack"
 	eventlist "main/constants/event-list"
 	"main/lib"
+	"main/model"
 	"main/terminal"
-	qnext "main/terminal/qNext"
+	qcallback "main/terminal/qcallback"
 )
 
 func main() {
+	if runtime.GOOS != "windows" {
+		fmt.Println("Эта программа поддерживается только на Windows.")
+		return
+	}
+
 	lib.Init()
 	go RunLoop()
 
 	select {}
 }
 
-var log = true
+var logger = false
 
 func RunLoop() {
 	for {
@@ -24,12 +33,12 @@ func RunLoop() {
 			if !ok {
 				break
 			}
-			if log && event.Key != eventlist.RESPONSE {
+			if logger && event.Key != eventlist.RESPONSE {
 				terminal.PrintTechInfo(event)
 			}
 			lib.HandleEvent(event)
 		}
-		qnext.QNext()
+		qcallback.QCallback(func() { callstack.Push(model.Event{Key: eventlist.RESET}) })
 		<-callstack.Changed()
 	}
 }

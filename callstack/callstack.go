@@ -11,7 +11,7 @@ var (
 	changed = make(chan struct{}, 1)
 )
 
-func PushCallStack(event model.Event) {
+func Push(event model.Event) {
 	mu.Lock()
 	queue = append(queue, event)
 	mu.Unlock()
@@ -22,7 +22,7 @@ func PushCallStack(event model.Event) {
 	}
 }
 
-func PushCallStackMany(events ...model.Event) {
+func PushMany(events ...model.Event) {
 	if len(events) == 0 {
 		return
 	}

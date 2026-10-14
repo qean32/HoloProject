@@ -25,5 +25,5 @@ func Manual() {
 		event.Response(err)
 		return
 	}
-	callstack.PushCallStack(event_)
+	callstack.Push(event_)
 }
