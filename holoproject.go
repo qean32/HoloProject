@@ -5,9 +5,9 @@ import (
 	"runtime"
 
 	"main/callstack"
+	"main/callstack/event"
 	eventlist "main/constants/event-list"
 	"main/lib"
-	"main/model"
 	"main/terminal"
 	qcallback "main/terminal/qcallback"
 )
@@ -36,9 +36,11 @@ func RunLoop() {
 			if logger && event.Key != eventlist.RESPONSE {
 				terminal.PrintTechInfo(event)
 			}
-			lib.HandleEvent(event)
+			if err := lib.HandleEvent(event); err != nil {
+				callstack.PushError(event, err)
+			}
 		}
-		qcallback.QCallback(func() { callstack.Push(model.Event{Key: eventlist.RESET}) })
+		qcallback.QCallback(func() { event.Reset() })
 		<-callstack.Changed()
 	}
 }

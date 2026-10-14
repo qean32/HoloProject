@@ -36,8 +36,9 @@ var (
 	MENUCRYPTO      = "MENUCRYPTO"
 	PURE_REMOVE_BAT = "67REMOVEBAT67"
 	RESET           = "reset"
-	TEST            = "test"
 	MANUAL          = "manual"
+	TEST            = "test"
+	TESTVIEW       = "testview"
 )
 
 // All — все события проекта, клиентские и технические.
