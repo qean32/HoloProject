@@ -1,7 +1,6 @@
 package terminal
 
 import (
-	"fmt"
 	"strings"
 
 	"main/constants/sgr"
@@ -10,35 +9,28 @@ import (
 )
 
 func PrintTechInfo(event model.Event) {
-	Println(utils.GetCustomMessage("Технический вывод:", sgr.UNDERLINE, sgr.RED))
-	printEvent(event, "  ")
+	Println(utils.GetCustomMessage("Технический вывод:", sgr.UNDERLINE, sgr.GREEN) + " " + formatEvent(event))
 }
 
-func printEvent(event model.Event, indent string) {
-	label := func(name, value string) {
-		Println(fmt.Sprintf("%s%s %s", indent, utils.GetCustomMessage(fmt.Sprintf("%-8s =", name), sgr.DIM), value))
+func formatEvent(event model.Event) string {
+	parts := []string{
+		formatField("Key", event.Key),
+		formatField("KeyWord", event.KeyWord),
+		formatField("Payload", event.Payload),
+		formatField("Password", event.Password),
+		formatField("DateTime", event.DateTime),
+		"Flags=" + formatFlags(event.Flags),
+		"SubEvent=" + formatSubEvent(event.SubEvent),
 	}
-	field := func(name, value string) {
-		if value == "" {
-			label(name, utils.GetCustomMessage("<empty>", sgr.DIM))
-			return
-		}
-		label(name, utils.GetCustomMessage(value, sgr.RED))
-	}
+	return strings.Join(parts, " ")
+}
 
-	field("Key", event.Key)
-	field("KeyWord", event.KeyWord)
-	field("Payload", event.Payload)
-	field("Password", event.Password)
-	field("DateTime", event.DateTime)
-	label("Flags", formatFlags(event.Flags))
-
-	if event.SubEvent != nil {
-		label("SubEvent", "")
-		printEvent(*event.SubEvent, indent+"  ")
-	} else {
-		label("SubEvent", utils.GetCustomMessage("<nil>", sgr.DIM))
+func formatField(name, value string) string {
+	label := utils.GetCustomMessage(name+"=", sgr.DIM)
+	if value == "" {
+		return label + utils.GetCustomMessage("<empty>", sgr.DIM)
 	}
+	return label + utils.GetCustomMessage(value, sgr.GREEN)
 }
 
 func formatFlags(flags []string) string {
@@ -47,8 +39,15 @@ func formatFlags(flags []string) string {
 	}
 	parts := make([]string, len(flags))
 	for i, flag := range flags {
-		parts[i] = utils.GetCustomMessage(flag, sgr.RED)
+		parts[i] = utils.GetCustomMessage(flag, sgr.GREEN)
 	}
-	sep := utils.GetCustomMessage(", ", sgr.DIM)
+	sep := utils.GetCustomMessage(",", sgr.DIM)
 	return utils.GetCustomMessage("[", sgr.DIM) + strings.Join(parts, sep) + utils.GetCustomMessage("]", sgr.DIM)
+}
+
+func formatSubEvent(sub *model.Event) string {
+	if sub == nil {
+		return utils.GetCustomMessage("<nil>", sgr.DIM)
+	}
+	return utils.GetCustomMessage("{", sgr.DIM) + formatEvent(*sub) + utils.GetCustomMessage("}", sgr.DIM)
 }

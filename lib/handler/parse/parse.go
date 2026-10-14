@@ -5,7 +5,6 @@ import (
 
 	errorlist "main/constants/error-list"
 	eventlist "main/constants/event-list"
-	"main/constants/literal"
 	"main/lib/array/filter"
 	"main/lib/death"
 	"main/model"
@@ -109,7 +108,7 @@ func eventWithKeywordRemoveBat(arr []string) (model.Event, error) {
 		KeyWord:  arr[1],
 		SubEvent: &model.Event{
 			Key:     eventlist.PURE_REMOVE_BAT,
-			KeyWord: arr[1] + literal.Extension.Bat,
+			KeyWord: arr[1],
 		},
 		Flags: filter.FilterIsFlag(arr),
 	}, nil

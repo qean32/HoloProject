@@ -29,6 +29,9 @@ var (
 	// ИНИЦИАЛИЗАЦИЯ
 	ErrTempDirEmpty = errors.New("os.TempDir() вернул пустой путь")
 	ErrInitRoot     = errors.New("Ошибка инициализации!")
+
+	// ТЕСТЫ
+	ErrTestNotConnected = errors.New("Набор тестов не подключён")
 )
 
 // InvalidName формирует ошибку некорректного имени,

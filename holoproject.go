@@ -24,7 +24,7 @@ func main() {
 	select {}
 }
 
-var logger = false
+var logger = true
 
 func RunLoop() {
 	for {
