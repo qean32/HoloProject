@@ -1,13 +1,13 @@
 package death
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"slices"
 	"strings"
 	"time"
 
+	"main/callstack"
 	eventlist "main/constants/event-list"
 	"main/constants/literal"
 	"main/model"
@@ -15,17 +15,17 @@ import (
 	errorlist "main/constants/error-list"
 )
 
-func Logger(event model.Event) error {
-	if event.Key == eventlist.RESPONSE {
+func Logger(stackErr model.StackError) error {
+	if stackErr.Event.Key == eventlist.RESPONSE {
 		return nil
 	}
-	noLog := slices.ContainsFunc(event.Flags, func(item string) bool {
+	if noLog := slices.ContainsFunc(stackErr.Event.Flags, func(item string) bool {
 		return strings.TrimSpace(item) == literal.Flags.NOLOG
-	})
-	if noLog {
+	}); noLog {
 		return nil
 	}
-	return PushToFile(literal.Path.PathLog, fmt.Sprintf("%#v", event))
+
+	return PushToFile(literal.Path.PathLog, callstack.StackErrorToString(stackErr, 0))
 }
 
 func CurrentTime() string {
@@ -46,11 +46,6 @@ func RunCmd(command string) error {
 func Exit() {
 	ClearTerminal()
 	os.Exit(0)
-}
-
-func GetShortEvent(event model.Event) model.Event {
-	event.DateTime = CurrentTime()
-	return event
 }
 
 func ClearTerminal() error {

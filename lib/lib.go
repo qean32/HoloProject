@@ -14,7 +14,7 @@ import (
 
 var succesList = []string{
 	eventlist.BAT,
-	eventlist.PURE_REMOVE_BAT,
+	eventlist.PUREREMOVEBAT,
 	eventlist.TEST,
 	eventlist.CLEARLOG,
 	eventlist.CRYPTO,
@@ -39,7 +39,10 @@ func Event(e model.Event) error {
 func HandleEvent(e model.Event) error {
 	if err := Event(e); err != nil {
 		event.Response(err)
-		if logErr := death.Logger(e); logErr != nil {
+		if logErr := death.Logger(model.StackError{
+			Event: e,
+			Err:   err,
+		}); logErr != nil {
 			event.Response(logErr)
 		}
 		return err
@@ -49,7 +52,10 @@ func HandleEvent(e model.Event) error {
 		event.Success()
 	}
 
-	if err := death.Logger(e); err != nil {
+	if err := death.Logger(model.StackError{
+		Event: e,
+		Err:   nil,
+	}); err != nil {
 		event.Response(err)
 		return err
 	}

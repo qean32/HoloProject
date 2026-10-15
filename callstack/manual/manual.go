@@ -13,17 +13,12 @@ import (
 
 func Manual() {
 	command := field.Field(model.FieldPayload{Prefix: constants.FIELDPREFIX})
-	trimmed := strings.TrimSpace(command)
+	stlit := strings.Split(strings.TrimSpace(command), " ")
 
-	if len(trimmed) <= 1 {
-		event.SyntaxError()
-		return
-	}
-
-	event_, err := parse.ParseEvent(trimmed, strings.Split(trimmed, " ")[0])
+	e, err := parse.Dispatch(stlit[0], stlit)
 	if err != nil {
 		event.Response(err)
 		return
 	}
-	callstack.Push(event_)
+	callstack.Push(e)
 }

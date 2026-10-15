@@ -12,7 +12,6 @@ import (
 	"main/callstack/event"
 	"main/constants"
 	"main/constants/sgr"
-	"main/lib/death"
 	"main/lib/utils"
 	"main/model"
 	"main/terminal"
@@ -93,7 +92,7 @@ func _select() {
 	jumpToEndList()
 	terminal.DownAndStart()
 	cursor.Show()
-	callstack.Push(death.GetShortEvent(list.Options[list.Position].Event))
+	callstack.Push(utils.GetShortEvent(list.Options[list.Position].Event))
 }
 
 func reRenderList() {

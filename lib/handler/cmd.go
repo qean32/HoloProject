@@ -89,10 +89,10 @@ func removeBatList() error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
 		trimmed := trimExtention(value)
 		return model.Event{
-			Key:     eventlist.PURE_REMOVE_BAT,
+			Key:     eventlist.PUREREMOVEBAT,
 			KeyWord: trimmed,
 			SubEvent: &model.Event{
-				Key:     eventlist.PURE_REMOVE_BAT,
+				Key:     eventlist.PUREREMOVEBAT,
 				KeyWord: trimmed,
 			},
 		}

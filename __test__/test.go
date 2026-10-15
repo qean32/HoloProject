@@ -13,9 +13,9 @@ import (
 func Test() {
 	callstack.PushMany(
 		model.Event{Key: eventlist.TESTVIEW},
-		model.Event{Key: eventlist.PURE_REMOVE_BAT, KeyWord: "test"},
+		model.Event{Key: eventlist.PUREREMOVEBAT, KeyWord: "test"},
 		model.Event{Key: eventlist.RUNBAT, KeyWord: "test"},
-		model.Event{Key: eventlist.BAT, KeyWord: "test", Payload: "start cmd /K echo 67"},
+		model.Event{Key: eventlist.BAT, KeyWord: "test", Payload: "start cmd /C echo 67"},
 	)
 }
 
@@ -26,7 +26,7 @@ func TestView() {
 	}
 
 	defer callstack.PushMany(
-		model.Event{Key: eventlist.PURE_REMOVE_BAT, KeyWord: "tmpbat"},
+		model.Event{Key: eventlist.PUREREMOVEBAT, KeyWord: "tmpbat"},
 		model.Event{Key: eventlist.RUNBAT, KeyWord: "tmpbat"},
 		model.Event{Key: eventlist.BAT, KeyWord: "tmpbat", Payload: "start " + filepath.Join(constants.Root, "tmplog.asc")},
 	)

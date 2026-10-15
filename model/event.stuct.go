@@ -9,8 +9,3 @@ type Event struct {
 	Flags    []string
 	DateTime string
 }
-
-type StackError struct {
-	Event Event
-	Err   error
-}

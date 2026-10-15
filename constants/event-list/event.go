@@ -29,16 +29,16 @@ var (
 
 	// ТЕХНИЧЕСКИЕ
 
-	INWORK          = "inwork"
-	RESPONSE        = "response"
-	MANUCREATEBAT   = "MANUCREATEBAT"
-	MENUDECRYPTO    = "MENUDECRYPTO"
-	MENUCRYPTO      = "MENUCRYPTO"
-	PURE_REMOVE_BAT = "67REMOVEBAT67"
-	RESET           = "reset"
-	MANUAL          = "manual"
-	TEST            = "test"
-	TESTVIEW       = "testview"
+	INWORK        = "inwork"
+	RESPONSE      = "response"
+	MANUCREATEBAT = "MANUCREATEBAT"
+	MENUDECRYPTO  = "MENUDECRYPTO"
+	MENUCRYPTO    = "MENUCRYPTO"
+	PUREREMOVEBAT = "REMOVEBAT"
+	RESET         = "reset"
+	MANUAL        = "manual"
+	TEST          = "test"
+	TESTVIEW      = "testview"
 )
 
 // All — все события проекта, клиентские и технические.
@@ -70,7 +70,7 @@ var All = []string{
 	MANUCREATEBAT,
 	MENUDECRYPTO,
 	MENUCRYPTO,
-	PURE_REMOVE_BAT,
+	PUREREMOVEBAT,
 	RESET,
 	TEST,
 	MANUAL,

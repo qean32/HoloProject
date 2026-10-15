@@ -3,10 +3,11 @@ package handler
 import (
 	test "main/__test__"
 	"main/callstack/manual"
-	errorlist "main/constants/error-list"
-	eventlist "main/constants/event-list"
 	"main/lib/death"
 	"main/model"
+
+	errorlist "main/constants/error-list"
+	eventlist "main/constants/event-list"
 )
 
 var registry = map[string]model.Handler{
@@ -38,11 +39,11 @@ var registry = map[string]model.Handler{
 	eventlist.GENERATEKEY:    ignoreEvent(generateKey),
 	eventlist.GENERATEMASTER: ignoreEvent(generateMasterKey),
 	// технические
-	eventlist.PURE_REMOVE_BAT: removeCmd,
-	eventlist.TEST:            ignoreError(test.Test),
-	eventlist.TESTVIEW:        ignoreError(test.TestView),
-	eventlist.RESPONSE:        _response,
-	eventlist.MENUCRYPTO:      ignoreError(inwork),
+	eventlist.PUREREMOVEBAT: removeCmd,
+	eventlist.TEST:          ignoreError(test.Test),
+	eventlist.TESTVIEW:      ignoreError(test.TestView),
+	eventlist.RESPONSE:      _response,
+	eventlist.MENUCRYPTO:    ignoreError(inwork),
 }
 
 func ignoreError(fn func()) model.Handler {

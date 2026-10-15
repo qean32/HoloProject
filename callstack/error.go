@@ -32,8 +32,12 @@ func GetErrorsString() string {
 	res := ""
 
 	for i, stackErr := range Errors {
-		res = res + fmt.Sprintf("[%d] Event: %+v, Error: %v\n", i+1, stackErr.Event, stackErr.Err)
+		res = res + StackErrorToString(stackErr, i)
 	}
 	fmt.Println(res)
 	return res
+}
+
+func StackErrorToString(stackErr model.StackError, i int) string {
+	return fmt.Sprintf("[%d] Event: %+v, Error: %v\n", i+1, stackErr.Event, stackErr.Err)
 }
