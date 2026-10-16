@@ -23,19 +23,19 @@ var (
 	BATLIST       = "list"
 	BATLISTREMOVE = "listremove"
 
-	MENU  = "menu"
-	QNEXT = "qcallback"
-	INIT  = "init"
+	MENU = "menu"
+	INIT = "init"
 
 	// ТЕХНИЧЕСКИЕ
 
+	QNEXT         = "qcallback"
 	INWORK        = "inwork"
 	RESPONSE      = "response"
 	MANUCREATEBAT = "MANUCREATEBAT"
 	MENUDECRYPTO  = "MENUDECRYPTO"
 	MENUCRYPTO    = "MENUCRYPTO"
 	PUREREMOVEBAT = "REMOVEBAT"
-	RESET         = "reset"
+	RESET         = "r"
 	MANUAL        = "manual"
 	TEST          = "test"
 	TESTVIEW      = "testview"

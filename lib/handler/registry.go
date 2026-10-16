@@ -40,6 +40,7 @@ var registry = map[string]model.Handler{
 	eventlist.GENERATEMASTER: ignoreEvent(generateMasterKey),
 	// технические
 	eventlist.PUREREMOVEBAT: removeCmd,
+	eventlist.INWORK:        ignoreError(inwork),
 	eventlist.TEST:          ignoreError(test.Test),
 	eventlist.TESTVIEW:      ignoreError(test.TestView),
 	eventlist.RESPONSE:      _response,

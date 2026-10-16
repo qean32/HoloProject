@@ -64,6 +64,7 @@ func List(payload model.ListPayload) {
 
 		return false, nil
 	})
+	terminal.DownAndStart()
 }
 
 func renderList(options []model.Option) {
@@ -90,7 +91,6 @@ func renderList(options []model.Option) {
 
 func _select() {
 	jumpToEndList()
-	terminal.DownAndStart()
 	cursor.Show()
 	callstack.Push(utils.GetShortEvent(list.Options[list.Position].Event))
 }

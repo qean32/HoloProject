@@ -58,24 +58,21 @@ var HelpMessage = `
 %v  \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\   \ \_\   \ \_\ \_\ \ \_____\/\_____\ \ \_____\ \ \_____\   \ \_\    \ \_\ \_\ \ \_____\ \ \_____\ \ \_\   
 %v   \/_/\/_/  \/_____/  \/_____/  \/_____/    \/_/    \/_/ /_/  \/_____/\/_____/  \/_____/  \/_____/    \/_/     \/_/\/_/  \/_____/  \/_____/  \/_/   
 %v
-%v  crypto         *ифрование
-%v  ecrypto        *ешифрование
 %v
-%v  bat            *обавить .bat                     bat key_word { payload }
-%v  list           *писок .bat
-%v  run            *апустить .bat                    run key_word
-%v  rbat           *далить .bat                      rbat key_word
+%v crypto         encryption
+%v ecrypto        decryption
 %v
-%v  gmaster        *енерация мастер-ключа
-%v  gkey           *енерация ключа
+%v bat            add .bat                          bat keyWord -p:payload
+%v list           list .bat
+%v run            run .bat                          run keyWord
+%v rbat           remove .bat                       rbat keyWord
 %v
-%v  menu
-%v  clog
-%v  log
-%v  drop
-%v  stop
-%v  test           *апустить юнит-тесты
-%v  help
+%v gmaster        generate master key
+%v gkey           generate key
+%v
+%v test           unit tests
+%v
+%v menu, clog, log, drop, stop, help,
 %v
 `
 

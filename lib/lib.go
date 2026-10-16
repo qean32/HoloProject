@@ -52,6 +52,10 @@ func HandleEvent(e model.Event) error {
 		event.Success()
 	}
 
+	if e.Key == eventlist.RESET {
+		return nil
+	}
+
 	if err := death.Logger(model.StackError{
 		Event: e,
 		Err:   nil,

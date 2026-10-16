@@ -6,111 +6,111 @@ import (
 )
 
 var (
-	// ОБЩИЕ
-	ErrAccessDenied   = errors.New("Процесс остановлен")
-	ErrNotExist       = errors.New("файл не существует")
-	ErrIsDir          = errors.New("Это директория")
-	ErrInvalidName    = errors.New("Некорректное имя")
-	ErrForbiddenName  = errors.New("Недопустимое имя")
-	ErrForbiddenChars = errors.New("Недопустимые символы")
+	// GENERAL
+	ErrAccessDenied   = errors.New("Process stopped")
+	ErrNotExist       = errors.New("file does not exist")
+	ErrIsDir          = errors.New("This is a directory")
+	ErrInvalidName    = errors.New("Invalid name")
+	ErrForbiddenName  = errors.New("Forbidden name")
+	ErrForbiddenChars = errors.New("Forbidden characters")
 
-	// СОБЫТИЯ
-	ErrNoSubEvent     = errors.New("SubEvent не задан")
-	ErrUnknownCommand = errors.New("Неизвестная команда")
+	// EVENTS
+	ErrNoSubEvent     = errors.New("SubEvent is not set")
+	ErrUnknownCommand = errors.New("Unknown command")
 
-	// ПАРСИНГ
-	ErrEmptyCommand = errors.New("Пустая команда")
-	ErrTooFewArgs   = errors.New("Недостаточно аргументов")
-	ErrNoPayload    = errors.New("Payload не найден")
+	// PARSING
+	ErrEmptyCommand = errors.New("Empty command")
+	ErrTooFewArgs   = errors.New("Not enough arguments")
+	ErrNoPayload    = errors.New("Payload not found")
 
-	// В РАЗРАБОТКЕ
-	ErrorInwork = errors.New("В разработке!")
+	// IN DEVELOPMENT
+	ErrorInwork = errors.New("In development!")
 
-	// ИНИЦИАЛИЗАЦИЯ
-	ErrTempDirEmpty = errors.New("os.TempDir() вернул пустой путь")
-	ErrInitRoot     = errors.New("Ошибка инициализации!")
+	// INITIALIZATION
+	ErrTempDirEmpty = errors.New("os.TempDir() returned an empty path")
+	ErrInitRoot     = errors.New("Initialization error!")
 
-	// ТЕСТЫ
-	ErrTestNotConnected = errors.New("Набор тестов не подключён")
+	// TESTS
+	ErrTestNotConnected = errors.New("Test suite is not connected")
 )
 
-// InvalidName формирует ошибку некорректного имени,
-// добавляя проблемное имя name и оборачивая причину err.
+// InvalidName builds an invalid name error,
+// adding the problematic name and wrapping the cause err.
 func InvalidName(name string, err error) error {
-	return fmt.Errorf("Некорректное имя %q: %w", name, err)
+	return fmt.Errorf("Invalid name %q: %w", name, err)
 }
 
-// Create — ошибка создания объекта с именем name.
+// Create — error creating an object with the name.
 func Create(name string, err error) error {
-	return fmt.Errorf("Создание %s: %w", name, err)
+	return fmt.Errorf("Create %s: %w", name, err)
 }
 
-// Run — ошибка запуска объекта с именем name.
+// Run — error running an object with the name.
 func Run(name string, err error) error {
-	return fmt.Errorf("Запуск %s: %w", name, err)
+	return fmt.Errorf("Run %s: %w", name, err)
 }
 
-// Remove — ошибка удаления объекта с именем name.
+// Remove — error removing an object with the name.
 func Remove(name string, err error) error {
-	return fmt.Errorf("Удаление %s: %w", name, err)
+	return fmt.Errorf("Remove %s: %w", name, err)
 }
 
-// Read — ошибка чтения объекта с именем name.
+// Read — error reading an object with the name.
 func Read(name string, err error) error {
-	return fmt.Errorf("Чтение %s: %w", name, err)
+	return fmt.Errorf("Read %s: %w", name, err)
 }
 
-// Open — ошибка открытия объекта с именем name.
+// Open — error opening an object with the name.
 func Open(name string, err error) error {
-	return fmt.Errorf("Сткрытие %s: %w", name, err)
+	return fmt.Errorf("Open %s: %w", name, err)
 }
 
-// ClearLog — ошибка очистки лога.
+// ClearLog — error clearing the log.
 func ClearLog(err error) error {
-	return fmt.Errorf("Счистка лога: %w", err)
+	return fmt.Errorf("Clear log: %w", err)
 }
 
-// RunCommand — ошибка запуска команды command.
+// RunCommand — error running the command.
 func RunCommand(command string, err error) error {
-	return fmt.Errorf("Запуск команды %q: %w", command, err)
+	return fmt.Errorf("Run command %q: %w", command, err)
 }
 
-// ExecCommand — ошибка выполнения команды command.
+// ExecCommand — error executing the command.
 func ExecCommand(command string, err error) error {
-	return fmt.Errorf("Выполнение команды %q: %w", command, err)
+	return fmt.Errorf("Execute command %q: %w", command, err)
 }
 
-// ClearTerminal — ошибка очистки терминала.
+// ClearTerminal — error clearing the terminal.
 func ClearTerminal(err error) error {
-	return fmt.Errorf("Очистка терминала: %w", err)
+	return fmt.Errorf("Clear terminal: %w", err)
 }
 
-// OpenFile — ошибка открытия файла path.
+// OpenFile — error opening the file at path.
 func OpenFile(path string, err error) error {
-	return fmt.Errorf("Открытие %s: %w", path, err)
+	return fmt.Errorf("Open %s: %w", path, err)
 }
 
-// ReadFile — ошибка чтения файла/каталога path.
+// ReadFile — error reading the file/directory at path.
 func ReadFile(path string, err error) error {
-	return fmt.Errorf("Чтение %s: %w", path, err)
+	return fmt.Errorf("Read %s: %w", path, err)
 }
 
-// CreateFile — ошибка создания файла path.
+// CreateFile — error creating the file at path.
 func CreateFile(path string, err error) error {
-	return fmt.Errorf("Создание %s: %w", path, err)
+	return fmt.Errorf("Create %s: %w", path, err)
 }
 
-// WriteFile — ошибка записи в файл path.
+// WriteFile — error writing to the file at path.
 func WriteFile(path string, err error) error {
-	return fmt.Errorf("Запись %s: %w", path, err)
+	return fmt.Errorf("Write %s: %w", path, err)
 }
 
-// RemoveFile — ошибка удаления файла path.
+// RemoveFile — error removing the file at path.
 func RemoveFile(path string, err error) error {
-	return fmt.Errorf("Удаление %s: %w", path, err)
+	return fmt.Errorf("Remove %s: %w", path, err)
 }
 
-// WithContext оборачивает ошибку err, добавляя контекст context.
+// WithContext wraps err, adding the context.
 func WithContext(context string, err error) error {
 	return fmt.Errorf("%w: %s", err, context)
 }
