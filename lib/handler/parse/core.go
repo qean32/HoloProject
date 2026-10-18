@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	prefixPassword = "-pass:"
-	prefixPayload  = "-p:"
+	prefixPassword = "pass/"
+	prefixPayload  = "p/"
 )
 
 type Options struct {

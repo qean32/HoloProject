@@ -3,12 +3,11 @@ package handler
 import (
 	"main/callstack"
 	errorlist "main/constants/error-list"
-	"main/constants/literal"
 	"main/model"
 	"main/terminal/questionnaire"
 )
 
-func questionnaireAccess(event model.Event) error {
+func qAccess(event model.Event) error {
 	if event.SubEvent == nil {
 		return errorlist.ErrNoSubEvent
 	}
@@ -16,12 +15,12 @@ func questionnaireAccess(event model.Event) error {
 	q := questionnaire.Questionnaire(model.QuestionnairePayload{
 		Questions: []model.Question{
 			{
-				Message:  "",
+				Message:  "Подтвердите действие (yea/no)",
 				Key:      "Response",
 				Callback: func(string) bool { return true },
 			},
 		},
-		Title: literal.Titles.Access,
+		Title: "",
 	})
 
 	if !questionnaire.IsAcceptableYea(q["Response"]) {

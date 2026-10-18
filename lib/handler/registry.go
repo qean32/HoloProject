@@ -18,7 +18,7 @@ var registry = map[string]model.Handler{
 	eventlist.MANUCREATEBAT: ignoreEvent(questionnaireCreateBat),
 
 	eventlist.RUNBAT:    runBat,
-	eventlist.REMOVEBAT: questionnaireAccess,
+	eventlist.REMOVEBAT: qAccess,
 
 	eventlist.BATLIST:       ignoreEvent(runBatList),
 	eventlist.BATLISTREMOVE: ignoreEvent(removeBatList),
