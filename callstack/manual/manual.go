@@ -6,6 +6,7 @@ import (
 	"main/callstack"
 	"main/callstack/event"
 	"main/constants"
+	errorlist "main/constants/error-list"
 	"main/lib/handler/parse"
 	"main/model"
 	"main/terminal/field"
@@ -13,17 +14,16 @@ import (
 
 func Manual() {
 	command := field.Field(model.FieldPayload{Prefix: constants.FIELDPREFIX})
-	trimmed := strings.TrimSpace(command)
-
-	if len(trimmed) <= 1 {
-		event.SyntaxError()
+	args := strings.Fields(command)
+	if len(args) == 0 {
+		event.Response(errorlist.ErrEmptyCommand)
 		return
 	}
 
-	event_, err := parse.ParseEvent(trimmed, strings.Split(trimmed, " ")[0])
+	e, err := parse.Dispatch(args[0], args)
 	if err != nil {
 		event.Response(err)
 		return
 	}
-	callstack.PushCallStack(event_)
+	callstack.Push(e)
 }

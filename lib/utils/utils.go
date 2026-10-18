@@ -2,6 +2,8 @@ package utils
 
 import (
 	"fmt"
+	"main/lib/death"
+	"main/model"
 	"strconv"
 	"strings"
 )
@@ -23,4 +25,9 @@ func ConcatMessage(messages ...any) string {
 		sb.WriteString(fmt.Sprint(msg))
 	}
 	return sb.String()
+}
+
+func GetShortEvent(event model.Event) model.Event {
+	event.DateTime = death.CurrentTime()
+	return event
 }

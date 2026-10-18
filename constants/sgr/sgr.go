@@ -1,6 +1,6 @@
 package sgr
 
-var (
+const (
 	BOLD      = 1
 	ITALIC    = 3
 	DIM       = 2

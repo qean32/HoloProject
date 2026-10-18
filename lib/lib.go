@@ -1,40 +1,58 @@
 package lib
 
 import (
-	"bufio"
-	"os"
+	"slices"
 
 	"main/callstack/event"
 	"main/callstack/manual"
 	"main/constants"
 	eventlist "main/constants/event-list"
+	"main/lib/death"
 	"main/lib/handler"
 	"main/model"
 	"main/terminal"
 )
 
-var READER = bufio.NewReader(os.Stdin)
+var successEvents = []string{
+	eventlist.BAT,
+	eventlist.PUREREMOVEBAT,
+	eventlist.TEST,
+	eventlist.CLEARLOG,
+	eventlist.CRYPTO,
+	eventlist.DROP,
+	eventlist.INIT,
+	eventlist.RUNBAT,
+}
 
-func INIT() {
-	constants.INIT_ROOT()
-	terminal.RenderBaner()
+func Init() {
+	if err := constants.InitRoot(); err != nil {
+		terminal.Println("Ошибка инициализации")
+		return
+	}
+	terminal.RenderBanner()
 	manual.Manual()
 }
 
-func Event(event_ model.Event) {
-	if event_.Key != eventlist.RESPONSE {
-		defer event.Success()
+func HandleEvent(e model.Event) error {
+	if err := handler.Dispatch(e); err != nil {
+		event.Response(err)
+		if logErr := death.Logger(model.StackError{Event: e, Err: err}); logErr != nil {
+			event.Response(logErr)
+		}
+		return err
 	}
 
-	if err := handler.Dispatch(event_); err != nil {
-		event.Response("Ошибка: ", err)
-		// if logErr := death.Logger(event_); logErr != nil {
-		// 	event.Response("Ошибка лога: ", logErr)
-		// }
-		return
+	if slices.Contains(successEvents, e.Key) {
+		event.Success()
 	}
 
-	// if err := death.Logger(event_); err != nil {
-	// 	event.Response("Ошибка лога: ", err)
-	// }
+	if e.Key == eventlist.RESET {
+		return nil
+	}
+
+	if err := death.Logger(model.StackError{Event: e}); err != nil {
+		event.Response(err)
+		return err
+	}
+	return nil
 }

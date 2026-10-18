@@ -2,31 +2,31 @@ package handler
 
 import (
 	"main/callstack"
-	"main/constants/literal"
+	errorlist "main/constants/error-list"
 	"main/model"
 	"main/terminal/questionnaire"
 )
 
-func questionnaireAccess(event model.Event) error {
+func qAccess(event model.Event) error {
 	if event.SubEvent == nil {
-		return ErrNoSubEvent
+		return errorlist.ErrNoSubEvent
 	}
 
 	q := questionnaire.Questionnaire(model.QuestionnairePayload{
 		Questions: []model.Question{
 			{
-				Message:  "",
+				Message:  "Подтвердите действие (yea/no)",
 				Key:      "Response",
 				Callback: func(string) bool { return true },
 			},
 		},
-		Title: literal.Titles.Access,
+		Title: "",
 	})
 
 	if !questionnaire.IsAcceptableYea(q["Response"]) {
-		return ErrAccessDenied
+		return errorlist.ErrAccessDenied
 	}
 
-	callstack.PushCallStack(*event.SubEvent)
+	callstack.Push(*event.SubEvent)
 	return nil
 }

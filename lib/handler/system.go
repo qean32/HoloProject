@@ -1,54 +1,68 @@
 package handler
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
 	"main/callstack/event"
 	"main/callstack/manual"
 	"main/constants"
+	errorlist "main/constants/error-list"
 	"main/constants/literal"
 	"main/lib/death"
-	"main/model"
+	"main/lib/eventlog"
 	"main/terminal"
 )
 
 const dirPerm os.FileMode = 0o755
 
-func reset(_ model.Event) error {
+func reset() {
 	death.ClearTerminal()
-	terminal.RenderBaner()
+	terminal.RenderBanner()
 	manual.Manual()
-	return nil
 }
 
-func drop(_ model.Event) error {
+func drop() error {
 	if err := os.RemoveAll(constants.Root); err != nil {
-		return fmt.Errorf("удаление %s: %w", constants.Root, err)
+		return errorlist.Remove(constants.Root, err)
 	}
 	if err := os.MkdirAll(constants.Root, dirPerm); err != nil {
-		return fmt.Errorf("создание %s: %w", constants.Root, err)
+		return errorlist.Create(constants.Root, err)
 	}
 	return nil
 }
 
-func clearLog(_ model.Event) error {
+func clearLog() error {
 	if err := death.ClearFile(literal.Path.PathLog); err != nil {
-		return fmt.Errorf("очистка лога: %w", err)
+		return errorlist.ClearLog(err)
 	}
 	return nil
 }
 
-func openLog(_ model.Event) error {
+func openLog() error {
 	path := filepath.Join(constants.Root, literal.Path.PathLog)
 	if err := death.RunCmd(path); err != nil {
-		return fmt.Errorf("открытие %s: %w", path, err)
+		return errorlist.Open(path, err)
 	}
 	return nil
 }
 
-func inwork(_ model.Event) error {
+func inwork() {
 	event.Response("В разработке")
-	return nil
+}
+
+// toggleLogger переключает вывод технических логов событий в терминал.
+func toggleLogger() {
+	if eventlog.Toggle() {
+		event.Response("Логирование событий: включено")
+		return
+	}
+	event.Response("Логирование событий: выключено")
+}
+
+func init_() error {
+	if err := os.MkdirAll(filepath.Join(constants.Root, constants.Cmd), dirPerm); err != nil {
+		return errorlist.Create(constants.Cmd, err)
+	}
+	return death.CreateFile(literal.Path.PathLog, "")
 }

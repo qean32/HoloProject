@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"sync"
 
-	"main/constants"
-	"main/constants/sgr"
 	"main/lib/utils"
 )
 
@@ -24,17 +22,10 @@ func Println(messages ...any) {
 }
 
 func PrintResponse(messages ...any) {
-	mu.Lock()
-	defer mu.Unlock()
-	fmt.Println(append([]any{constants.RESPONSEPREFIX}, messages...)...)
-	fmt.Println("")
-}
-
-func PrintTopLine() {
-	// Println(utils.GetCustomMessage("┌──", sgr.DIM))
+	Println(messages...)
 	Println("")
 }
 
-func PrintTechInfo(messages ...any) {
-	Println(fmt.Sprintf(utils.GetCustomMessage("Технический вывод: %s", sgr.GREEN), utils.ConcatMessage(messages...)))
+func PrintTopLine() {
+	Println("")
 }

@@ -1,45 +1,52 @@
 package handler
 
 import (
+	test "main/__test__"
 	"main/callstack/manual"
-	eventlist "main/constants/event-list"
 	"main/lib/death"
 	"main/model"
-	qnext "main/terminal/qNext"
+
+	errorlist "main/constants/error-list"
+	eventlist "main/constants/event-list"
 )
 
 var registry = map[string]model.Handler{
 	// клиентские
-	eventlist.BAT:        bat,
-	eventlist.MANUADDBAT: questionnaireAddBat,
+	eventlist.INIT: ignoreEvent(init_),
+
+	eventlist.BAT:           bat,
+	eventlist.MANUCREATEBAT: ignoreEvent(questionnaireCreateBat),
 
 	eventlist.RUNBAT:    runBat,
-	eventlist.REMOVEBAT: questionnaireAccess,
+	eventlist.REMOVEBAT: qAccess,
 
-	eventlist.BATLIST:       runBatList,
-	eventlist.BATLISTREMOVE: removeBatList,
+	eventlist.BATLIST:       ignoreEvent(runBatList),
+	eventlist.BATLISTREMOVE: ignoreEvent(removeBatList),
 
 	eventlist.HELP:   ignoreError(help),
 	eventlist.MENU:   ignoreError(runMenu),
-	eventlist.RESET:  reset,
-	eventlist.DROP:   drop,
+	eventlist.RESET:  ignoreError(reset),
+	eventlist.DROP:   ignoreEvent(drop),
 	eventlist.STOP:   ignoreError(death.Exit),
 	eventlist.MANUAL: ignoreError(manual.Manual),
 
-	eventlist.CLEARLOG: clearLog,
-	eventlist.OPENLOG:  openLog,
+	eventlist.LOGGER: ignoreError(toggleLogger),
 
-	eventlist.CRYPTO:   encrypt,
-	eventlist.DECRYPTO: decrypt,
+	eventlist.CLEARLOG: ignoreEvent(clearLog),
+	eventlist.OPENLOG:  ignoreEvent(openLog),
 
-	eventlist.GENERATEKEY:    generateKey,
-	eventlist.GENERATEMASTER: generateMasterKey,
+	eventlist.CRYPTO:   ignoreEvent(encrypt),
+	eventlist.DECRYPTO: ignoreEvent(decrypt),
+
+	eventlist.GENERATEKEY:    ignoreEvent(generateKey),
+	eventlist.GENERATEMASTER: ignoreEvent(generateMasterKey),
 	// технические
-	eventlist.RRBAT:      removeCmd,
-	eventlist.RESPONSE:   _response,
-	eventlist.MENUCRYPTO: inwork,
-	eventlist.QNEXT:      ignoreError(qnext.QNext),
-	eventlist.MANUADDBAT: questionnaireAddBat,
+	eventlist.PUREREMOVEBAT: removeCmd,
+	eventlist.INWORK:        ignoreError(inwork),
+	eventlist.TEST:          ignoreError(test.Test),
+	eventlist.TESTVIEW:      ignoreError(test.TestView),
+	eventlist.RESPONSE:      _response,
+	eventlist.MENUCRYPTO:    ignoreError(inwork),
 }
 
 func ignoreError(fn func()) model.Handler {
@@ -49,10 +56,16 @@ func ignoreError(fn func()) model.Handler {
 	}
 }
 
+func ignoreEvent(fn func() error) model.Handler {
+	return func(_ model.Event) error {
+		return fn()
+	}
+}
+
 func Dispatch(e model.Event) error {
 	fn, ok := registry[e.Key]
 	if !ok {
-		return ErrUnknownCommand
+		return errorlist.ErrUnknownCommand
 	}
 	return fn(e)
 }

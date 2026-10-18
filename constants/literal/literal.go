@@ -9,8 +9,7 @@ var Extension = extensionType{
 }
 
 var Path = pathType{
-	PathLog:     "log.asc",
-	PathSetting: "settings.asc",
+	PathLog: "log.asc",
 }
 
 var Titles = titleType{

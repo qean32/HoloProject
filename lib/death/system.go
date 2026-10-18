@@ -1,57 +1,44 @@
 package death
 
 import (
-	"bufio"
-	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"main/constants"
+	errorlist "main/constants/error-list"
 )
 
-func ReadFile(path string) ([]string, error) {
-	file, err := os.Open(constants.Root + path)
-	if err != nil {
-		return nil, fmt.Errorf("открытие %s: %w", path, err)
-	}
-	defer file.Close()
-
-	var data []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		data = append(data, scanner.Text())
-	}
-	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("чтение %s: %w", path, err)
-	}
-	return data, nil
-}
-
 func WriteFile(data, path string) error {
-	file, err := os.Create(constants.Root + path)
+	file, err := os.Create(filepath.Join(constants.Root, path))
 	if err != nil {
-		return fmt.Errorf("создание %s: %w", path, err)
+		return errorlist.CreateFile(path, err)
 	}
 	defer file.Close()
 
 	if _, err := file.WriteString(data); err != nil {
-		return fmt.Errorf("запись %s: %w", path, err)
+		return errorlist.WriteFile(path, err)
 	}
 	return nil
 }
 
+// PushToFile дописывает newText в конец файла (вместо полного
+// перечитывания и перезаписи файла на каждую запись).
 func PushToFile(path, newText string) error {
-	data, err := ReadFile(path)
+	file, err := os.OpenFile(filepath.Join(constants.Root, path), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 	if err != nil {
-		return err
+		return errorlist.OpenFile(path, err)
 	}
-	return WriteFile(strings.Join(append(data, newText+"\n"), " \n"), path)
+	defer file.Close()
+
+	if _, err := file.WriteString(newText + "\n"); err != nil {
+		return errorlist.WriteFile(path, err)
+	}
+	return nil
 }
 
 func CreateFile(path string, content string) error {
-	if err := os.WriteFile(path, []byte(content), 0644); err != nil {
-		return fmt.Errorf("создание %s: %w", path, err)
+	if err := os.WriteFile(filepath.Join(constants.Root, path), []byte(content), 0o644); err != nil {
+		return errorlist.CreateFile(path, err)
 	}
 	return nil
 }
@@ -61,20 +48,19 @@ func ClearFile(path string) error {
 }
 
 func RemoveFile(path string) error {
-	if err := os.Remove(constants.Root + path); err != nil {
-		return fmt.Errorf("удаление %s: %w", path, err)
+	if err := os.Remove(filepath.Join(constants.Root, path)); err != nil {
+		return errorlist.RemoveFile(path, err)
 	}
 	return nil
 }
 
 func ListFilesByExt(dir string, ext string) ([]string, error) {
-	var files []string
-
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		return nil, fmt.Errorf("чтение %s: %w", dir, err)
+		return nil, errorlist.ReadFile(dir, err)
 	}
 
+	var files []string
 	for _, entry := range entries {
 		if entry.IsDir() {
 			continue

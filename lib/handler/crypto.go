@@ -1,21 +1,19 @@
 package handler
 
-import (
-	"main/model"
-)
+import errorlist "main/constants/error-list"
 
-func encrypt(_ model.Event) error {
-	return ErrorInwork
+func encrypt() error {
+	return errorlist.ErrorInwork
 }
 
-func decrypt(_ model.Event) error {
-	return ErrorInwork
+func decrypt() error {
+	return errorlist.ErrorInwork
 }
 
-func generateKey(_ model.Event) error {
-	return ErrorInwork
+func generateKey() error {
+	return errorlist.ErrorInwork
 }
 
-func generateMasterKey(_ model.Event) error {
-	return ErrorInwork
+func generateMasterKey() error {
+	return errorlist.ErrorInwork
 }

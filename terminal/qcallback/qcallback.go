@@ -1,10 +1,7 @@
-package qnext
+package qcallback
 
 import (
-	"main/callstack"
-	eventlist "main/constants/event-list"
-	"main/lib/death"
-	"main/model"
+	"main/callstack/event"
 	"main/terminal"
 
 	"atomicgo.dev/cursor"
@@ -12,18 +9,17 @@ import (
 	"atomicgo.dev/keyboard/keys"
 )
 
-func QNext() {
-	terminal.Print("Press Enter to continue")
+func QCallback(callback func()) {
+	defer cursor.Show()
+	terminal.Print("press Enter to continue")
 	cursor.Hide()
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		switch key.Code {
 		case keys.Enter:
-			cursor.Show()
-			callstack.PushCallStack(model.Event{Key: eventlist.RESET})
+			callback()
 			return true, nil
 		case keys.Escape, keys.CtrlC:
-			cursor.Show()
-			death.Exit()
+			event.Reset()
 			return true, nil
 		}
 

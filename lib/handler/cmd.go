@@ -1,12 +1,11 @@
 package handler
 
 import (
-	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 
 	"main/constants"
+	errorlist "main/constants/error-list"
 	eventlist "main/constants/event-list"
 	"main/constants/literal"
 	"main/lib/array"
@@ -24,30 +23,30 @@ func _response(event model.Event) error {
 
 func bat(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
-		return fmt.Errorf("Некорректное имя %q: %w", event.KeyWord, err)
+		return errorlist.InvalidName(event.KeyWord, err)
 	}
 	if err := death.CreateFile(cmdPath(event.KeyWord), event.Payload); err != nil {
-		return fmt.Errorf("Создание %s: %w", event.KeyWord, err)
+		return errorlist.Create(event.KeyWord, err)
 	}
 	return nil
 }
 
 func runBat(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
-		return fmt.Errorf("Некорректное имя %q: %w", event.KeyWord, err)
+		return errorlist.InvalidName(event.KeyWord, err)
 	}
-	if err := death.RunCmd(cmdPath(event.KeyWord)); err != nil {
-		return fmt.Errorf("Запуск %s: %w", event.KeyWord, err)
+	if err := death.RunCmd(filepath.Join(constants.Root, cmdPath(event.KeyWord))); err != nil {
+		return errorlist.Run(event.KeyWord, err)
 	}
 	return nil
 }
 
 func removeCmd(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
-		return fmt.Errorf("Некорректное имя %q: %w", event.KeyWord, err)
+		return errorlist.InvalidName(event.KeyWord, err)
 	}
-	if err := os.Remove(cmdPath(event.KeyWord)); err != nil {
-		return fmt.Errorf("Удаление %s: %w", event.KeyWord, err)
+	if err := death.RemoveFile(cmdPath(event.KeyWord)); err != nil {
+		return errorlist.Remove(event.KeyWord, err)
 	}
 	return nil
 }
@@ -56,7 +55,7 @@ func listBatFiles(title string, makeEvent func(name string) model.Event) error {
 	dir := filepath.Join(constants.Root, constants.Cmd)
 	commands, err := death.ListFilesByExt(dir, literal.Extension.Bat)
 	if err != nil {
-		return fmt.Errorf("Чтение %s: %w", dir, err)
+		return errorlist.Read(dir, err)
 	}
 
 	list.List(model.ListPayload{
@@ -71,36 +70,30 @@ func listBatFiles(title string, makeEvent func(name string) model.Event) error {
 	return nil
 }
 
-func batList(event model.Event) error {
-	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
-		return model.Event{Key: event.Key, KeyWord: value}
-	})
-}
-
-func runBatList(_ model.Event) error {
+func runBatList() error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
 		return model.Event{
 			Key:     eventlist.RUNBAT,
-			KeyWord: trimExtention(value),
+			KeyWord: trimExtension(value),
 		}
 	})
 }
 
-func removeBatList(_ model.Event) error {
+func removeBatList() error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
-		trimmed := trimExtention(value)
+		trimmed := trimExtension(value)
 		return model.Event{
-			Key:     eventlist.RRBAT,
+			Key:     eventlist.REMOVEBAT,
 			KeyWord: trimmed,
 			SubEvent: &model.Event{
-				Key:     eventlist.RRBAT,
+				Key:     eventlist.PUREREMOVEBAT,
 				KeyWord: trimmed,
 			},
 		}
 	})
 }
 
-func questionnaireAddBat(_ model.Event) error {
+func questionnaireCreateBat() error {
 	q := questionnaire.Questionnaire(model.QuestionnairePayload{
 		Questions: []model.Question{
 			{

@@ -2,20 +2,12 @@ package filter
 
 import "strings"
 
-func FilterIsFlag[T string](arr []T) []T {
-	return Filter(arr, isFlag)
-}
-
-func Filter[T any](arr []T, f func(item T) bool) []T {
-	filtered := make([]T, 0, len(arr))
-	for _, e := range arr {
-		if f(e) {
-			filtered = append(filtered, e)
+func FilterIsFlag(args []string) []string {
+	flags := make([]string, 0, len(args))
+	for _, arg := range args {
+		if strings.HasPrefix(arg, "-") {
+			flags = append(flags, arg)
 		}
 	}
-	return filtered
-}
-
-func isFlag[T string](item T) bool {
-	return strings.HasPrefix(string(item), "-")
+	return flags
 }

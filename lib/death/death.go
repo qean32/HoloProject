@@ -1,28 +1,31 @@
 package death
 
 import (
-	"bufio"
-	"fmt"
 	"os"
 	"os/exec"
 	"slices"
 	"strings"
 	"time"
 
+	"main/callstack"
+	eventlist "main/constants/event-list"
 	"main/constants/literal"
 	"main/model"
+
+	errorlist "main/constants/error-list"
 )
 
-var reader = bufio.NewReader(os.Stdin)
-
-func Logger(event model.Event) error {
-	noLog := slices.ContainsFunc(event.Flags, func(item string) bool {
-		return strings.TrimSpace(item) == literal.Flags.NOLOG
-	})
-	if noLog {
+func Logger(stackErr model.StackError) error {
+	if stackErr.Event.Key == eventlist.RESPONSE {
 		return nil
 	}
-	return PushToFile(literal.Path.PathLog, fmt.Sprintf("%#v", event))
+	if noLog := slices.ContainsFunc(stackErr.Event.Flags, func(item string) bool {
+		return strings.TrimSpace(item) == literal.Flags.NOLOG
+	}); noLog {
+		return nil
+	}
+
+	return PushToFile(literal.Path.PathLog, callstack.StackErrorToString(stackErr, 0))
 }
 
 func CurrentTime() string {
@@ -30,12 +33,8 @@ func CurrentTime() string {
 }
 
 func RunCmd(command string) error {
-	cmd := exec.Command("CMD.exe", "/C", command)
-	if err := cmd.Start(); err != nil {
-		return fmt.Errorf("запуск команды %q: %w", command, err)
-	}
-	if err := cmd.Wait(); err != nil {
-		return fmt.Errorf("выполнение команды %q: %w", command, err)
+	if err := exec.Command("cmd", "/C", command).Run(); err != nil {
+		return errorlist.RunCommand(command, err)
 	}
 	return nil
 }
@@ -45,16 +44,11 @@ func Exit() {
 	os.Exit(0)
 }
 
-func GetShortEvent(event model.Event) model.Event {
-	event.DateTime = CurrentTime()
-	return event
-}
-
 func ClearTerminal() error {
 	cmd := exec.Command("cmd", "/c", "cls")
 	cmd.Stdout = os.Stdout
 	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("очистка терминала: %w", err)
+		return errorlist.ClearTerminal(err)
 	}
 	return nil
 }

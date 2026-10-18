@@ -2,14 +2,18 @@ package event
 
 import (
 	"main/callstack"
-	"main/constants/event-list"
+	eventlist "main/constants/event-list"
 	"main/lib/utils"
 	"main/model"
 )
 
 func Response(message ...any) {
-	callstack.PushCallStack(model.Event{
+	callstack.Push(model.Event{
 		Key:     eventlist.RESPONSE,
 		Payload: utils.ConcatMessage(message...),
 	})
+}
+
+func Reset() {
+	callstack.Push(model.Event{Key: eventlist.RESET})
 }

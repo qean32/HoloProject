@@ -39,16 +39,6 @@ func PrintASCIICenter(ascii string, separator string) {
 	Print(fmt.Sprintf(ascii, params...))
 }
 
-func ReRenderLine(message string) {
-	cursor.StartOfLine()
-	cursor.ClearLine()
-	Print(message)
-}
-
-func PrintCenter(output string, separator string) {
-	Print(strings.Repeat(separator, calcCenterCMD(len(output))) + output)
-}
-
 func DownAndStart() {
 	Println()
 	cursor.StartOfLine()
@@ -70,7 +60,7 @@ func calcCenterCMD(length int) int {
 	return res
 }
 
-func RenderBaner() {
+func RenderBanner() {
 	PrintASCIICenter(constants.BinaryPROJECT_INIT, " ")
 	PrintASCIICenter(constants.PROJECT_INIT, " ")
 }

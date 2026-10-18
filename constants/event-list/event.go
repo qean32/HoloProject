@@ -1,8 +1,7 @@
 package eventlist
 
-var (
-	// КЛИЕНТСКИЕ
-
+// КЛИЕНТСКИЕ
+const (
 	CRYPTO   = "crypto"
 	DECRYPTO = "ecrypto"
 
@@ -23,17 +22,21 @@ var (
 	BATLIST       = "list"
 	BATLISTREMOVE = "listremove"
 
-	MENU  = "menu"
-	QNEXT = "qnext"
+	MENU = "menu"
+	INIT = "init"
 
-	// ТЕХНИЧЕСКИЕ
+	LOGGER = "logger"
+)
 
-	INWORK       = "inwork"
-	RESPONSE     = "response"
-	MANUADDBAT   = "MANUADDBAT"
-	MENUDECRYPTO = "MENUDECRYPTO"
-	MENUCRYPTO   = "MENUCRYPTO"
-	RRBAT        = "%333RRBAT"
-	RESET        = "reset"
-	MANUAL       = "manual"
+// ТЕХНИЧЕСКИЕ
+const (
+	INWORK        = "inwork"
+	RESPONSE      = "response"
+	MANUCREATEBAT = "MANUCREATEBAT"
+	MENUCRYPTO    = "MENUCRYPTO"
+	PUREREMOVEBAT = "REMOVEBAT"
+	RESET         = "r"
+	MANUAL        = "manual"
+	TEST          = "test"
+	TESTVIEW      = "testview"
 )

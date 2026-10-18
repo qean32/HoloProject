@@ -2,25 +2,29 @@ package constants
 
 import (
 	"os"
+	"path/filepath"
 
+	errorlist "main/constants/error-list"
 	"main/constants/sgr"
 )
 
-const Mode = "prod"
-const projectname = "holoproject"
+const projectName = "holoproject"
 
 var (
 	Root = `private`
 	Cmd  = `cmd`
 )
 
-func INIT_ROOT() {
-	if Mode == "dev" {
-	} else {
-		Root = os.TempDir() + `\` + projectname + `\`
-		os.Mkdir(Root, 0755)
-		os.Mkdir(Root+Cmd, 0755)
+func InitRoot() error {
+	base := os.TempDir()
+	if base == "" {
+		return errorlist.ErrTempDirEmpty
 	}
+	Root = filepath.Join(base, projectName)
+	if err := os.MkdirAll(Root, 0o755); err != nil {
+		return errorlist.ErrInitRoot
+	}
+	return nil
 }
 
 var BinaryPROJECT_INIT = `
@@ -28,11 +32,11 @@ var BinaryPROJECT_INIT = `
 `
 
 var PROJECT_INIT = `
-%v __  __    ______    __        ______     ______  ______    ______      __    ______    ______    ______     
-%v/\ \_\ \  /\  __ \  /\ \      /\  __ \   /\  == \/\  == \  /\  __ \    /\ \  /\  ___\  /\  ___\  /\__  _\    
-%v\ \  __ \ \ \ \/\ \ \ \ \____ \ \ \/\ \  \ \  _-/\ \  __<  \ \ \/\ \  _\_\ \ \ \  __\  \ \ \____ \/_/\ \/    
-%v \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\  \ \_\   \ \_\ \_\ \ \_____\/\_____\ \ \_____\ \ \_____\   \ \_\    
-%v  \/_/\/_/  \/_____/  \/_____/  \/_____/   \/_/    \/_/ /_/  \/_____/\/_____/  \/_____/  \/_____/    \/_/    
+%v __  __    ______    __        ______      ______  ______    ______      __    ______    ______    ______     
+%v/\ \_\ \  /\  __ \  /\ \      /\  __ \    /\  == \/\  == \  /\  __ \    /\ \  /\  ___\  /\  ___\  /\__  _\    
+%v\ \  __ \ \ \ \/\ \ \ \ \____ \ \ \/\ \   \ \  _-/\ \  __<  \ \ \/\ \  _\_\ \ \ \  __\  \ \ \____ \/_/\ \/    
+%v \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\   \ \_\   \ \_\ \_\ \ \_____\/\_____\ \ \_____\ \ \_____\   \ \_\    
+%v  \/_/\/_/  \/_____/  \/_____/  \/_____/    \/_/    \/_/ /_/  \/_____/\/_____/  \/_____/  \/_____/    \/_/    
 %v
 `
 
@@ -42,42 +46,35 @@ var PROJECT_INIT = `
 // https://patorjk.com/software/taag/#p=testall&f=Broadway&t=holoproject+2&x=none&v=4&h=4&w=80&we=false
 
 var HelpMessage = `
-%v  __  __    ______    __        ______      ______  ______    ______      __    ______    ______    ______     __  __    ______    __        ______  
-%v /\ \_\ \  /\  __ \  /\ \      /\  __ \    /\  == \/\  == \  /\  __ \    /\ \  /\  ___\  /\  ___\  /\__  _\   /\ \_\ \  /\  ___\  /\ \      /\  == \ 
-%v \ \  __ \ \ \ \/\ \ \ \ \____ \ \ \/\ \   \ \  _-/\ \  __<  \ \ \/\ \  _\_\ \ \ \  __\  \ \ \____ \/_/\ \/   \ \  __ \ \ \  __\  \ \ \____ \ \  _-/ 
-%v  \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\   \ \_\   \ \_\ \_\ \ \_____\/\_____\ \ \_____\ \ \_____\   \ \_\    \ \_\ \_\ \ \_____\ \ \_____\ \ \_\   
-%v   \/_/\/_/  \/_____/  \/_____/  \/_____/    \/_/    \/_/ /_/  \/_____/\/_____/  \/_____/  \/_____/    \/_/     \/_/\/_/  \/_____/  \/_____/  \/_/   
+%v  __  __    ______    __        ______      __  __    ______    __        ______  
+%v /\ \_\ \  /\  __ \  /\ \      /\  __ \    /\ \_\ \  /\  ___\  /\ \      /\  == \ 
+%v \ \  __ \ \ \ \/\ \ \ \ \____ \ \ \/\ \   \ \  __ \ \ \  __\  \ \ \____ \ \  _-/ 
+%v  \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\   \ \_\ \_\ \ \_____\ \ \_____\ \ \_\   
+%v   \/_/\/_/  \/_____/  \/_____/  \/_____/    \/_/\/_/  \/_____/  \/_____/  \/_/   
 %v
-%v  crypto         *ифрование
-%v  ecrypto        *ешифрование
+%v crypto         encryption
+%v ecrypto        decryption
 %v
-%v  bat            *обавить .bat                     bat key_word { payload }
-%v  list           *писок .bat
-%v  run            *апустить .bat                    run key_word
-%v  rbat           *далить .bat                      rbat key_word
+%v bat            add .bat                          bat keyWord -p:payload
+%v list           list .bat
+%v run            run .bat                          run keyWord
+%v rbat           remove .bat                       rbat keyWord
 %v
-%v  gmaster        *енерация мастер-ключа
-%v  gkey           *енерация ключа
+%v gmaster        generate master key
+%v gkey           generate key
 %v
-%v  menu
-%v  clog
-%v  log
-%v  drop
-%v  stop
-%v  help
+%v test           unit tests
+%v
+%v
+%v menu, clog, log, drop, stop, help,
 %v
 `
 
 const CHAR_SELECTED_ITEM = "+ "
 const CHAR_UN_SELECTED_ITEM = "│  "
 
-const FIELDPREFIX = "-> "
-const RESPONSEPREFIX = ""
+const FIELDPREFIX = "> "
 
-var (
-	StyleError    = []int{sgr.RED, sgr.BOLD}
-	StyleDim      = []int{sgr.DIM}
-	StyleSelected = []int{sgr.RED, sgr.BOLD, sgr.UNDERLINE}
-)
+var StyleDim = []int{sgr.DIM}
 
-var AcceptableYeaOrNot []string = []string{"yes", "y", "yea"}
+var AcceptableYeaOrNot = []string{"yes", "y", "yea", "да"}
