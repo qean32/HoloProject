@@ -24,6 +24,8 @@ const (
 
 	MENU = "menu"
 	INIT = "init"
+
+	LOGGER = "logger"
 )
 
 // ТЕХНИЧЕСКИЕ

@@ -8,11 +8,10 @@ import (
 	"main/callstack/event"
 	eventlist "main/constants/event-list"
 	"main/lib"
+	"main/lib/eventlog"
 	"main/terminal"
 	"main/terminal/qcallback"
 )
-
-var logger = true
 
 func main() {
 	if runtime.GOOS != "windows" {
@@ -33,7 +32,7 @@ func runLoop() {
 			if !ok {
 				break
 			}
-			if logger && ev.Key != eventlist.RESPONSE {
+			if eventlog.Enabled() && ev.Key != eventlist.RESPONSE {
 				terminal.PrintTechInfo(ev)
 			}
 			if err := lib.HandleEvent(ev); err != nil {

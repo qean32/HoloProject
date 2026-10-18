@@ -30,6 +30,8 @@ var registry = map[string]model.Handler{
 	eventlist.STOP:   ignoreError(death.Exit),
 	eventlist.MANUAL: ignoreError(manual.Manual),
 
+	eventlist.LOGGER: ignoreError(toggleLogger),
+
 	eventlist.CLEARLOG: ignoreEvent(clearLog),
 	eventlist.OPENLOG:  ignoreEvent(openLog),
 

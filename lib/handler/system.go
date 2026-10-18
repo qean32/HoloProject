@@ -10,6 +10,7 @@ import (
 	errorlist "main/constants/error-list"
 	"main/constants/literal"
 	"main/lib/death"
+	"main/lib/eventlog"
 	"main/terminal"
 )
 
@@ -48,6 +49,15 @@ func openLog() error {
 
 func inwork() {
 	event.Response("В разработке")
+}
+
+// toggleLogger переключает вывод технических логов событий в терминал.
+func toggleLogger() {
+	if eventlog.Toggle() {
+		event.Response("Логирование событий: включено")
+		return
+	}
+	event.Response("Логирование событий: выключено")
 }
 
 func init_() error {
