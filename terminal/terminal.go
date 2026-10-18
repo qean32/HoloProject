@@ -3,38 +3,29 @@ package terminal
 import (
 	"fmt"
 	"sync"
+
+	"main/lib/utils"
 )
 
-var (
-	mu sync.Mutex
-)
+var mu sync.Mutex
 
-func Output(messages ...string) {
-	var result string
-	for _, msg := range messages {
-		result += fmt.Sprint(msg)
-	}
+func Print(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
-
-	fmt.Print(" ", result)
+	fmt.Print(" " + utils.ConcatMessage(messages...))
 }
 
-func Outputln(messages ...string) {
-	var result string
-	for _, msg := range messages {
-		result += fmt.Sprint(msg)
-	}
+func Println(messages ...any) {
 	mu.Lock()
 	defer mu.Unlock()
-
-	fmt.Println(" ", result)
+	fmt.Println(" " + utils.ConcatMessage(messages...))
 }
 
-func OutputTechInfo(messages ...any) {
-	var result string
-	for _, msg := range messages {
-		result += fmt.Sprint(msg)
-	}
-	// Outputln("\033[31m" + "Технический вывод: " + result + "\033[0m")
+func PrintResponse(messages ...any) {
+	Println(messages...)
+	Println("")
+}
+
+func PrintTopLine() {
+	Println("")
 }

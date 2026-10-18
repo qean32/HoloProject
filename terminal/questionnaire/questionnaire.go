@@ -1,23 +1,31 @@
 package questionnaire
 
 import (
+	"main/constants/sgr"
 	"main/model"
 	"main/terminal"
 	"main/terminal/field"
 )
 
-func askQuestion(question model.Question) {
-	terminal.Output("Введите: ", terminal.GetCustomMessage(question.Message))
-	terminal.DownAndStart()
-	answer := field.Field()
+func Questionnaire(payload model.QuestionnairePayload) map[string]string {
+	result := make(map[string]string, len(payload.Questions))
 
-	if question.Callback(answer) {
-		pushAnswer(question.Key, answer)
+	terminal.Println(payload.Title)
+	for _, question := range payload.Questions {
+		if answer := askQuestion(question); question.Callback(answer) {
+			result[question.Key] = answer
+		} else {
+			newQuestion := question
+			newQuestion.Message = "invalid response " + question.Message
+			askQuestion(newQuestion)
+		}
 	}
+	return result
 }
 
-func runQuestionnaire() {
-	for _, question := range questionnaire.Questions {
-		askQuestion(question)
-	}
+func askQuestion(question model.Question) string {
+	return field.Field(model.FieldPayload{
+		Prefix:    question.Message + " > ",
+		PrefixSRG: []int{sgr.DIM},
+	})
 }

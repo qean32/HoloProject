@@ -1,55 +1,21 @@
 package field
 
 import (
-	"atomicgo.dev/keyboard"
-	"atomicgo.dev/keyboard/keys"
-	"main/lib/low"
+	"bufio"
+	"os"
+	"strings"
+
+	"main/lib/utils"
+	"main/model"
 	"main/terminal"
 )
 
-const prefix = "~ "
+var reader = bufio.NewReader(os.Stdin)
 
-func Field() string {
-	terminal.OutputTechInfo("[Field] start")
-	terminal.Output(prefix)
-	reset()
-	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
-		char := key.String()
+func Field(payload model.FieldPayload) string {
+	terminal.Print(utils.GetCustomMessage(payload.Prefix, payload.PrefixSRG...))
+	text, _ := reader.ReadString('\n')
 
-		switch key.Code {
-		case keys.Space:
-			char = " "
-		case keys.Backspace:
-			removeChar()
-		case keys.Enter:
-			terminal.DownAndStart()
-			return true, nil
-		case keys.Left:
-			horizontalCursorToLeft()
-		case keys.Right:
-			horizontalCursorToRight()
-		case keys.End:
-			horizontalJumpToEnd()
-		case keys.Home:
-			horizontalCursorToPosition(0)
-		case keys.Escape:
-			low.StopProcess()
-			return true, nil
-		case keys.CtrlC:
-			low.StopProcess()
-			return true, nil
-		}
-
-		if len(char) == 1 {
-			pushChar(char)
-		}
-		return false, nil
-	})
-
-	terminal.OutputTechInfo("[Field] listener returned")
-	return field.Message
-}
-
-func enter() {
-	reset()
+	terminal.DownAndStart()
+	return strings.TrimSpace(text)
 }

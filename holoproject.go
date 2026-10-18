@@ -1,31 +1,45 @@
 package main
 
 import (
+	"fmt"
+	"runtime"
+
 	"main/callstack"
-	"main/constants/literals"
+	"main/callstack/event"
+	eventlist "main/constants/event-list"
 	"main/lib"
-	"main/model"
+	"main/lib/eventlog"
 	"main/terminal"
+	"main/terminal/qcallback"
 )
 
 func main() {
-	lib.INIT()
-	go RunLoop()
+	if runtime.GOOS != "windows" {
+		fmt.Println("Эта программа поддерживается только на Windows.")
+		return
+	}
+
+	lib.Init()
+	go runLoop()
 
 	select {}
 }
 
-func RunLoop() {
+func runLoop() {
 	for {
 		for {
-			event, ok := callstack.Pop()
+			ev, ok := callstack.Pop()
 			if !ok {
 				break
 			}
-			terminal.OutputTechInfo(event)
-			lib.Event(event)
+			if eventlog.Enabled() && ev.Key != eventlist.RESPONSE {
+				terminal.PrintTechInfo(ev)
+			}
+			if err := lib.HandleEvent(ev); err != nil {
+				callstack.PushError(ev, err)
+			}
 		}
-		lib.Event(model.Event{Key: literals.COMMANDS_LIST.MANUAL})
+		qcallback.QCallback(func() { event.Reset() })
 		<-callstack.Changed()
 	}
 }

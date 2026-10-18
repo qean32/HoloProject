@@ -1,33 +1,58 @@
 package lib
 
 import (
-	"bufio"
+	"slices"
+
+	"main/callstack/event"
+	"main/callstack/manual"
 	"main/constants"
+	eventlist "main/constants/event-list"
+	"main/lib/death"
 	"main/lib/handler"
-	"main/lib/low"
 	"main/model"
 	"main/terminal"
-	"main/terminal/list"
-	"os"
 )
 
-var READER = bufio.NewReader(os.Stdin)
-
-func INIT() {
-	terminal.OutputASCII_CENTER(constants.BinaryPROJECT_INIT, " ")
-	terminal.OutputASCII_CENTER(constants.PROJECT_INIT, " ")
-	constants.INIT_ROOT()
-	low.SETDATA()
-	list.List(handler.Menu)
+var successEvents = []string{
+	eventlist.BAT,
+	eventlist.PUREREMOVEBAT,
+	eventlist.TEST,
+	eventlist.CLEARLOG,
+	eventlist.CRYPTO,
+	eventlist.DROP,
+	eventlist.INIT,
+	eventlist.RUNBAT,
 }
 
-func Event(e model.Event) {
-	function := handler.MAP[e.Key]
-
-	if function != nil {
-		function(e)
-		low.LOG(e)
-	} else {
-		terminal.Outputln(constants.UNDEFINED_COMMAND)
+func Init() {
+	if err := constants.InitRoot(); err != nil {
+		terminal.Println("Ошибка инициализации")
+		return
 	}
+	terminal.RenderBanner()
+	manual.Manual()
+}
+
+func HandleEvent(e model.Event) error {
+	if err := handler.Dispatch(e); err != nil {
+		event.Response(err)
+		if logErr := death.Logger(model.StackError{Event: e, Err: err}); logErr != nil {
+			event.Response(logErr)
+		}
+		return err
+	}
+
+	if slices.Contains(successEvents, e.Key) {
+		event.Success()
+	}
+
+	if e.Key == eventlist.RESET {
+		return nil
+	}
+
+	if err := death.Logger(model.StackError{Event: e}); err != nil {
+		event.Response(err)
+		return err
+	}
+	return nil
 }

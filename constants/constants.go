@@ -1,22 +1,30 @@
 package constants
 
 import (
-	"main/constants/literals"
 	"os"
+	"path/filepath"
+
+	errorlist "main/constants/error-list"
+	"main/constants/sgr"
 )
 
-const MODE = "dev"
-const PROJECT_NAME = "holo"
+const projectName = "holoproject"
 
-var Root = "./private"
+var (
+	Root = `private`
+	Cmd  = `cmd`
+)
 
-func INIT_ROOT() {
-	if MODE == "dev" {
-		Root = "./private"
-	} else {
-		os.Mkdir(os.TempDir()+`\`+PROJECT_NAME, 0755)
-		Root = os.TempDir() + `\` + PROJECT_NAME
+func InitRoot() error {
+	base := os.TempDir()
+	if base == "" {
+		return errorlist.ErrTempDirEmpty
 	}
+	Root = filepath.Join(base, projectName)
+	if err := os.MkdirAll(Root, 0o755); err != nil {
+		return errorlist.ErrInitRoot
+	}
+	return nil
 }
 
 var BinaryPROJECT_INIT = `
@@ -24,58 +32,49 @@ var BinaryPROJECT_INIT = `
 `
 
 var PROJECT_INIT = `
-%v __  __     ______     __         ______     ______   ______     ______       __     ______     ______     ______     
-%v/\ \_\ \   /\  __ \   /\ \       /\  __ \   /\  == \ /\  == \   /\  __ \     /\ \   /\  ___\   /\  ___\   /\__  _\    
-%v\ \  __ \  \ \ \/\ \  \ \ \____  \ \ \/\ \  \ \  _-/ \ \  __<   \ \ \/\ \   _\_\ \  \ \  __\   \ \ \____  \/_/\ \/    
-%v \ \_\ \_\  \ \_____\  \ \_____\  \ \_____\  \ \_\    \ \_\ \_\  \ \_____\ /\_____\  \ \_____\  \ \_____\    \ \_\    
-%v  \/_/\/_/   \/_____/   \/_____/   \/_____/   \/_/     \/_/ /_/   \/_____/ \/_____/   \/_____/   \/_____/     \/_/    
+%v __  __    ______    __        ______      ______  ______    ______      __    ______    ______    ______     
+%v/\ \_\ \  /\  __ \  /\ \      /\  __ \    /\  == \/\  == \  /\  __ \    /\ \  /\  ___\  /\  ___\  /\__  _\    
+%v\ \  __ \ \ \ \/\ \ \ \ \____ \ \ \/\ \   \ \  _-/\ \  __<  \ \ \/\ \  _\_\ \ \ \  __\  \ \ \____ \/_/\ \/    
+%v \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\   \ \_\   \ \_\ \_\ \ \_____\/\_____\ \ \_____\ \ \_____\   \ \_\    
+%v  \/_/\/_/  \/_____/  \/_____/  \/_____/    \/_/    \/_/ /_/  \/_____/\/_____/  \/_____/  \/_____/    \/_/    
 %v
 `
 
 // ASCII
-// "\033[31m" red color text
 // https://translated.turbopages.org/proxy_u/en-ru.ru.6c604ba4-6a11ef9b-b4e5d92b-74722d776562/https/student.cs.uwaterloo.ca/~cs452/terminal.html
 // https://www.asciiart.eu/text-to-ascii-art respect
 // https://patorjk.com/software/taag/#p=testall&f=Broadway&t=holoproject+2&x=none&v=4&h=4&w=80&we=false
 
 var HelpMessage = `
-%v  __  __     ______     __         ______     ______   ______     ______       __     ______     ______     ______      __  __     ______     __         ______  
-%v /\ \_\ \   /\  __ \   /\ \       /\  __ \   /\  == \ /\  == \   /\  __ \     /\ \   /\  ___\   /\  ___\   /\__  _\    /\ \_\ \   /\  ___\   /\ \       /\  == \ 
-%v \ \  __ \  \ \ \/\ \  \ \ \____  \ \ \/\ \  \ \  _-/ \ \  __<   \ \ \/\ \   _\_\ \  \ \  __\   \ \ \____  \/_/\ \/    \ \  __ \  \ \  __\   \ \ \____  \ \  _-/ 
-%v  \ \_\ \_\  \ \_____\  \ \_____\  \ \_____\  \ \_\    \ \_\ \_\  \ \_____\ /\_____\  \ \_____\  \ \_____\    \ \_\     \ \_\ \_\  \ \_____\  \ \_____\  \ \_\   
-%v   \/_/\/_/   \/_____/   \/_____/   \/_____/   \/_/     \/_/ /_/   \/_____/ \/_____/   \/_____/   \/_____/     \/_/      \/_/\/_/   \/_____/   \/_____/   \/_/   
+%v  __  __    ______    __        ______      __  __    ______    __        ______  
+%v /\ \_\ \  /\  __ \  /\ \      /\  __ \    /\ \_\ \  /\  ___\  /\ \      /\  == \ 
+%v \ \  __ \ \ \ \/\ \ \ \ \____ \ \ \/\ \   \ \  __ \ \ \  __\  \ \ \____ \ \  _-/ 
+%v  \ \_\ \_\ \ \_____\ \ \_____\ \ \_____\   \ \_\ \_\ \ \_____\ \ \_____\ \ \_\   
+%v   \/_/\/_/  \/_____/  \/_____/  \/_____/    \/_/\/_/  \/_____/  \/_____/  \/_/   
 %v
-%v  Команда        Описание                          Пример
+%v crypto         encryption
+%v ecrypto        decryption
 %v
-%v  cripto         Шифрование строки                 cripto key_word key_password { payload }
-%v  ecripto        Дешифровка строки                 ecripto key_word key_password
+%v bat            add .bat                          bat keyWord -p:payload
+%v list           list .bat
+%v run            run .bat                          run keyWord
+%v rbat           remove .bat                       rbat keyWord
 %v
-%v  gmaster        Генерация мастер-ключа
-%v  gkey           Генерация ключа для шифра
+%v gmaster        generate master key
+%v gkey           generate key
 %v
-%v  clog           Очистка логов
-%v  drop           Удалить данные приложения
-%v  stop           Остановить приложение
-%v  help           Список команд
+%v test           unit tests
 %v
-%v  declare        Добавить команду                 declare key_word { payload }
-%v  commands       Просмотреть список команд
-%v  run            Запустить команду                 run key_word
-%v  runm           Запустить множественную           runm key_word
-%v  rmc            Удалить команду                   rmc key_word
 %v
-%v  note           Открыть запись
-%v  dnote          Создание записи                   dnote key_word key_password
-%v  notes          Получить список записей
+%v menu, clog, log, drop, stop, help,
 %v
 `
 
-const CHAR_SELECTED_ITEM = "-> "
-const CHAR_UN_SELECTED_ITEM = ""
+const CHAR_SELECTED_ITEM = "+ "
+const CHAR_UN_SELECTED_ITEM = "│  "
 
-var (
-	StyleError    = []int{literals.SGR.RED, literals.SGR.BOLD}
-	StyleSelected = []int{literals.SGR.RED, literals.SGR.BOLD, literals.SGR.UNDERLINE}
-)
+const FIELDPREFIX = "> "
 
-var AcceptableYeaOrNot []string = []string{"yes", "no", "y", "n", "yea", "not"}
+var StyleDim = []int{sgr.DIM}
+
+var AcceptableYeaOrNot = []string{"yes", "y", "yea", "да"}
