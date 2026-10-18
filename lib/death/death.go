@@ -33,12 +33,8 @@ func CurrentTime() string {
 }
 
 func RunCmd(command string) error {
-	cmd := exec.Command("CMD.exe", "/C", command)
-	if err := cmd.Start(); err != nil {
+	if err := exec.Command("cmd", "/C", command).Run(); err != nil {
 		return errorlist.RunCommand(command, err)
-	}
-	if err := cmd.Wait(); err != nil {
-		return errorlist.ExecCommand(command, err)
 	}
 	return nil
 }

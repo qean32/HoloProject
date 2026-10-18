@@ -2,19 +2,19 @@ package field
 
 import (
 	"bufio"
+	"os"
+	"strings"
+
 	"main/lib/utils"
 	"main/model"
 	"main/terminal"
-	"os"
-	"strings"
 )
 
-var r = bufio.NewReader(os.Stdin)
+var reader = bufio.NewReader(os.Stdin)
 
 func Field(payload model.FieldPayload) string {
-	set(payload)
-	terminal.Print(utils.GetCustomMessage(field.Prefix, field.PrefixSRG...))
-	text, _ := r.ReadString('\n')
+	terminal.Print(utils.GetCustomMessage(payload.Prefix, payload.PrefixSRG...))
+	text, _ := reader.ReadString('\n')
 
 	terminal.DownAndStart()
 	return strings.TrimSpace(text)

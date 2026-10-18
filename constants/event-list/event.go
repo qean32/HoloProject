@@ -1,8 +1,7 @@
 package eventlist
 
-var (
-	// КЛИЕНТСКИЕ
-
+// КЛИЕНТСКИЕ
+const (
 	CRYPTO   = "crypto"
 	DECRYPTO = "ecrypto"
 
@@ -25,14 +24,13 @@ var (
 
 	MENU = "menu"
 	INIT = "init"
+)
 
-	// ТЕХНИЧЕСКИЕ
-
-	QNEXT         = "qcallback"
+// ТЕХНИЧЕСКИЕ
+const (
 	INWORK        = "inwork"
 	RESPONSE      = "response"
 	MANUCREATEBAT = "MANUCREATEBAT"
-	MENUDECRYPTO  = "MENUDECRYPTO"
 	MENUCRYPTO    = "MENUCRYPTO"
 	PUREREMOVEBAT = "REMOVEBAT"
 	RESET         = "r"
@@ -40,38 +38,3 @@ var (
 	TEST          = "test"
 	TESTVIEW      = "testview"
 )
-
-// All — все события проекта, клиентские и технические.
-// По этому списку проходят встроенные тесты (main/__test__),
-// поэтому новое событие нужно добавлять и сюда.
-var All = []string{
-	// клиентские
-	CRYPTO,
-	DECRYPTO,
-	GENERATEMASTER,
-	GENERATEKEY,
-	CLEARLOG,
-	OPENLOG,
-	DROP,
-	STOP,
-	HELP,
-	BAT,
-	RUNBAT,
-	REMOVEBAT,
-	BATLIST,
-	BATLISTREMOVE,
-	MENU,
-	QNEXT,
-	INIT,
-
-	// технические
-	INWORK,
-	RESPONSE,
-	MANUCREATEBAT,
-	MENUDECRYPTO,
-	MENUCRYPTO,
-	PUREREMOVEBAT,
-	RESET,
-	TEST,
-	MANUAL,
-}

@@ -9,8 +9,10 @@ import (
 	eventlist "main/constants/event-list"
 	"main/lib"
 	"main/terminal"
-	qcallback "main/terminal/qcallback"
+	"main/terminal/qcallback"
 )
+
+var logger = true
 
 func main() {
 	if runtime.GOOS != "windows" {
@@ -19,25 +21,23 @@ func main() {
 	}
 
 	lib.Init()
-	go RunLoop()
+	go runLoop()
 
 	select {}
 }
 
-var logger = true
-
-func RunLoop() {
+func runLoop() {
 	for {
 		for {
-			event, ok := callstack.Pop()
+			ev, ok := callstack.Pop()
 			if !ok {
 				break
 			}
-			if logger && event.Key != eventlist.RESPONSE {
-				terminal.PrintTechInfo(event)
+			if logger && ev.Key != eventlist.RESPONSE {
+				terminal.PrintTechInfo(ev)
 			}
-			if err := lib.HandleEvent(event); err != nil {
-				callstack.PushError(event, err)
+			if err := lib.HandleEvent(ev); err != nil {
+				callstack.PushError(ev, err)
 			}
 		}
 		qcallback.QCallback(func() { event.Reset() })

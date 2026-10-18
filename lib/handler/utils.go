@@ -1,12 +1,12 @@
 package handler
 
 import (
+	"path/filepath"
 	"strings"
 
 	"main/constants"
 	errorlist "main/constants/error-list"
 	"main/constants/literal"
-	"path/filepath"
 )
 
 func validateName(name string) error {
@@ -23,6 +23,6 @@ func cmdPath(keyword string) string {
 	return filepath.Join(constants.Cmd, keyword+literal.Extension.Bat)
 }
 
-func trimExtention(str string) string {
+func trimExtension(str string) string {
 	return strings.TrimSuffix(str, literal.Extension.Bat)
 }

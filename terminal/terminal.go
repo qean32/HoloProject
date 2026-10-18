@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"sync"
 
-	"main/constants"
 	"main/lib/utils"
 )
 
@@ -23,13 +22,10 @@ func Println(messages ...any) {
 }
 
 func PrintResponse(messages ...any) {
-	mu.Lock()
-	defer mu.Unlock()
-	fmt.Println(append([]any{constants.RESPONSEPREFIX}, messages...)...)
-	fmt.Println("")
+	Println(messages...)
+	Println("")
 }
 
 func PrintTopLine() {
-	// Println(utils.GetCustomMessage("┌──", sgr.DIM))
 	Println("")
 }

@@ -39,7 +39,7 @@ func Dispatch(key string, args []string) (model.Event, error) {
 
 func parse(args []string, opts Options) (model.Event, error) {
 	if len(args) == 0 {
-		return model.Event{}, errorlist.ErrNotExist
+		return model.Event{}, errorlist.ErrEmptyCommand
 	}
 
 	event := model.Event{
@@ -48,13 +48,9 @@ func parse(args []string, opts Options) (model.Event, error) {
 		Flags:    filter.FilterIsFlag(args),
 	}
 
-	if args == nil {
-		return event, nil
-	}
-
 	if opts.KeyWord {
 		if len(args) < 2 {
-			return event, errorlist.ErrNotExist
+			return event, errorlist.ErrTooFewArgs
 		}
 		event.KeyWord = args[1]
 	}
@@ -76,9 +72,6 @@ func parse(args []string, opts Options) (model.Event, error) {
 	}
 
 	if opts.GetSubEvent {
-		if len(args) < 2 && opts.KeyWord {
-			return event, errorlist.ErrNotExist
-		}
 		event.SubEvent = &model.Event{
 			KeyWord: args[1],
 			Key:     opts.SubEvent,
@@ -100,7 +93,9 @@ func getItem(args []string, prefix string) (string, error) {
 func getPayload(args []string, prefix string) (string, error) {
 	for i, a := range args {
 		if v, ok := strings.CutPrefix(a, prefix); ok {
-			rest := append([]string{v}, args[i+1:]...)
+			rest := make([]string, 0, len(args)-i)
+			rest = append(rest, v)
+			rest = append(rest, args[i+1:]...)
 			return strings.TrimSpace(strings.Join(rest, " ")), nil
 		}
 	}

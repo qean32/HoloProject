@@ -12,7 +12,7 @@ import (
 
 var registry = map[string]model.Handler{
 	// клиентские
-	eventlist.INIT: ignoreError(init_),
+	eventlist.INIT: ignoreEvent(init_),
 
 	eventlist.BAT:           bat,
 	eventlist.MANUCREATEBAT: ignoreEvent(questionnaireCreateBat),

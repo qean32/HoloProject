@@ -9,8 +9,6 @@ var (
 	// GENERAL
 	ErrAccessDenied   = errors.New("Process stopped")
 	ErrNotExist       = errors.New("file does not exist")
-	ErrIsDir          = errors.New("This is a directory")
-	ErrInvalidName    = errors.New("Invalid name")
 	ErrForbiddenName  = errors.New("Forbidden name")
 	ErrForbiddenChars = errors.New("Forbidden characters")
 
@@ -29,9 +27,6 @@ var (
 	// INITIALIZATION
 	ErrTempDirEmpty = errors.New("os.TempDir() returned an empty path")
 	ErrInitRoot     = errors.New("Initialization error!")
-
-	// TESTS
-	ErrTestNotConnected = errors.New("Test suite is not connected")
 )
 
 // InvalidName builds an invalid name error,
@@ -75,11 +70,6 @@ func RunCommand(command string, err error) error {
 	return fmt.Errorf("Run command %q: %w", command, err)
 }
 
-// ExecCommand — error executing the command.
-func ExecCommand(command string, err error) error {
-	return fmt.Errorf("Execute command %q: %w", command, err)
-}
-
 // ClearTerminal — error clearing the terminal.
 func ClearTerminal(err error) error {
 	return fmt.Errorf("Clear terminal: %w", err)
@@ -108,9 +98,4 @@ func WriteFile(path string, err error) error {
 // RemoveFile — error removing the file at path.
 func RemoveFile(path string, err error) error {
 	return fmt.Errorf("Remove %s: %w", path, err)
-}
-
-// WithContext wraps err, adding the context.
-func WithContext(context string, err error) error {
-	return fmt.Errorf("%w: %s", err, context)
 }

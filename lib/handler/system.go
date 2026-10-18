@@ -17,7 +17,7 @@ const dirPerm os.FileMode = 0o755
 
 func reset() {
 	death.ClearTerminal()
-	terminal.RenderBaner()
+	terminal.RenderBanner()
 	manual.Manual()
 }
 
@@ -50,8 +50,9 @@ func inwork() {
 	event.Response("В разработке")
 }
 
-func init_() {
-	os.Mkdir(constants.Root, 0755)
-	os.Mkdir(filepath.Join(constants.Root, constants.Cmd), 0755)
-	death.CreateFile(literal.Path.PathLog, "")
+func init_() error {
+	if err := os.MkdirAll(filepath.Join(constants.Root, constants.Cmd), dirPerm); err != nil {
+		return errorlist.Create(constants.Cmd, err)
+	}
+	return death.CreateFile(literal.Path.PathLog, "")
 }

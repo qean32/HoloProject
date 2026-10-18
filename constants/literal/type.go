@@ -5,8 +5,7 @@ type extensionType struct {
 }
 
 type pathType struct {
-	PathLog     string
-	PathSetting string
+	PathLog string
 }
 
 type titleType struct {

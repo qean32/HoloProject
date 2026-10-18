@@ -2,6 +2,7 @@ package callstack
 
 import (
 	"fmt"
+	"strings"
 	"sync"
 
 	"main/model"
@@ -29,13 +30,11 @@ func GetErrorsString() string {
 		return "no error"
 	}
 
-	res := ""
-
+	var sb strings.Builder
 	for i, stackErr := range Errors {
-		res = res + StackErrorToString(stackErr, i)
+		sb.WriteString(StackErrorToString(stackErr, i))
 	}
-	fmt.Println(res)
-	return res
+	return sb.String()
 }
 
 func StackErrorToString(stackErr model.StackError, i int) string {

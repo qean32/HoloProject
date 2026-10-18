@@ -70,24 +70,18 @@ func listBatFiles(title string, makeEvent func(name string) model.Event) error {
 	return nil
 }
 
-func batList(event model.Event) error {
-	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
-		return model.Event{Key: event.Key, KeyWord: value}
-	})
-}
-
 func runBatList() error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
 		return model.Event{
 			Key:     eventlist.RUNBAT,
-			KeyWord: trimExtention(value),
+			KeyWord: trimExtension(value),
 		}
 	})
 }
 
 func removeBatList() error {
 	return listBatFiles(literal.Titles.ListBat, func(value string) model.Event {
-		trimmed := trimExtention(value)
+		trimmed := trimExtension(value)
 		return model.Event{
 			Key:     eventlist.PUREREMOVEBAT,
 			KeyWord: trimmed,

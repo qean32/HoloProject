@@ -8,25 +8,19 @@ import (
 	"main/constants/sgr"
 )
 
-const (
-	ModeDev  = "dev"
-	ModeProd = "prod"
-)
-
-const Mode = ModeProd
-const projectname = "holoproject"
+const projectName = "holoproject"
 
 var (
 	Root = `private`
 	Cmd  = `cmd`
 )
 
-func Init_root() error {
+func InitRoot() error {
 	base := os.TempDir()
 	if base == "" {
 		return errorlist.ErrTempDirEmpty
 	}
-	Root = filepath.Join(base, projectname)
+	Root = filepath.Join(base, projectName)
 	if err := os.MkdirAll(Root, 0o755); err != nil {
 		return errorlist.ErrInitRoot
 	}
@@ -80,12 +74,7 @@ const CHAR_SELECTED_ITEM = "+ "
 const CHAR_UN_SELECTED_ITEM = "│  "
 
 const FIELDPREFIX = "> "
-const RESPONSEPREFIX = ""
 
-var (
-	StyleError    = []int{sgr.RED, sgr.BOLD}
-	StyleDim      = []int{sgr.DIM}
-	StyleSelected = []int{sgr.RED, sgr.BOLD, sgr.UNDERLINE}
-)
+var StyleDim = []int{sgr.DIM}
 
-var AcceptableYeaOrNot []string = []string{"yes", "y", "yea"}
+var AcceptableYeaOrNot = []string{"yes", "y", "yea", "да"}
