@@ -7,6 +7,9 @@ import (
 	"main/constants"
 	errorlist "main/constants/error-list"
 	"main/constants/literal"
+	"main/terminal"
+
+	"atomicgo.dev/cursor"
 )
 
 func validateName(name string) error {
@@ -23,6 +26,7 @@ func cmdPath(keyword string) string {
 	return filepath.Join(constants.Cmd, keyword+literal.Extension.Bat)
 }
 
-func trimExtension(str string) string {
-	return strings.TrimSuffix(str, literal.Extension.Bat)
+func help() {
+	cursor.StartOfLine()
+	terminal.PrintASCIICenter(constants.HelpMessage, "")
 }

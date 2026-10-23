@@ -1,55 +1,66 @@
 package lib
 
 import (
-	"slices"
-
+	"main/callstack"
 	"main/callstack/event"
 	"main/callstack/manual"
 	"main/constants"
-	eventlist "main/constants/event-list"
 	"main/lib/death"
 	"main/lib/handler"
 	"main/model"
 	"main/terminal"
 )
 
-var successEvents = []string{
-	eventlist.BAT,
-	eventlist.PUREREMOVEBAT,
-	eventlist.TEST,
-	eventlist.CLEARLOG,
-	eventlist.CRYPTO,
-	eventlist.DROP,
-	eventlist.INIT,
-	eventlist.RUNBAT,
-}
-
-func Init() {
-	if err := constants.InitRoot(); err != nil {
-		terminal.Println("Ошибка инициализации")
-		return
-	}
-	terminal.RenderBanner()
-	manual.Manual()
-}
-
-func HandleEvent(e model.Event) error {
-	if err := handler.Dispatch(e); err != nil {
-		event.Response(err)
-		if logErr := death.Logger(model.StackError{Event: e, Err: err}); logErr != nil {
-			event.Response(logErr)
-		}
+func Init() error {
+	if err := InitData(); err != nil {
 		return err
 	}
 
-	if slices.Contains(successEvents, e.Key) {
+	terminal.RenderBanner()
+	manual.Manual()
+	return nil
+}
+
+func InitData() error {
+	if err := constants.InitRoot(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func HandleEvent(e model.Event) error {
+	action, err := handler.Dispatch(e)
+	if err != nil {
+		return fail(e, err)
+	}
+
+	if action != nil {
+		events, err := action.Run()
+		if err != nil {
+			return fail(e, err)
+		}
+		for _, next := range events {
+			callstack.Push(next)
+		}
+	}
+
+	if handler.Success(e.Key) {
 		event.Success()
 	}
 
-	if e.Key == eventlist.RESET {
-		return nil
-	}
+	return logg(e)
+}
 
+// logg ошибки
+func fail(e model.Event, err error) error {
+	event.Response(err)
+	if logErr := death.Logger(model.StackError{Event: e, Err: err}); logErr != nil {
+		event.Response(logErr)
+	}
+	return err
+}
+
+func logg(e model.Event) error {
 	if err := death.Logger(model.StackError{Event: e}); err != nil {
 		event.Response(err)
 		return err

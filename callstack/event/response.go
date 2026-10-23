@@ -9,6 +9,6 @@ import (
 func Success() {
 	callstack.Push(model.Event{
 		Key:     eventlist.RESPONSE,
-		Payload: "/ᐠ-˕-マᶻ",
+		Payload: "/ᐠ-˕-マ Успех!",
 	})
 }
