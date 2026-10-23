@@ -2,10 +2,10 @@ package handler
 
 import (
 	"os"
-	"os/exec"
 	"path/filepath"
 
 	"main/callstack/event"
+	"main/callstack/manual"
 	"main/constants"
 	errorlist "main/constants/error-list"
 	"main/constants/literal"
@@ -14,22 +14,22 @@ import (
 	"main/terminal"
 )
 
-func clearScreen() {
-	_ = death.ClearTerminal()
+const dirPerm os.FileMode = 0o755
+
+func reset() {
+	death.ClearTerminal()
 	terminal.RenderBanner()
+	manual.Manual()
 }
 
 func drop() error {
-	if !filepath.IsAbs(constants.Root) {
-		return errorlist.ErrForbiddenName
-	}
 	if err := os.RemoveAll(constants.Root); err != nil {
 		return errorlist.Remove(constants.Root, err)
 	}
-	// if err := constants.EnsureLayout(); err != nil {
-	// 	return err
-	// }
-	return death.EnsureFile(literal.Path.PathLog)
+	if err := os.MkdirAll(constants.Root, dirPerm); err != nil {
+		return errorlist.Create(constants.Root, err)
+	}
+	return nil
 }
 
 func clearLog() error {
@@ -41,10 +41,7 @@ func clearLog() error {
 
 func openLog() error {
 	path := filepath.Join(constants.Root, literal.Path.PathLog)
-	if _, err := os.Stat(path); err != nil {
-		return errorlist.Open(path, err)
-	}
-	if err := exec.Command("cmd", "/c", "start", "", path).Run(); err != nil {
+	if err := death.RunCmd(path); err != nil {
 		return errorlist.Open(path, err)
 	}
 	return nil
@@ -54,6 +51,7 @@ func inwork() {
 	event.Response("В разработке")
 }
 
+// toggleLogger переключает вывод технических логов событий в терминал.
 func toggleLogger() {
 	if eventlog.Toggle() {
 		event.Response("Логирование событий: включено")
@@ -63,8 +61,8 @@ func toggleLogger() {
 }
 
 func init_() error {
-	// if err := constants.EnsureLayout(); err != nil {
-	// 	return err
-	// }
-	return death.EnsureFile(literal.Path.PathLog)
+	if err := os.MkdirAll(filepath.Join(constants.Root, constants.Cmd), dirPerm); err != nil {
+		return errorlist.Create(constants.Cmd, err)
+	}
+	return death.CreateFile(literal.Path.PathLog, "")
 }

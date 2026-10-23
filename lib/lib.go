@@ -47,17 +47,22 @@ func HandleEvent(e model.Event) error {
 		event.Success()
 	}
 
-	if err := death.Logger(model.StackError{Event: e}); err != nil {
-		event.Response(err)
-		return err
-	}
-	return nil
+	return logg(e)
 }
 
+// logg ошибки
 func fail(e model.Event, err error) error {
 	event.Response(err)
 	if logErr := death.Logger(model.StackError{Event: e, Err: err}); logErr != nil {
 		event.Response(logErr)
 	}
 	return err
+}
+
+func logg(e model.Event) error {
+	if err := death.Logger(model.StackError{Event: e}); err != nil {
+		event.Response(err)
+		return err
+	}
+	return nil
 }

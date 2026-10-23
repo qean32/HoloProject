@@ -55,7 +55,7 @@ var commands = []model.Command{
 		Name:  eventlist.CLEAR,
 		Title: "Очистить экран",
 		Usage: "clear",
-		Run:   ignoreError(clearScreen),
+		Run:   ignoreError(reset),
 	},
 	{
 		Name:    eventlist.CLEARLOG,

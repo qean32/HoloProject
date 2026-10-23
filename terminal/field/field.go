@@ -2,8 +2,6 @@ package field
 
 import (
 	"bufio"
-	"errors"
-	"io"
 	"os"
 	"strings"
 
@@ -14,13 +12,10 @@ import (
 
 var reader = bufio.NewReader(os.Stdin)
 
-func Field(payload model.FieldPayload) (string, error) {
+func Field(payload model.FieldPayload) string {
 	terminal.Print(utils.GetCustomMessage(payload.Prefix, payload.PrefixSRG...))
-	text, err := reader.ReadString('\n')
-	terminal.DownAndStart()
+	text, _ := reader.ReadString('\n')
 
-	if err != nil && !(errors.Is(err, io.EOF) && text != "") {
-		return "", err
-	}
-	return strings.TrimSpace(text), nil
+	terminal.DownAndStart()
+	return strings.TrimSpace(text)
 }

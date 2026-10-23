@@ -42,7 +42,7 @@ func Menu(_ model.Event) (model.Action, error) {
 // CreateBat спрашивает имя и содержимое .bat и возвращает событие BAT.
 func CreateBat(_ model.Event) (model.Action, error) {
 	return model.ActionFunc(func() ([]model.Event, error) {
-		answers, err := questionnaire.Questionnaire(model.QuestionnairePayload{
+		answers := questionnaire.Questionnaire(model.QuestionnairePayload{
 			Questions: []model.Question{
 				{
 					Message: "Ключ",
@@ -61,9 +61,6 @@ func CreateBat(_ model.Event) (model.Action, error) {
 			},
 			Title: literal.Titles.EnterBat,
 		})
-		if err != nil {
-			return nil, err
-		}
 
 		return []model.Event{{
 			Key:      eventlist.BAT,
@@ -82,7 +79,7 @@ func ConfirmRemove(event model.Event) (model.Action, error) {
 	next := *event.SubEvent
 
 	return model.ActionFunc(func() ([]model.Event, error) {
-		answers, err := questionnaire.Questionnaire(model.QuestionnairePayload{
+		answers:= questionnaire.Questionnaire(model.QuestionnairePayload{
 			Questions: []model.Question{
 				{
 					Message:  "Подтвердите действие (yea/no)",
@@ -91,9 +88,6 @@ func ConfirmRemove(event model.Event) (model.Action, error) {
 				},
 			},
 		})
-		if err != nil {
-			return nil, err
-		}
 		if !questionnaire.IsAcceptableYea(answers["Response"]) {
 			return nil, errorlist.ErrAccessDenied
 		}

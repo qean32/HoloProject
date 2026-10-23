@@ -25,7 +25,3 @@ func PrintResponse(messages ...any) {
 	Println(messages...)
 	Println("")
 }
-
-func PrintTopLine() {
-	Println("")
-}
