@@ -8,11 +8,10 @@ import (
 	"time"
 
 	"main/callstack"
+	errorlist "main/constants/error-list"
 	eventlist "main/constants/event-list"
 	"main/constants/literal"
 	"main/model"
-
-	errorlist "main/constants/error-list"
 )
 
 func Logger(stackErr model.StackError) error {
@@ -25,7 +24,9 @@ func Logger(stackErr model.StackError) error {
 		return nil
 	}
 
-	return PushToFile(literal.Path.PathLog, callstack.StackErrorToString(stackErr, 0))
+	safe := stackErr.Event
+	safe.Password = ""
+	return PushToFile(literal.Path.PathLog, callstack.StackErrorToString(model.StackError{Event: safe, Err: stackErr.Err}, 0))
 }
 
 func CurrentTime() string {
@@ -33,14 +34,17 @@ func CurrentTime() string {
 }
 
 func RunCmd(command string) error {
-	if err := exec.Command("cmd", "/C", command).Run(); err != nil {
+	cmd := exec.Command("cmd", "/C", command)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
 		return errorlist.RunCommand(command, err)
 	}
 	return nil
 }
 
 func Exit() {
-	ClearTerminal()
+	_ = ClearTerminal()
 	os.Exit(0)
 }
 

@@ -31,12 +31,12 @@ const (
 // ТЕХНИЧЕСКИЕ
 const (
 	INWORK        = "inwork"
+	RESET         = "r"
 	RESPONSE      = "response"
 	MANUCREATEBAT = "MANUCREATEBAT"
 	MENUCRYPTO    = "MENUCRYPTO"
 	PUREREMOVEBAT = "REMOVEBAT"
-	RESET         = "r"
-	MANUAL        = "manual"
+	CLEAR         = "clear"
 	TEST          = "test"
 	TESTVIEW      = "testview"
 )

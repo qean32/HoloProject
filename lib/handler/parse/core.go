@@ -1,43 +1,21 @@
 package parse
 
 import (
+	"slices"
 	"strings"
 
 	errorlist "main/constants/error-list"
-	eventlist "main/constants/event-list"
 	"main/lib/array/filter"
 	"main/lib/death"
 	"main/model"
 )
 
-const (
-	prefixPassword = "pass/"
-	prefixPayload  = "p/"
+var (
+	payloadPrefixes  = []string{"p/", "-p:"}
+	passwordPrefixes = []string{"pass/", "-pass:"}
 )
 
-type Options struct {
-	KeyWord     bool
-	Payload     bool
-	Password    bool
-	Flags       bool
-	GetSubEvent bool
-	SubEvent    string
-}
-
-var registry = map[string]Options{
-	eventlist.CRYPTO:   {KeyWord: true, Payload: true, Password: true},
-	eventlist.DECRYPTO: {KeyWord: true, Password: true},
-
-	eventlist.BAT:       {KeyWord: true, Payload: true},
-	eventlist.RUNBAT:    {KeyWord: true},
-	eventlist.REMOVEBAT: {GetSubEvent: true, SubEvent: eventlist.PUREREMOVEBAT, KeyWord: true},
-}
-
-func Dispatch(key string, args []string) (model.Event, error) {
-	return parse(args, registry[key])
-}
-
-func parse(args []string, opts Options) (model.Event, error) {
+func Parse(args []string, opts model.ParseOptions) (model.Event, error) {
 	if len(args) == 0 {
 		return model.Event{}, errorlist.ErrEmptyCommand
 	}
@@ -45,7 +23,7 @@ func parse(args []string, opts Options) (model.Event, error) {
 	event := model.Event{
 		Key:      args[0],
 		DateTime: death.CurrentTime(),
-		Flags:    filter.FilterIsFlag(args),
+		Flags:    parseFlags(args, opts),
 	}
 
 	if opts.KeyWord {
@@ -56,7 +34,7 @@ func parse(args []string, opts Options) (model.Event, error) {
 	}
 
 	if opts.Password {
-		pass, err := getItem(args, prefixPassword)
+		pass, err := getItem(args, passwordPrefixes)
 		if err != nil {
 			return event, err
 		}
@@ -64,7 +42,11 @@ func parse(args []string, opts Options) (model.Event, error) {
 	}
 
 	if opts.Payload {
-		payload, err := getPayload(args, prefixPayload)
+		var stopPrefixes []string
+		if opts.Password {
+			stopPrefixes = passwordPrefixes
+		}
+		payload, err := getPayload(args, payloadPrefixes, stopPrefixes)
 		if err != nil {
 			return event, err
 		}
@@ -72,6 +54,9 @@ func parse(args []string, opts Options) (model.Event, error) {
 	}
 
 	if opts.GetSubEvent {
+		if len(args) < 2 {
+			return event, errorlist.ErrTooFewArgs
+		}
 		event.SubEvent = &model.Event{
 			KeyWord: args[1],
 			Key:     opts.SubEvent,
@@ -81,23 +66,61 @@ func parse(args []string, opts Options) (model.Event, error) {
 	return event, nil
 }
 
-func getItem(args []string, prefix string) (string, error) {
+func getItem(args []string, prefixes []string) (string, error) {
 	for _, a := range args {
-		if v, ok := strings.CutPrefix(a, prefix); ok {
+		if v, ok := cutPrefix(a, prefixes); ok {
 			return v, nil
 		}
 	}
 	return "", errorlist.ErrNotExist
 }
 
-func getPayload(args []string, prefix string) (string, error) {
+func getPayload(args []string, prefixes, stopPrefixes []string) (string, error) {
 	for i, a := range args {
-		if v, ok := strings.CutPrefix(a, prefix); ok {
+		if v, ok := cutPrefix(a, prefixes); ok {
 			rest := make([]string, 0, len(args)-i)
 			rest = append(rest, v)
-			rest = append(rest, args[i+1:]...)
+			for _, next := range args[i+1:] {
+				if _, stop := cutPrefix(next, stopPrefixes); stop {
+					break
+				}
+				rest = append(rest, next)
+			}
 			return strings.TrimSpace(strings.Join(rest, " ")), nil
 		}
 	}
 	return "", errorlist.ErrNoPayload
+}
+
+func cutPrefix(value string, prefixes []string) (string, bool) {
+	for _, prefix := range prefixes {
+		if v, ok := strings.CutPrefix(value, prefix); ok {
+			return v, true
+		}
+	}
+	return "", false
+}
+
+func parseFlags(args []string, opts model.ParseOptions) []string {
+	limit := len(args)
+	if opts.Payload {
+		if idx := indexOfPrefix(args, payloadPrefixes); idx >= 0 {
+			limit = idx
+		}
+	}
+
+	flags := filter.FilterIsFlag(args[:limit])
+	return slices.DeleteFunc(flags, func(flag string) bool {
+		_, ok := cutPrefix(flag, passwordPrefixes)
+		return ok
+	})
+}
+
+func indexOfPrefix(args, prefixes []string) int {
+	for i, arg := range args {
+		if _, ok := cutPrefix(arg, prefixes); ok {
+			return i
+		}
+	}
+	return -1
 }

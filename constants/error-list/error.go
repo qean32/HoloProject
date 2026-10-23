@@ -17,9 +17,10 @@ var (
 	ErrUnknownCommand = errors.New("Unknown command")
 
 	// PARSING
-	ErrEmptyCommand = errors.New("Empty command")
-	ErrTooFewArgs   = errors.New("Not enough arguments")
-	ErrNoPayload    = errors.New("Payload not found")
+	ErrEmptyCommand    = errors.New("Empty command")
+	ErrTooFewArgs      = errors.New("Not enough arguments")
+	ErrNoPayload       = errors.New("Payload not found")
+	ErrTooManyAttempts = errors.New("too many invalid attempts")
 
 	// IN DEVELOPMENT
 	ErrorInwork = errors.New("In development!")

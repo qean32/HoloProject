@@ -8,6 +8,8 @@ import (
 	errorlist "main/constants/error-list"
 )
 
+const maxLogSize = 1 << 20
+
 func WriteFile(data, path string) error {
 	file, err := os.Create(filepath.Join(constants.Root, path))
 	if err != nil {
@@ -21,10 +23,14 @@ func WriteFile(data, path string) error {
 	return nil
 }
 
-// PushToFile дописывает newText в конец файла (вместо полного
-// перечитывания и перезаписи файла на каждую запись).
 func PushToFile(path, newText string) error {
-	file, err := os.OpenFile(filepath.Join(constants.Root, path), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+	full := filepath.Join(constants.Root, path)
+	if info, err := os.Stat(full); err == nil && info.Size() >= maxLogSize {
+		_ = os.Remove(full + ".1")
+		_ = os.Rename(full, full+".1")
+	}
+
+	file, err := os.OpenFile(full, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 	if err != nil {
 		return errorlist.OpenFile(path, err)
 	}
@@ -34,6 +40,14 @@ func PushToFile(path, newText string) error {
 		return errorlist.WriteFile(path, err)
 	}
 	return nil
+}
+
+func EnsureFile(path string) error {
+	file, err := os.OpenFile(filepath.Join(constants.Root, path), os.O_CREATE|os.O_WRONLY, 0o644)
+	if err != nil {
+		return errorlist.OpenFile(path, err)
+	}
+	return file.Close()
 }
 
 func CreateFile(path string, content string) error {

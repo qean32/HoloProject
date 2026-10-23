@@ -1,26 +1,31 @@
 package manual
 
 import (
+	"errors"
+	"io"
 	"strings"
 
 	"main/callstack"
 	"main/callstack/event"
 	"main/constants"
-	errorlist "main/constants/error-list"
-	"main/lib/handler/parse"
+	"main/lib/death"
+	"main/lib/handler"
 	"main/model"
 	"main/terminal/field"
 )
 
 func Manual() {
-	command := field.Field(model.FieldPayload{Prefix: constants.FIELDPREFIX})
-	args := strings.Fields(command)
-	if len(args) == 0 {
-		event.Response(errorlist.ErrEmptyCommand)
+	command, err := field.Field(model.FieldPayload{Prefix: constants.FIELDPREFIX})
+	if err != nil {
+		if errors.Is(err, io.EOF) {
+			death.Exit()
+		}
+		event.Response(err)
 		return
 	}
 
-	e, err := parse.Dispatch(args[0], args)
+	args := strings.Fields(command)
+	e, err := handler.Parse(args)
 	if err != nil {
 		event.Response(err)
 		return

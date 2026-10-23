@@ -17,12 +17,19 @@ func formatEvent(event model.Event) string {
 		formatField("Key", event.Key),
 		formatField("KeyWord", event.KeyWord),
 		formatField("Payload", event.Payload),
-		formatField("Password", event.Password),
+		formatField("Password", maskSecret(event.Password)),
 		formatField("DateTime", event.DateTime),
 		"Flags=" + formatFlags(event.Flags),
 		"SubEvent=" + formatSubEvent(event.SubEvent),
 	}
 	return strings.Join(parts, " ")
+}
+
+func maskSecret(value string) string {
+	if value == "" {
+		return ""
+	}
+	return "<hidden>"
 }
 
 func formatField(name, value string) string {
