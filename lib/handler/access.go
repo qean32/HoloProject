@@ -14,7 +14,7 @@ func QAccess(event model.Event, warning string) error {
 	q := questionnaire.Questionnaire(model.QuestionnairePayload{
 		Questions: []model.Question{
 			{
-				Message:  "Подтвердите действие (yea/no) " + warning,
+				Message:  "confirm (yea/no) " + warning,
 				Key:      "Response",
 				Callback: func(string) bool { return true },
 			},

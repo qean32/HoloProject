@@ -30,9 +30,6 @@ func CreateBat(event model.Event) error {
 }
 
 func RunBat(event model.Event) error {
-	if err := validateName(event.KeyWord); err != nil {
-		return errorlist.InvalidName(event.KeyWord, err)
-	}
 	if err := death.RunCmd(filepath.Join(constants.Root, cmdPath(event.KeyWord))); err != nil {
 		return errorlist.Run(event.KeyWord, err)
 	}
@@ -40,9 +37,6 @@ func RunBat(event model.Event) error {
 }
 
 func RemoveCmd(event model.Event) error {
-	if err := validateName(event.KeyWord); err != nil {
-		return errorlist.InvalidName(event.KeyWord, err)
-	}
 	if err := death.RemoveFile(cmdPath(event.KeyWord)); err != nil {
 		return errorlist.Remove(event.KeyWord, err)
 	}

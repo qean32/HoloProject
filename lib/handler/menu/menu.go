@@ -39,7 +39,7 @@ func localBalList(title string, makeEvent func(name string) model.Event) error {
 	}
 
 	menu.Menu(model.ListPayload{
-		Options: array.Map(commands,
+		Options: array.Mapped(commands,
 			func(value string) model.Option {
 				return model.Option{
 					Message: utils.TrimBatExtension(value),

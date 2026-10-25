@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	prefixPassword = "pass/"
-	prefixPayload  = "p/"
+	prefixPassword = "-pass:"
+	prefixPayload  = "-p:"
 )
 
 var registry = map[string]model.ParseOptions{
