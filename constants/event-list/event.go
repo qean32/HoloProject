@@ -32,9 +32,8 @@ const (
 const (
 	INWORK        = "inwork"
 	RESPONSE      = "response"
-	MANUCREATEBAT = "MANUCREATEBAT"
-	MENUCRYPTO    = "MENUCRYPTO"
-	PUREREMOVEBAT = "REMOVEBAT"
+	QCREATEBAT    = "QCREATEBAT~"
+	PUREREMOVEBAT = "PUREREMOVEBAT~"
 	RESET         = "r"
 	MANUAL        = "manual"
 	TEST          = "test"

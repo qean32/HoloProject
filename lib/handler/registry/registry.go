@@ -8,6 +8,7 @@ import (
 	"main/lib/handler"
 	"main/lib/handler/menu"
 	"main/model"
+	"slices"
 )
 
 var commands = []model.Command{
@@ -29,11 +30,7 @@ var commands = []model.Command{
 		NeedAccess: true,
 		Fn:         handler.RemoveCmd,
 	},
-	{
-		Name:    eventlist.TEST,
-		Fn:      ignoreError(test.Test),
-		Success: true,
-	},
+	{Name: eventlist.TEST, Fn: ignoreError(test.Test), Success: true},
 	{Name: eventlist.DROP, Fn: ignoreEvent(handler.Drop), Success: true, NeedAccess: true},
 	{Name: eventlist.CLEARLOG, Fn: ignoreEvent(handler.ClearLog), Success: true},
 	{Name: eventlist.OPENLOG, Fn: ignoreEvent(handler.ClearLog)},
@@ -44,21 +41,14 @@ var commands = []model.Command{
 	{Name: eventlist.BATLIST, Fn: ignoreError(func() { menu.BatList(eventlist.RUNBAT) })},
 	{Name: eventlist.BATLISTREMOVE, Fn: ignoreError(func() { menu.BatList(eventlist.REMOVEBAT) })},
 	// Служебные команды и события меню
-	{
-		Name:       eventlist.PUREREMOVEBAT,
-		Fn:         handler.RemoveCmd,
-		Success:    true,
-	},
-	{
-		Name:       eventlist.INIT,
-		Fn:         ignoreEvent(handler.InitSystem),
-		Success:    true,
-		NeedAccess: true,
-	},
+	{Name: eventlist.PUREREMOVEBAT, Fn: handler.RemoveCmd, Success: true},
+	{Name: eventlist.INIT, Fn: ignoreEvent(handler.InitSystem), Success: true, NeedAccess: true},
 	{Name: eventlist.INWORK, Fn: ignoreError(handler.Inwork)},
 	{Name: eventlist.RESPONSE, Fn: handler.Response},
 	{Name: eventlist.TESTVIEW, Fn: ignoreError(test.TestView)},
 	{Name: eventlist.RESET, Fn: ignoreError(handler.Reset)},
+	// Опросники
+	{Name: eventlist.QCREATEBAT, Fn: ignoreEvent(handler.QuestionnaireCreateBat)},
 }
 
 var registry = buildRegistry(commands)
@@ -73,7 +63,7 @@ func Dispatch(e model.Event) (model.Action, error) {
 	if !ok {
 		return nil, errorlist.ErrUnknownCommand
 	}
-	if command.NeedAccess {
+	if command.NeedAccess && !slices.Contains(e.Flags, "-y") {
 		if err := handler.QAccess(e, ""); err != nil {
 			return nil, err
 		}
