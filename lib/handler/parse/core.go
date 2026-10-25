@@ -15,16 +15,7 @@ const (
 	prefixPayload  = "p/"
 )
 
-type Options struct {
-	KeyWord     bool
-	Payload     bool
-	Password    bool
-	Flags       bool
-	GetSubEvent bool
-	SubEvent    string
-}
-
-var registry = map[string]Options{
+var registry = map[string]model.ParseOptions{
 	eventlist.CRYPTO:   {KeyWord: true, Payload: true, Password: true},
 	eventlist.DECRYPTO: {KeyWord: true, Password: true},
 
@@ -37,7 +28,7 @@ func Dispatch(key string, args []string) (model.Event, error) {
 	return parse(args, registry[key])
 }
 
-func parse(args []string, opts Options) (model.Event, error) {
+func parse(args []string, opts model.ParseOptions) (model.Event, error) {
 	if len(args) == 0 {
 		return model.Event{}, errorlist.ErrEmptyCommand
 	}

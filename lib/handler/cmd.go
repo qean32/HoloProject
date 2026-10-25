@@ -14,12 +14,12 @@ import (
 	"main/terminal/questionnaire"
 )
 
-func _response(event model.Event) error {
+func Response(event model.Event) error {
 	terminal.PrintResponse(event.Payload)
 	return nil
 }
 
-func bat(event model.Event) error {
+func CreateBat(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
 		return errorlist.InvalidName(event.KeyWord, err)
 	}
@@ -29,7 +29,7 @@ func bat(event model.Event) error {
 	return nil
 }
 
-func runBat(event model.Event) error {
+func RunBat(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
 		return errorlist.InvalidName(event.KeyWord, err)
 	}
@@ -39,7 +39,7 @@ func runBat(event model.Event) error {
 	return nil
 }
 
-func removeCmd(event model.Event) error {
+func RemoveCmd(event model.Event) error {
 	if err := validateName(event.KeyWord); err != nil {
 		return errorlist.InvalidName(event.KeyWord, err)
 	}
@@ -49,7 +49,7 @@ func removeCmd(event model.Event) error {
 	return nil
 }
 
-func questionnaireCreateBat() error {
+func QuestionnaireCreateBat() error {
 	q := questionnaire.Questionnaire(model.QuestionnairePayload{
 		Questions: []model.Question{
 			{
@@ -70,7 +70,7 @@ func questionnaireCreateBat() error {
 		Title: literal.Titles.EnterBat,
 	})
 
-	return bat(model.Event{
+	return CreateBat(model.Event{
 		Key:      eventlist.BAT,
 		KeyWord:  q["KeyWord"],
 		Payload:  q["Payload"],

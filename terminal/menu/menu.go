@@ -26,12 +26,14 @@ func (state *stateStruct) length() int {
 	return len(state.options)
 }
 
-func Menu(payload model.ListPayload) {
+func Menu(payload model.ListPayload) (model.Event, bool) {
 	terminal.DownAndStart()
 	if len(payload.Options) == 0 {
 		event.Response("length == zero! ave caesar! ")
-		return
+		return model.Event{}, false
 	}
+	var selected model.Event
+	chosen := false
 
 	cursor.Hide()
 	terminal.Println(utils.GetCustomMessage(payload.Title+" ↓"+" (ctrl+c back)", constants.StyleDim...))
@@ -48,6 +50,8 @@ func Menu(payload model.ListPayload) {
 		switch key.Code {
 		case keys.Enter:
 			state.selectOption()
+			selected = utils.GetShortEvent(state.options[state.position].Event)
+			chosen = true
 			return true, nil
 		case keys.Down:
 			state.moveDown()
@@ -62,6 +66,7 @@ func Menu(payload model.ListPayload) {
 		return false, nil
 	})
 	terminal.DownAndStart()
+	return selected, chosen
 }
 
 func (state *stateStruct) render() {

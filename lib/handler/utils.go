@@ -26,7 +26,7 @@ func cmdPath(keyword string) string {
 	return filepath.Join(constants.Cmd, keyword+literal.Extension.Bat)
 }
 
-func help() {
+func Help() {
 	cursor.StartOfLine()
 	terminal.PrintASCIICenter(constants.HelpMessage, "")
 }

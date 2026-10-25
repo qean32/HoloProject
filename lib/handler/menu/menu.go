@@ -24,7 +24,14 @@ var menuOption = []model.Option{
 	{Message: "Выход", Event: model.Event{Key: eventlist.STOP}},
 }
 
-func LocalList(title string, makeEvent func(name string) model.Event) error {
+func MainMenu() {
+	menu.Menu(model.ListPayload{
+		Options: menuOption,
+		Title:   "Главное меню: ",
+	})
+}
+
+func localBalList(title string, makeEvent func(name string) model.Event) error {
 	dir := filepath.Join(constants.Root, constants.Cmd)
 	commands, err := death.ListFilesByExt(dir, literal.Extension.Bat)
 	if err != nil {
@@ -32,36 +39,25 @@ func LocalList(title string, makeEvent func(name string) model.Event) error {
 	}
 
 	menu.Menu(model.ListPayload{
-		Options: array.Map(commands, func(value string) model.Option {
-			return model.Option{
-				Message: utils.TrimBatExtension(value),
-				Event:   makeEvent(value),
-			}
-		}),
+		Options: array.Map(commands,
+			func(value string) model.Option {
+				return model.Option{
+					Message: utils.TrimBatExtension(value),
+					Event:   makeEvent(value),
+				}
+			}),
 		Title: title,
 	})
 	return nil
 }
 
-func runBatList() error {
-	return LocalList(literal.Titles.ListBat, func(value string) model.Event {
-		return model.Event{
-			Key:     eventlist.RUNBAT,
-			KeyWord: utils.TrimBatExtension(value),
-		}
-	})
-}
-
-func removeBatList() error {
-	return LocalList(literal.Titles.ListBat, func(value string) model.Event {
-		trimmed := utils.TrimBatExtension(value)
-		return model.Event{
-			Key:     eventlist.REMOVEBAT,
-			KeyWord: trimmed,
-			SubEvent: &model.Event{
-				Key:     eventlist.PUREREMOVEBAT,
-				KeyWord: trimmed,
-			},
-		}
-	})
+func BatList(keyEvent string) error {
+	return localBalList(literal.Titles.ListBat,
+		func(value string) model.Event {
+			return model.Event{
+				Key:     keyEvent,
+				KeyWord: utils.TrimBatExtension(value),
+			}
+		},
+	)
 }
