@@ -10,7 +10,9 @@ import (
 func Questionnaire(payload model.QuestionnairePayload) map[string]string {
 	result := make(map[string]string, len(payload.Questions))
 
-	terminal.Println(payload.Title)
+	if payload.Title != "" {
+		terminal.Println(payload.Title)
+	}
 	for _, question := range payload.Questions {
 		if answer := askQuestion(question); question.Callback(answer) {
 			result[question.Key] = answer
@@ -20,12 +22,14 @@ func Questionnaire(payload model.QuestionnairePayload) map[string]string {
 			askQuestion(newQuestion)
 		}
 	}
+	terminal.DownAndStart()
 	return result
 }
 
 func askQuestion(question model.Question) string {
 	return field.Field(model.FieldPayload{
-		Prefix:    question.Message + " > ",
-		PrefixSRG: []int{sgr.DIM},
+		Prefix:          question.Message + " > ",
+		PrefixSRG:       []int{sgr.DIM},
+		IsQuestionnaire: true,
 	})
 }

@@ -24,6 +24,9 @@ func InitRoot() error {
 	if err := os.MkdirAll(Root, 0o755); err != nil {
 		return errorlist.ErrInitRoot
 	}
+	if err := os.MkdirAll(filepath.Join(Root, Cmd), 0o755); err != nil {
+		return errorlist.ErrInitRoot
+	}
 	return nil
 }
 

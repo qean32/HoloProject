@@ -7,14 +7,10 @@ import (
 )
 
 func QAccess(event model.Event, warning string) error {
-	if event.SubEvent == nil {
-		return errorlist.ErrNoSubEvent
-	}
-
 	q := questionnaire.Questionnaire(model.QuestionnairePayload{
 		Questions: []model.Question{
 			{
-				Message:  "confirm (yea/no) " + warning,
+				Message:  "confirm (yea/no)" + warning,
 				Key:      "Response",
 				Callback: func(string) bool { return true },
 			},
