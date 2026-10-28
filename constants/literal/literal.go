@@ -5,11 +5,12 @@ var Flags = flagType{
 }
 
 var Extension = extensionType{
-	Bat: ".bat",
+	Bat:  ".bat",
+	Txt: ".txt",
 }
 
 var Path = pathType{
-	PathLog: "log.asc",
+	PathLog: "log" + Extension.Txt,
 }
 
 var Titles = titleType{

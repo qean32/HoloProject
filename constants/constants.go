@@ -24,11 +24,14 @@ func InitRoot() error {
 	if err := os.MkdirAll(Root, 0o755); err != nil {
 		return errorlist.ErrInitRoot
 	}
+	if err := os.MkdirAll(filepath.Join(Root, Cmd), 0o755); err != nil {
+		return errorlist.ErrInitRoot
+	}
 	return nil
 }
 
 var BinaryPROJECT_INIT = `
-%v01101000 01101111 01101100 01101111 01110000 01110010 01101111 01101010 01100101 01100011 01110100
+%v01100110 01101111 01111000 00100000 01101000 01101001 01100100 01101001 01101110 01100111
 `
 
 var PROJECT_INIT = `

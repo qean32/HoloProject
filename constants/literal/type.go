@@ -2,6 +2,7 @@ package literal
 
 type extensionType struct {
 	Bat string
+	Txt string
 }
 
 type pathType struct {
